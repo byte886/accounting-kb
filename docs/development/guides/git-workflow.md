@@ -189,7 +189,7 @@ __pycache__/
 *.log
 
 # 生成结果目录
-transcription/transcripts/
+transcription/trancode/scripts/
 transcription/transcripts_full/
 transcription/transcripts_test/
 transcription/pdf_test_pages/
@@ -306,12 +306,12 @@ fix: 修复上传脚本路径缺少高顿层
 ### 9.3 安装
 
 ```bash
-# 项目已包含 scripts/pre-commit，安装到 .git/hooks/
-cp scripts/pre-commit .git/hooks/pre-commit
+# 项目已包含 code/scripts/pre-commit，安装到 .git/hooks/
+cp code/scripts/pre-commit .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
 ```
 
-> 运行产物模式表 `ARTIFACT_RE` 与根 `.gitignore` 互为备份，新增一类运行产物时两处同步（依据 PROJECT_STRUCTURE_MAINTENANCE 2.1）。pre-commit 只查本次暂存（增量拦截）；需要排查存量时跑只读的全量体检 `bash scripts/check_git_hygiene.sh`。
+> 运行产物模式表 `ARTIFACT_RE` 与根 `.gitignore` 互为备份，新增一类运行产物时两处同步（依据 PROJECT_STRUCTURE_MAINTENANCE 2.1）。pre-commit 只查本次暂存（增量拦截）；需要排查存量时跑只读的全量体检 `bash code/scripts/check_git_hygiene.sh`。
 
 ### 9.4 跳过检查（特殊情况）
 
@@ -423,7 +423,7 @@ git rev-list --objects --all | git cat-file --batch-check='%(objecttype) %(objec
 docs: 添加项目维护规则，更新GitHub目录结构
 
 - 添加项目维护规则（结构维护原则、检查触发时机、存储分工）
-- 更新GitHub仓库目录结构（脚本统一放scripts/、文档按领域分类）
+- 更新GitHub仓库目录结构（脚本统一放code/scripts/、文档按领域分类）
 ```
 
 ## 14. 参考资料

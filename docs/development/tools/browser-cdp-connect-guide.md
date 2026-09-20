@@ -66,16 +66,16 @@ UI 兜底 ───────────────────────�
 
 ```bash
 # 1) 环境自检：自动点授权 → 连接日常 Chrome → 打印版本和所有标签 → 干净断开
-node scripts/cdp/connect_browser.js
+node code/scripts/cdp/connect_browser.js
 
 # 2) 抓包演示：抓 URL 含 baidu 的标签、刷新、采集 6 秒，结果落 data/_workspace/_account/auth/*.jsonl
-node scripts/cdp/connect_browser.js  # 环境自检：连接→列标签→断开
+node code/scripts/cdp/connect_browser.js  # 环境自检：连接→列标签→断开
 
 # 3) 真实抓高顿（默认不刷新页面，避免误动作），先在日常 Chrome 打开并登录做题页
 # 业务脚本 require('./cdp/connect_browser') 复用连接
 ```
 
-可复用模块 `scripts/cdp/`：
+可复用模块 `code/scripts/cdp/`：
 
 | 文件 | 作用 |
 |---|---|
@@ -83,7 +83,7 @@ node scripts/cdp/connect_browser.js  # 环境自检：连接→列标签→断�
 | `press_allow.applescript` | macOS AX 代点「允许」（被连接模块自动调用，一般不用手动跑） |
 | `press_allow_locked.sh` | 代点的**跨进程互斥包装**：全机同一时刻只放一个代点 osascript 过（I-015/B-103），连接模块经它调用，一般不直接用 |
 | `cdp_consent_guard.sh` | **单例授权守护**：长跑下载期间由调度器拉起，1s 探测、发现授权 sheet 就代点+还焦、清掉连接窗口外的残留弹窗（I-015/B-104），pidfile 单例、收工回收 |
-| `refresh_auth_token.js` | token 自愈：连接日常 Chrome→找高顿 tab→`page.on('request')` 监听 `apigateway.gaodun.com` 请求的 `authentication` 头→reload 触发→存 `_account/auth/refresh_<时间>.jsonl`→findJwt 回读验活。做题脚本捕获 553649434 时自动调用，也可手动 `node scripts/cdp/refresh_auth_token.js` |
+| `refresh_auth_token.js` | token 自愈：连接日常 Chrome→找高顿 tab→`page.on('request')` 监听 `apigateway.gaodun.com` 请求的 `authentication` 头→reload 触发→存 `_account/auth/refresh_<时间>.jsonl`→findJwt 回读验活。做题脚本捕获 553649434 时自动调用，也可手动 `node code/scripts/cdp/refresh_auth_token.js` |
 
 在自己的业务脚本里这样用：
 
@@ -181,7 +181,7 @@ try {
 - 还焦必须走 System Events `set frontmost of process "<name>"`；`tell application "X" to activate` 在 node 派生的 osascript 宿主下会被静默丢弃，对 Doubao 实测**反而会把焦点切走**。
 - 代点循环间隔维持 800ms：再短会因多个 osascript 并发访问 System Events 拥塞、反而点不中（血泪教训，见 startPressLoop 注释）；跨进程的并发由 `press_allow_locked.sh` 全局锁兜底。
 - 无弹窗时 `press_allow.applescript` 返回 pressed=false 且绝不切换焦点，可高频安全重复调用。
-- **连接结束后仍残留的弹窗**不是连接内循环能管的（它已 stop），长跑任务必须靠单例守护 `cdp_consent_guard.sh` 兜底；手动清一次残留：`osascript scripts/cdp/press_allow.applescript "Doubao"`，若 `pressed=true` 但 sheet 还在（时序竞态），再点一次即可。
+- **连接结束后仍残留的弹窗**不是连接内循环能管的（它已 stop），长跑任务必须靠单例守护 `cdp_consent_guard.sh` 兜底；手动清一次残留：`osascript code/scripts/cdp/press_allow.applescript "Doubao"`，若 `pressed=true` 但 sheet 还在（时序竞态），再点一次即可。
 
 ### 4.6 Chrome 没开会自动拉起，Profile 怎么选
 

@@ -94,7 +94,7 @@ python transcribe_pipeline.py <视频路径> <输出目录>
 ### 4.2 批量转写
 
 ```bash
-bash scripts/transcribe_all.sh   # 按 GAODUN_COURSE_PROFILE 转写整门课，已存在 transcript 自动跳过
+bash code/scripts/transcribe_all.sh   # 按 GAODUN_COURSE_PROFILE 转写整门课，已存在 transcript 自动跳过
 ```
 
 **重要**：批量脚本需在 iTerm 中运行，可开多个窗口并行处理不同视频。

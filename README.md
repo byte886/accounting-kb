@@ -33,7 +33,7 @@
 
 ## 仓库地址
 
-- GitHub: https://github.com/byte886/gaodun-course-knowledge-base （公有）
+- GitHub: https://github.com/byte886/accounting-kb （公有）
 
 ## 常用查询话术（直接复制使用）
 
@@ -100,7 +100,7 @@
 ├── docs/                 # 项目文档（只放静态内容：方法论、指导、规范、流程、模板）
 ├── project-management/   # 项目管理（动态内容：任务状态、问题跟踪、测试计划、报告）
 ├── knowledge-base/       # 知识库内容（本地源头，同步到飞书）
-├── scripts/              # 脚本（下载、压缩、转写、上传、做题等）
+├── code/                  # 所有代码（脚本、venv、node_modules）
 ├── transcription/        # 转写工作目录（.gitignore忽略）
 ├── .secrets/             # 加密凭证（加密文件提交到仓库）
 ├── data/                 # 运行数据实体目录（高顿课程库 + _workspace），整体 .gitignore 忽略
@@ -166,7 +166,7 @@
 ### 核心原则
 
 1. **GitHub 仓库只放代码和文档**：生成结果（视频、PDF、文字稿）放本地和百度网盘
-2. **脚本统一放 `scripts/`**：不分散在各子目录
+2. **代码统一放 `code/`（scripts/ venvs/ node_modules/）**：不分散在各子目录
 3. **文档按专业领域分类**：`docs/project-management/`、`docs/development/`
 4. **具体产出物放对应课程目录**：专项质检、知识梳理等和被验证对象在一起（验证默认不单独成文）
 5. **定期清理**：测试文件、临时日志、残留目录及时清理
@@ -224,7 +224,7 @@
 敏感凭证使用 openssl AES-256-CBC -pbkdf2 加密存储，加密文件提交到仓库，解密密码由用户保管。
 
 ```bash
-secrets decrypt .secrets/<name>.enc   # 全局命令解密查看（原 scripts/secrets.sh 已抽离为全机唯一工具）
+secrets decrypt .secrets/<name>.enc   # 全局命令解密查看（原 code/scripts/... 已抽离为全机唯一工具）
 ```
 
 

@@ -448,5 +448,5 @@ PY
 - 知识库模板：[KNOWLEDGE_BASE_TEMPLATE.md](../templates/KNOWLEDGE_BASE_TEMPLATE.md)
 - 知识生成 SOP：[knowledge-base-organization.md](../knowledge/knowledge-base-organization.md)
 - 链接验证 SOP：[wiki-link-verification-sop.md](./wiki-link-verification-sop.md)
-- 内容重同步脚本：`scripts/knowledge/resync_wiki_content.py`（`--force` 强制重刷）
+- 内容重同步脚本：`code/scripts/knowledge/resync_wiki_content.py`（`--force` 强制重刷）
 - 节点台账：`data/_workspace/<profile>/logs/wiki_node_map.tsv`

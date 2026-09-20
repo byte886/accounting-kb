@@ -51,9 +51,9 @@
 
 ## 二、执行前准备
 
-1. **登录态（唯一需要用户的环节）**：日常 Chrome 保持登录高顿。JWT 存于业务请求头 `authentication`，HS256、**声明有效期 7 天，但服务端可提前使其失效**（返回业务码 553649434「登录超时」，HTTP 仍 200，不能只看 JWT 的 exp）。token 获取分两级：① 常规由 `findJwt()` 从 `data/_workspace/_account/auth/*.jsonl` **按文件 mtime 取最新**；② 失效时 `node scripts/cdp/refresh_auth_token.js` 连接已登录的日常 Chrome、reload 高顿页自动抓新 token（批量脚本已内置：捕获 553649434 自动刷新并重试同一试卷，最多 2 次）。**只有日常 Chrome 也未登录/需验证码时才暂停交用户**，不读取密码。JWT/Cookie 禁止入库。
-2. **连接自检**：`node scripts/cdp/connect_browser.js`（连接→列标签→断开）。连接通道与"允许远程调试"弹窗处理见 ADR-010 与 [浏览器 CDP 连接手册](../tools/browser-cdp-connect-guide.md)。
-3. **刷新作业基线（只读，必做）**：`node scripts/cdp/refresh_inventory.js`（约1–2分钟，低频只读）。它拉 syllabus 枚举全部 paper、对每张只读 record 审计，产出：
+1. **登录态（唯一需要用户的环节）**：日常 Chrome 保持登录高顿。JWT 存于业务请求头 `authentication`，HS256、**声明有效期 7 天，但服务端可提前使其失效**（返回业务码 553649434「登录超时」，HTTP 仍 200，不能只看 JWT 的 exp）。token 获取分两级：① 常规由 `findJwt()` 从 `data/_workspace/_account/auth/*.jsonl` **按文件 mtime 取最新**；② 失效时 `node code/scripts/cdp/refresh_auth_token.js` 连接已登录的日常 Chrome、reload 高顿页自动抓新 token（批量脚本已内置：捕获 553649434 自动刷新并重试同一试卷，最多 2 次）。**只有日常 Chrome 也未登录/需验证码时才暂停交用户**，不读取密码。JWT/Cookie 禁止入库。
+2. **连接自检**：`node code/scripts/cdp/connect_browser.js`（连接→列标签→断开）。连接通道与"允许远程调试"弹窗处理见 ADR-010 与 [浏览器 CDP 连接手册](../tools/browser-cdp-connect-guide.md)。
+3. **刷新作业基线（只读，必做）**：`node code/scripts/cdp/refresh_inventory.js`（约1–2分钟，低频只读）。它拉 syllabus 枚举全部 paper、对每张只读 record 审计，产出：
    - `data/_workspace/<profile>/manifest/papers_inventory.json`（全量）
    - `data/_workspace/<profile>/manifest/papers_audit.json`（待做：非满分且非冲刺）
    - **作用：避免重复做已完成卷**，批量脚本以它为输入。
@@ -88,9 +88,9 @@
 ### 4.1 批量（推荐）
 
 ```bash
-node scripts/cdp/batch_redo_papers.js          # dry-run：只列出将处理的卷与停留，不写
-node scripts/cdp/batch_redo_papers.js --go     # 实跑 audit 中全部待补基础卷
-node scripts/cdp/batch_redo_papers.js --go 82174 82175   # 只跑指定 paperId
+node code/scripts/cdp/batch_redo_papers.js          # dry-run：只列出将处理的卷与停留，不写
+node code/scripts/cdp/batch_redo_papers.js --go     # 实跑 audit 中全部待补基础卷
+node code/scripts/cdp/batch_redo_papers.js --go 82174 82175   # 只跑指定 paperId
 # 加 --no-ai：只交卷、不做交卷后主观 AI 批改（主观停在"待批改"，作业仍算已交）
 ```
 
@@ -99,7 +99,7 @@ node scripts/cdp/batch_redo_papers.js --go 82174 82175   # 只跑指定 paperId
 - **token 失效自愈**：批量过程中任一接口返回 553649434（登录超时），脚本自动调 `refresh_auth_token.js` 从已登录 Chrome 抓新 token，并用新 token 重试当前试卷（同一卷最多刷新 2 次）；2 次后仍失败才标记该卷异常、继续下一张。因此长跑期间 token 中途过期无需人工介入，前提是日常 Chrome 保持登录。
 - **长跑必须套守护器，不要裸跑 `--go`**：`batch_redo_papers.js` 连续跑数十张后会「零错误静默退出」（进程消失、日志停在 `[N/M]`、无异常栈，caffeinate 也拦不住）。而 redo 不回写 audit，**直接重启会按启动时的旧 audit 从 `[1]` 重做已满分卷**，陷入"永远前几十张"的死循环。标准启动用做题守护启动器，它让守护器每一轮严格「先 `refresh_inventory` 从平台回查重建 audit（已满分自动剔除）→ 再 `--go` 只续跑剩余」，redo 一退出 5 秒后自动进入下一轮，PPID=1 脱离 AI 会话，无需 AI 在线或定时巡检：
   ```bash
-  nohup bash scripts/cdp/run_papers_supervised.sh <profile> \
+  nohup bash code/scripts/cdp/run_papers_supervised.sh <profile> \
     > data/_workspace/<profile>/logs/supervisor_papers.log 2>&1 & disown
   ```
   全部达成（refresh 后 audit=0）或连续 3 轮平台已达成数不增长（个别卷客观无法满分）时写终态日志（`[NOTIFY]`）并退出。**做题线默认不弹 macOS 通知**（`SUPERVISE_NO_OSASCRIPT=1`），终态由 15 分钟定时任务唤醒 AI 识别、自动做终态核对/推进冲刺卷并在豆包通知；封装已套 `caffeinate -i` 防 Mac 空闲睡眠。三份日志分工：`supervisor_papers.log`（守护轮次/停滞/`[NOTIFY]` 终态）、`refresh_supervised.log`（每轮平台回查）、`batch_do_paper.log`（做题明细，追加）。
@@ -107,8 +107,8 @@ node scripts/cdp/batch_redo_papers.js --go 82174 82175   # 只跑指定 paperId
 ### 4.2 单卷
 
 ```bash
-node scripts/cdp/api_do_paper.js <paperId 或 标题关键字> [最小停留秒] [--no-ai]
-# 例：node scripts/cdp/api_do_paper.js 82749
+node code/scripts/cdp/api_do_paper.js <paperId 或 标题关键字> [最小停留秒] [--no-ai]
+# 例：node code/scripts/cdp/api_do_paper.js 82749
 ```
 
 退出码：**0=严格满分或平台最优**；4=已交卷但未达平台最优（可补批）；1/2=未交卷成功或异常。
@@ -259,7 +259,7 @@ node scripts/cdp/api_do_paper.js <paperId 或 标题关键字> [最小停留秒]
 
 ## 八、知识反哺（做题产出 → 知识库）
 
-1. **只读采集题源**：`node scripts/cdp/collect_paper_sources.js [--all] [paperId...]`，对已交卷卷经 record→paper/analysis 只读拉取题面/选项/标准答案/官方解析/知识点标签，落：
+1. **只读采集题源**：`node code/scripts/cdp/collect_paper_sources.js [--all] [paperId...]`，对已交卷卷经 record→paper/analysis 只读拉取题面/选项/标准答案/官方解析/知识点标签，落：
    - `data/_workspace/<profile>/papers/<paperId>.json`（每卷精简题答解析）
    - `data/_workspace/<profile>/manifest/paper_index.json`（paperId→章/标题/题量/文件，`chapter`=官方讲次标题）
    - 纯只读、不 redo、不建实例、不交卷、不耗 AI 权益。
@@ -290,13 +290,13 @@ node scripts/cdp/api_do_paper.js <paperId 或 标题关键字> [最小停留秒]
 
 **三段式流程**
 1. **抓 key（唯一需要 Chrome 的一步，一次性）**
-   `node scripts/cdp/fetch_question_video_keys.js`
+   `node code/scripts/cdp/fetch_question_video_keys.js`
    CDP 打开逐题解析页→全部解析→对每个大题：开答题卡点"N-1"→点 `.sub-tiku__video-box img` 封面加载播放器→注入 Worker hook（hook `postMessage`，从 `to_worker` 的 `response` 取前 16B ASCII 即 key）→落 `data/_workspace/<profile>/papers/qvideo_keys.json`。
 2. **下载解密（纯 Node，可并发/断点重跑，不再依赖浏览器）**
-   `node scripts/cdp/download_question_videos.js all`
+   `node code/scripts/cdp/download_question_videos.js all`
    JWT 取 **SD** m3u8（转写对分辨率不敏感，SD 又快又小；要高清改 res=FHD 需播放器切档另抓 key）→解析全局 IV→并发下载→逐片 `AES-128-CBC` 解密（校验首字节 0x47=MPEG-TS 同步字节）→顺序合并 merged.ts。**完成后必须 ffprobe 校验时长 == 接口 duration**。
 3. **remux + 并发转写**
-   `ffmpeg -i merged.ts -c copy -bsf:a aac_adtstoasc video.mp4`（TS→MP4 必须带 aac_adtstoasc），再 `bash scripts/transcribe_qvideos.sh 6`（FunASR，本机约 20x 实时、单进程约 2 核 3.3G，20 逻辑核默认并发 6）。
+   `ffmpeg -i merged.ts -c copy -bsf:a aac_adtstoasc video.mp4`（TS→MP4 必须带 aac_adtstoasc），再 `bash code/scripts/transcribe_qvideos.sh 6`（FunASR，本机约 20x 实时、单进程约 2 核 3.3G，20 逻辑核默认并发 6）。
 4. **归置到课程目录两层桶（下载只是到工作区 data/_workspace/<profile>/tmp/download/sprint-videos，成品必须归位）**
    成品三件套（video.mp4 + transcript.md/json）移入课程目录 `原始资源/videos/`，延续正课 `NN_讲次/` 扁平范式、正课已到 39，冲刺顺延：40–42 为三套整卷视频解析、43–49 为题目级大题讲解（`43_冲刺模考01-题目讲解-卷烟厂消费税` 等，大题中文名取 redo 题面）；6 卷题答在分流阶段从 redo 精简为 `原始资源/papers/`。归位后 data/_workspace/<profile>/tmp/download/sprint-videos 的 `.vfetch`（merged.ts+分片，可由脚本重下）移废纸篓。**网盘不在此步传**：按 [finalize-sop.md](finalize-sop.md)，等知识详解生成自检通过后随"原始资源+知识详解"整层一次性镜像。
 

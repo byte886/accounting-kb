@@ -19,13 +19,13 @@
 
 1. **同卷秒换**：`~/Desktop` 与项目目录在同一块盘、同一个 APFS 卷（设备号相同）。`mv ~/Desktop/高顿 data/高顿` 是同卷 rename（改目录项），秒级完成、**不复制字节、不额外占用空间**，与 935G 体积无关。
 2. **忽略规则现成**：`.gitignore` 已整体忽略 `data/`，实体化后数据依旧不入库，无需新增忽略规则。
-3. **现役链路对软链无依赖**：cdp 下载、knowledge 知识生成、compress 压缩、网盘 sync、`course_config.COURSE_LOCAL_ROOT` 全部走相对路径 `data/高顿/...`（`scripts/cdp`、`scripts/knowledge` 下零 `~/Desktop` 绝对引用）。软链换成同名实体目录后该路径字符串不变，主力脚本无感知。压缩脚本幂等：已 hevc 的自动跳过、进度记 `compress_state.jsonl`、中断的 `.compress_tmp__*` 重启自动重压。
+3. **现役链路对软链无依赖**：cdp 下载、knowledge 知识生成、compress 压缩、网盘 sync、`course_config.COURSE_LOCAL_ROOT` 全部走相对路径 `data/高顿/...`（`code/scripts/cdp`、`code/scripts/knowledge` 下零 `~/Desktop` 绝对引用）。软链换成同名实体目录后该路径字符串不变，主力脚本无感知。压缩脚本幂等：已 hevc 的自动跳过、进度记 `compress_state.jsonl`、中断的 `.compress_tmp__*` 重启自动重压。
 
 ## 决策
 
 1. **数据实体化**：删除 `data/高顿` 软链（先 `test -L` 确认是链接才 `unlink`，绝不 `rm -rf` 跟随），将 `~/Desktop/高顿` 同卷 `mv` 为项目内实体目录 `data/高顿/`；此后桌面不再有"高顿"文件夹，数据唯一实体在项目 `data/高顿/`，整体被 `.gitignore` 忽略、不入库。
-2. **配置收口**：`scripts/course_config.sh` 的 `COURSE_DESKTOP_ROOT` **保留变量名**（转写/编码/结构检查 4 个下游脚本仍引用，避免改名扩散），其值改为等同 `COURSE_LOCAL_ROOT`（`data/高顿/CPA/$COURSE_NAME`），不再指向桌面。
-3. **建链脚本退役**：`scripts/setup_data_symlink.sh`（专门创建桌面软链）使命消失、且误跑会与实体目录冲突，按精简原则移废纸篓；换机/克隆改为"把课程数据放回 `data/高顿/`（从百度网盘镜像拉回）"，不再建软链。
+2. **配置收口**：`code/scripts/course_config.sh` 的 `COURSE_DESKTOP_ROOT` **保留变量名**（转写/编码/结构检查 4 个下游脚本仍引用，避免改名扩散），其值改为等同 `COURSE_LOCAL_ROOT`（`data/高顿/CPA/$COURSE_NAME`），不再指向桌面。
+3. **建链脚本退役**：`code/scripts/setup_data_symlink.sh`（专门创建桌面软链）使命消失、且误跑会与实体目录冲突，按精简原则移废纸篓；换机/克隆改为"把课程数据放回 `data/高顿/`（从百度网盘镜像拉回）"，不再建软链。
 4. **网盘远端不动**：百度网盘根 `/apps/CPA课程归档/...` 结构与 ADR-020 的沙箱根名约束完全不变，本次纯本地形态调整。
 5. **文档与记忆同步**：现行规范/手册/记忆 concept 中"`data/高顿` 是软链 / 指向桌面 / find 需 `-L` / 本地在 `~/Desktop/高顿`"等表述统一改为实体目录口径；ADR-005/016/020 等历史 ADR 与 CHANGELOG 按"编年体只增不改"保留原文，由本 ADR 承接新结论，工程记忆 concept `architecture-storage-layout` 同步修订并在 `memory/log.md` 留痕。
 

@@ -113,18 +113,18 @@
 
 | 任务 | 统一使用 |
 |------|----------|
-| 连接日常 Chrome（主通道，ADR-010） | `scripts/cdp/connect_browser.js`（puppeteer-core 经 CDP 连已登录日常 Chrome，免重登） |
-| 视频下载解密 | `scripts/download_decrypt.js`（glive/ep3 共用） |
-| 名师课 ep3 视频+字幕采集（type=13） | `scripts/cdp/ep3_download_videos.js`（FHD-1080P + 平台 VTT 字幕，免 FunASR；ADR-018） |
-| 视频压缩（仅正课 glive） | `scripts/compress.sh`（ep3 FHD 用 ffmpeg -c copy，不重压） |
-| 讲义 OCR | `scripts/batch_ocr.sh` |
-| 音频转写 | `scripts/transcribe_pipeline.py` |
-| 网盘上传 | `scripts/baidu_upload.py` |
-| 做题/交卷（接口主链路） | `scripts/cdp/api_do_paper.js`（syllabus→redo取答案→submit交卷→exam-report回查） |
+| 连接日常 Chrome（主通道，ADR-010） | `code/scripts/cdp/connect_browser.js`（puppeteer-core 经 CDP 连已登录日常 Chrome，免重登） |
+| 视频下载解密 | `code/scripts/download_decrypt.js`（glive/ep3 共用） |
+| 名师课 ep3 视频+字幕采集（type=13） | `code/scripts/cdp/ep3_download_videos.js`（FHD-1080P + 平台 VTT 字幕，免 FunASR；ADR-018） |
+| 视频压缩（仅正课 glive） | `code/scripts/compress.sh`（ep3 FHD 用 ffmpeg -c copy，不重压） |
+| 讲义 OCR | `code/scripts/batch_ocr.sh` |
+| 音频转写 | `code/scripts/transcribe_pipeline.py` |
+| 网盘上传 | `code/scripts/baidu_upload.py` |
+| 做题/交卷（接口主链路） | `code/scripts/cdp/api_do_paper.js`（syllabus→redo取答案→submit交卷→exam-report回查） |
 | 做题/交卷（纯接口主链路） | `cdp/api_do_paper.js`（单卷）、`cdp/batch_redo_papers.js`（批量，内置 token 失效自愈重试）、`cdp/do_sprint_paper.js`（冲刺） |
 | 鉴权 token 自愈 | `cdp/refresh_auth_token.js`（从已登录日常 Chrome 自动抓新 authentication；findJwt 按文件 mtime 取最新） |
 
-完整索引见 [scripts/README.md](../code/scripts/README.md)。
+完整索引见 [code/scripts/README.md](../code/scripts/README.md)。
 
 ### 重要决策前查看历史 ADR（必须遵守）
 
@@ -148,7 +148,7 @@
 | 冲刺模考完成后（最终一次） | 冲刺题/答/解析并入的知识点更新 + 更新后的考试指导速查手册 |
 
 - 飞书结构与本地 `知识详解/` **同构**：课程容器下章＝父节点、知识点篇＝子页面、根 README＝容器首页。
-- 现役链路（配置驱动、一门一验收）：`scripts/knowledge/build_tree.py` 建树 → `run_resync_batches.sh`/`resync_wiki_content.py` 分批同步正文（含首页）→ `verify_wiki_tree.py` + `verify_wiki_content.py` 只读双验收；完整步骤、8 课坐标、限流处置见 **[wiki-sync-sop.md](development/guides/wiki-sync-sop.md)**。
+- 现役链路（配置驱动、一门一验收）：`code/scripts/knowledge/build_tree.py` 建树 → `run_resync_batches.sh`/`resync_wiki_content.py` 分批同步正文（含首页）→ `verify_wiki_tree.py` + `verify_wiki_content.py` 只读双验收；完整步骤、8 课坐标、限流处置见 **[wiki-sync-sop.md](development/guides/wiki-sync-sop.md)**。
 - 先本地生成、校验通过再同步；同步后做结构检查：节点层级、重复节点、空节点、父节点链接。
 - 必须用 API 同步，禁止直接在飞书编辑（紧急修复除外）；同一空间同一时刻只允许一个写进程；连续失败 3 次以上暂停并报告。
 - 飞书写操作前先读 lark-wiki / lark-doc 相关 Skill。
@@ -206,7 +206,7 @@
 - 讲义：**禁止点 Chrome 下载按钮**（弹对话框），用 CDN 直链 curl；PDF 多为图片型，必须 OCR，表格/公式/图表用 AI 视觉补。
 - 转写：FunASR SenseVoiceSmall（本地、0 成本），虚拟环境 `transcription/venv/`，**串行最优、禁止并发转写**。
 - 命名与落点遵循 NAMING_CONVENTION / DIRECTORY_STRUCTURE：`videos/NN_讲题/`、`notes/NN_模块/`。
-- **先按 saasCourseType 分流（ADR-018）**：正课 glive(type=16) 走上面"H.265 压缩 + FunASR 转写"全流程；**名师课 ep3/epiphany(type=13) 走 `scripts/cdp/ep3_download_videos.js` 独立链路**——正式 FHD-1080P、ffmpeg `-c copy` 不重压、**平台自带 VTT 字幕直接下载（subtitle.vtt 原始稿 + transcript.md），不做 FunASR 转写**；取 key 仍走 CDP 真实播放（gp.play + 点1080P）。详见 [video-processing.md](development/tools/video-processing.md) 的"名师课 ep3"小节。
+- **先按 saasCourseType 分流（ADR-018）**：正课 glive(type=16) 走上面"H.265 压缩 + FunASR 转写"全流程；**名师课 ep3/epiphany(type=13) 走 `code/scripts/cdp/ep3_download_videos.js` 独立链路**——正式 FHD-1080P、ffmpeg `-c copy` 不重压、**平台自带 VTT 字幕直接下载（subtitle.vtt 原始稿 + transcript.md），不做 FunASR 转写**；取 key 仍走 CDP 真实播放（gp.play + 点1080P）。详见 [video-processing.md](development/tools/video-processing.md) 的"名师课 ep3"小节。
 
 ### 参考文档
 
@@ -225,7 +225,7 @@
 
 ### 关键要点
 
-- **接口主链路**：syllabus 枚举卷与完成状态 → record → redo-paper（当场拿题+答案+解析）→ 满足最小作答墙钟时长 → submit 一次性交全卷 → exam-report 回查全对。契约见 [gaodun-exam-api.md](development/api/gaodun-exam-api.md)，入口 `scripts/cdp/api_do_paper.js`。
+- **接口主链路**：syllabus 枚举卷与完成状态 → record → redo-paper（当场拿题+答案+解析）→ 满足最小作答墙钟时长 → submit 一次性交全卷 → exam-report 回查全对。契约见 [gaodun-exam-api.md](development/api/gaodun-exam-api.md)，入口 `code/scripts/cdp/api_do_paper.js`。
 - **题型两型**：客观题（type1/2）取顶层标准答案；**主观大题（type5 容器）必须下钻 `subQuestionList`（type6 小问），答案在小问 `analysisText`**，按"大题→小问"组织；其他题型遇新先只读侦查再打通。
 - **异常出口分级**：token 失效（业务码 553649434，JWT 未到 exp 也可能发生）但日常 Chrome 仍登录 → `refresh_auth_token.js` 自动刷新重试（批量脚本内置，最多 2 次）；仅当 Chrome 也未登录/需验证码 → 暂停交用户；遇未见过的卷型/题型/报错 → 不硬闯，停下发起针对性测试或迭代。
 - **manifest**：汇总 syllabus + papers 生成讲↔资源↔知识点映射，承载知识点等价/归并（如 id=112376"应纳税额的计算"并入"增值税一般计税方法应纳税额的计算"）；脚本校验知识点合计 92、无未归类。
@@ -310,7 +310,7 @@
 - 课程表 TAB 可能因 ffmpeg 占内存崩溃，需重新加载。
 - 不要在浏览器点"下载"按钮（触发 Chrome 下载弹窗），讲义用 CDN 直链 curl。
 - 代理：GitHub/Homebrew/npm 走 ClashX（127.0.0.1:7890）；高顿课程页、百度 API/网盘直连。
-- 密钥管理用全局命令 `secrets`（原 `scripts/secrets.sh` 已抽离为全机唯一工具，规范见 mac-system-toolkit 的 secret-encryption.md），本项目加密凭证在 `.secrets/`（留仓库根、不进工作区）。
+- 密钥管理用全局命令 `secrets`（原 `code/scripts/secrets.sh` 已抽离为全机唯一工具，规范见 mac-system-toolkit 的 secret-encryption.md），本项目加密凭证在 `.secrets/`（留仓库根、不进工作区）。
 - 业务数据在 `data/`（`高顿/` 课程库实体目录，ADR-021 去软链），不入 Git；Git 只版本化规范/模板/SOP/脚本等文本。
 
 ---

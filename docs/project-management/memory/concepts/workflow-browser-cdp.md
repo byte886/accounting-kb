@@ -11,11 +11,11 @@ sources:
     resource: ../../../development/tools/browser-cdp-connect-guide.md
     title: 浏览器 CDP 连接操作手册
   - id: connect-browser
-    resource: ../../../../scripts/cdp/connect_browser.js
-    title: scripts/cdp/connect_browser.js 连接模块
+    resource: ../../../../code/scripts/cdp/connect_browser.js
+    title: code/scripts/cdp/connect_browser.js 连接模块
   - id: refresh-auth-token
-    resource: ../../../../scripts/cdp/refresh_auth_token.js
-    title: scripts/cdp/refresh_auth_token.js token 自愈模块
+    resource: ../../../../code/scripts/cdp/refresh_auth_token.js
+    title: code/scripts/cdp/refresh_auth_token.js token 自愈模块
 generated: { by: "doubao/okf-wiki", at: "2026-09-07T20:30:00+08:00" }
 status: stable
 ---
@@ -32,7 +32,7 @@ status: stable
 - **已证伪/弃用**：Playwright `connectOverCDP`（ws 连上但等不到协议消息，issue #40027）、CLI attach（端点丢 UUID 超时）、`--remote-debugging-port` + 默认 Profile（Chrome 136+ 屏蔽，强制独立 Profile，不符合约束）。
 
 ## 操作要点
-- 连接/自检/抓包的可复用模块都在 `scripts/cdp/`，入口 `connect_browser.js`（snake_case；旧名 connectBrowser.js 已更名）。
+- 连接/自检/抓包的可复用模块都在 `code/scripts/cdp/`，入口 `connect_browser.js`（snake_case；旧名 connectBrowser.js 已更名）。
 - token 自愈模块 `refresh_auth_token.js`：连接日常 Chrome→找高顿 tab→监听 `apigateway.gaodun.com` 请求头→reload 抓新 `authentication`→落 `_account/auth/`；做题脚本遇 553649434 自动调用，也可手动跑。
 - Node 依赖由仓库根 `package.json` 声明（`puppeteer-core`，**不下载 Chromium**）；`node_modules` 不入库，新机 `npm install` 补足。
 - 抓包原始报文落 `data/_workspace/<profile>/sniff/`（见 [统一运行时工作区](architecture-runtime-workspace.md)）。
@@ -47,5 +47,5 @@ status: stable
 ## 来源与下钻
 - [ADR-010 连接通道与技术栈选型](../../decisions/ADR-010-浏览器自动化连接通道与技术栈选型.md)（完整备选对比表、官方来源、实测环境）
 - [浏览器 CDP 连接操作手册](../../../development/tools/browser-cdp-connect-guide.md)
-- 连接模块 [scripts/cdp/connect_browser.js](../../../../scripts/cdp/connect_browser.js)
+- 连接模块 [code/scripts/cdp/connect_browser.js](../../../../code/scripts/cdp/connect_browser.js)
 - 业务接口见 [做题/试卷采集接口链路](workflow-exam-paper-pipeline.md)。

@@ -175,10 +175,10 @@ data/_workspace/
 ## 九、Git 仓库工程目录与文件命名规范（2026-08-31 新增）
 
 > 本章规范 **GitHub 仓库内**的工程目录与文件命名，是仓库命名的**唯一事实源（SSOT）**，遵循两条：
-> 1. **只此一处写规则**：其它任何文档（含 `CODE_STYLE.md`、`DIRECTORY_STRUCTURE.md`、`DOCUMENTATION_GUIDE.md`、各目录 README、`scripts/README.md`、目录树注释）涉及命名处**只引用本章、不复述阈值或清单**，避免多处复述导致互相矛盾（曾出现 scripts/README 把 1MB/10MB 误写成 50MB）；规则变更只改本章。
+> 1. **只此一处写规则**：其它任何文档（含 `CODE_STYLE.md`、`DIRECTORY_STRUCTURE.md`、`DOCUMENTATION_GUIDE.md`、各目录 README、`code/scripts/README.md`、目录树注释）涉及命名处**只引用本章、不复述阈值或清单**，避免多处复述导致互相矛盾（曾出现 code/scripts/README 把 1MB/10MB 误写成 50MB）；规则变更只改本章。
 > 2. **判型以正文实质为准**：头部「文档类型」仅作声明，与正文实质冲突时以实质为准并回头修正头部（见 9.1.1，code-style 即此类）。
 >
-> 第一~八章的课程/网盘/飞书命名与本章并行，互不覆盖。巡检 / 改名影响面 / 整改回归用 `scripts/check_naming_consistency.py`。
+> 第一~八章的课程/网盘/飞书命名与本章并行，互不覆盖。巡检 / 改名影响面 / 整改回归用 `code/scripts/check_naming_consistency.py`。
 
 ### 9.1 总原则
 
@@ -196,7 +196,7 @@ data/_workspace/
 | L0 | 平台/工具固定名 | 原样（白名单，9.3） | 各处 | `README.md`、`pre-commit`、`.github/` |
 | L1 | 治理规范/标准/模板/状态台账/全局索引/顶层骨架 | 英文 UPPER_SNAKE_CASE（9.6） | `docs/` 根、`standards/`、`templates/`、`active/` 台账 | `NAMING_CONVENTION.md`、`REPORT_TEMPLATE.md`、`TASK_STATUS.md`、`WORKFLOW.md` |
 | L2 | 方法/操作/流程/工具 API/最佳实践 | 英文小写 kebab-case（9.7） | `guides/api/tools/knowledge/methodology/` | `git-workflow.md`、`multi-role-collaboration.md` |
-| L3 | 可执行脚本 | 英文小写 snake_case（9.4） | `scripts/` | `baidu_upload.py` |
+| L3 | 可执行脚本 | 英文小写 snake_case（9.4） | `code/scripts/` | `baidu_upload.py` |
 | L4 | 知识库成品（同步飞书，不入库） | 中文，对应飞书节点/H1（9.5） | `data/.../知识详解/`（gitignore） | `增值税税率.md`、`考试指导速查手册.md` |
 | L5 | 单课过程产物（任务报告/测试计划/侦查/工单记录） | 中文，对应 H1、ISO 日期（9.5） | `data/_workspace/<course>/{task-reports,tickets}/`（gitignore 不入库） | `任务报告_对象_2026-08-31.md` |
 | L6 | 架构决策记录 | `ADR-NNN-中文`（9.8） | `decisions/` | `ADR-012-三层解耦与按知识点聚合.md` |
@@ -246,7 +246,7 @@ data/_workspace/
 
 ### 9.4 L3 脚本：全小写 snake_case
 
-- 适用 `scripts/` 下 `.py/.sh/.js/.mjs`：多词用下划线 `_`，**禁止连字符 `-`、禁止大写**。
+- 适用 `code/scripts/` 下 `.py/.sh/.js/.mjs`：多词用下划线 `_`，**禁止连字符 `-`、禁止大写**。
 - 正例：`baidu_upload.py`、`check_directory_structure.sh`、`fetch_lecture_video.js`。
 - 反例：`check-kb-structure.sh`、`setup-transcription-env.sh`、`SetupTranscribe.js`。
 - 依据 PEP 8（Python 模块全小写、可用下划线）；Google JS 指南允许下划线或连字符但要求"跟随项目既有约定"，本项目主流为下划线，统一为 snake_case。

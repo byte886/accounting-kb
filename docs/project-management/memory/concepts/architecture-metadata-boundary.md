@@ -31,7 +31,7 @@ status: stable
 **最终知识详解中禁止出现**：学员名（如"（学员 XXX）"标注）、点赞/赞助数 `fabulousNum`、`userId`、日期、`noteId` 等一切平台元数据与个人标识。
 - **原始资料**（notes-raw、抓包 JSON）保留完整字段，便于追溯；剥离只发生在"原始 → 成品"的加工环节。
 - 「四、学员补充」每条只输出 `- {纯文本经验}`；节标题与分类子标题（记忆口诀/易错点辨析/解题技巧/知识补充）是**内容分类标签、不含个人信息，保留**。
-- 已根治 `scripts/knowledge/organize_user_notes.py`（不再输出 studentName/fabulousNum）；历史清理：点赞 524 处、学员名 745 处。
+- 已根治 `code/scripts/knowledge/organize_user_notes.py`（不再输出 studentName/fabulousNum）；历史清理：点赞 524 处、学员名 745 处。
 - 注意别误杀正常词：正文里的"赞/赞助"、文档版本日期"2026-"不是元数据，不清理。
 
 ## 三、分数不是目标（ADR-014）

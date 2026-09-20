@@ -4,9 +4,9 @@
 > **更新频率**：抓包验证到新接口/字段时
 > **维护者**：AI自动维护
 > **读者**：开发工程师（实现「接口为主、UI 兜底」做题链路）
-> **证据基线**：2026-09-02 课程 42660 客观卷（消费税 6/9 题等）纯接口闭环 + 主观计算大题卷 82749（type5 套 type6、AI 批改）从带答案交卷到 11/11 的完整实测；原始报文在 `data/_workspace/<profile>/sniff/`（不入库），验证脚本在 `scripts/cdp/`
+> **证据基线**：2026-09-02 课程 42660 客观卷（消费税 6/9 题等）纯接口闭环 + 主观计算大题卷 82749（type5 套 type6、AI 批改）从带答案交卷到 11/11 的完整实测；原始报文在 `data/_workspace/<profile>/sniff/`（不入库），验证脚本在 `code/scripts/cdp/`
 
-本文档只记录**已抓包/已实测**的接口契约，每条结论标注【实测】或【待验证】，推测不写成事实。连接/抓包手段见 [浏览器 CDP 连接手册](../tools/browser-cdp-connect-guide.md)，共享实现见 `scripts/cdp/gaodun_paper_core.js`。
+本文档只记录**已抓包/已实测**的接口契约，每条结论标注【实测】或【待验证】，推测不写成事实。连接/抓包手段见 [浏览器 CDP 连接手册](../tools/browser-cdp-connect-guide.md)，共享实现见 `code/scripts/cdp/gaodun_paper_core.js`。
 
 ---
 
@@ -50,7 +50,7 @@ vcourse/pc(盘点账号下全部课程，拿各门 saasCourseId —— 见 2.11)
 - 请求体均为**明文 JSON**，`content-type: application/json;charset=UTF-8`；**全链路未见 sign / nonce / 时间戳 / 加密 body**（无需逆向前端加密）。
 - 导出与选取：连接日常 Chrome 后从任意业务请求头读取，存 `data/_workspace/_account/auth/*.jsonl`；`findJwt()` **按文件 mtime 升序、倒序提取最新文件**（不按文件名排序，否则新抓的 token 可能因文件名靠前后被旧文件遮蔽）。JWT/Cookie 禁止入库。
 - **JWT 的 `exp` 未到 ≠ 服务端仍认**【实测】：高顿服务端可提前使会话失效，此时 HTTP 层仍 200、业务层返回 `status=553649434, info="登录超时,请重新登录", result="Unable to verify token"`（minerva 所有接口统一表现）。不能只解码 exp 判断有效性，必须以一次真实只读请求（如 student/paper/record）验活。
-- **token 自愈**【实测】：底层 `scripts/cdp/refresh_auth_token.js` 连接已登录的日常 Chrome、reload 高顿页监听 `apigateway.gaodun.com` 请求头，自动抓新 token 落 auth 目录。上层统一收口到共享件 `scripts/cdp/auth_token_guard.js`（I-013）：导出 `isTokenExpired()`（只认 553649434，做题风控码 10462221 等不误触发）与 `refreshJwtWithLock()`，用 `.refresh.lock` 文件锁做**跨进程 single-flight**——下载是 3 消费者+1 生产者并行，只让第一个命中的进程连 Chrome 刷新，其余等待复用同一新 token，不重复连 Chrome/抢焦点，陈旧锁自动抢占。接入方：①做题 `batch_redo_papers.js` 捕获失效码后刷新并重试同一试卷（最多 2 次）；②下载 `ep3_download_videos.js` 在统一请求入口 `apiGet` 拦截→刷新→重试 1 次，覆盖 syllabus/getVideoInfo/getLiveResource，**修复了「JWT 过期→消费者枚举即 FATAL 秒退→调度器空转静默停摆」**。前提是日常 Chrome 仍保持登录；Chrome 也未登录时刷新抛错、才交用户。
+- **token 自愈**【实测】：底层 `code/scripts/cdp/refresh_auth_token.js` 连接已登录的日常 Chrome、reload 高顿页监听 `apigateway.gaodun.com` 请求头，自动抓新 token 落 auth 目录。上层统一收口到共享件 `code/scripts/cdp/auth_token_guard.js`（I-013）：导出 `isTokenExpired()`（只认 553649434，做题风控码 10462221 等不误触发）与 `refreshJwtWithLock()`，用 `.refresh.lock` 文件锁做**跨进程 single-flight**——下载是 3 消费者+1 生产者并行，只让第一个命中的进程连 Chrome 刷新，其余等待复用同一新 token，不重复连 Chrome/抢焦点，陈旧锁自动抢占。接入方：①做题 `batch_redo_papers.js` 捕获失效码后刷新并重试同一试卷（最多 2 次）；②下载 `ep3_download_videos.js` 在统一请求入口 `apiGet` 拦截→刷新→重试 1 次，覆盖 syllabus/getVideoInfo/getLiveResource，**修复了「JWT 过期→消费者枚举即 FATAL 秒退→调度器空转静默停摆」**。前提是日常 Chrome 仍保持登录；Chrome 也未登录时刷新抛错、才交用户。
 - 建议带全：`accept`、`accept-language: zh`、与浏览器一致的 `user-agent`、来源域 `origin/referer`（见 1.4）。跨子域 POST 会先发一次 `OPTIONS` 预检（正常现象）。
 
 ### 1.3 关键 ID 与固定常量【实测】
@@ -266,7 +266,7 @@ vcourse/pc(盘点账号下全部课程，拿各门 saasCourseId —— 见 2.11)
   | `currentStudyUrl` | 进入课程 URL，模式 `//glivepro.gaodun.com/course/{saasCourseId}/guide-course` |
 
 - **本账号 2026-09-07 实测 8 门**（CPA 项目）：26 考季 VIPCPA 系列 税法(96834/42660)、会计(96760/42656)；名师专业课全科六科 税法50122/17247、会计50126/17244、战略50128/17249、审计50130/17245、财管50132/17246、经济法50124/17248（括号内 vcourseId/saasCourseId）。
-- **采集脚本**：`node scripts/cdp/fetch_user_space_courses.js [--print]`（JWT 直连、可重复跑）；精简结构化台账落 `data/_workspace/_account/user-space/account_courses.json`（覆盖式、带 fetchedAt，不入库、不传网盘），当次原始响应留同目录 `user_space_vcourse_<ts>.json`。
+- **采集脚本**：`node code/scripts/cdp/fetch_user_space_courses.js [--print]`（JWT 直连、可重复跑）；精简结构化台账落 `data/_workspace/_account/user-space/account_courses.json`（覆盖式、带 fetchedAt，不入库、不传网盘），当次原始响应留同目录 `user_space_vcourse_<ts>.json`。
 - 同页伴随的只读接口：`ep-course/.../space/student/info`（student_id、item_done）、`space/student/exam-date?subjectIds=...`（考试日期）。
 
 ## 3. 纯接口做卷时序（实现蓝本 = gaodun_paper_core.doPaperViaApi）
@@ -281,7 +281,7 @@ vcourse/pc(盘点账号下全部课程，拿各门 saasCourseId —— 见 2.11)
 8. **回查与两层完成判据**：exam-report 核对。**fullScore（严格满分）**=userScore=totalScore 且 noCorrectAi=0 且 wrong 空 且所有子题 aiQuestionStatus=2（未配 AI 卷天然达不到）；**platformDone（平台最优）**=已交卷 + 客观全对（客观数以 build 的非 type6 项为准，顶层 type6 不算客观）+ 无 aiFailed + 配了 AI 的题全部 cs=2 或 aiCeiling；unsupported（未配 AI）与 aiCeiling（AI 判分上限）都不阻断。交卷成功但未达平台最优 → 标 submitted/aiPartial/aiFailed，不崩、不影响下一张。
 9. **沉淀**：题面/选项/答案/解析/来源卷/抓取时间作为末期知识库来源（自动化错题除外）；不建重型题库，知识成型后中间数据可弃。
 
-命令入口：单卷 `scripts/cdp/api_do_paper.js <paperId|标题关键字> [停留秒] [--no-ai]`；批量 `scripts/cdp/batch_redo_papers.js [--go] [paperId...] [--no-ai]`（默认 dry-run、硬排除冲刺）。
+命令入口：单卷 `code/scripts/cdp/api_do_paper.js <paperId|标题关键字> [停留秒] [--no-ai]`；批量 `code/scripts/cdp/batch_redo_papers.js [--go] [paperId...] [--no-ai]`（默认 dry-run、硬排除冲刺）。
 
 ---
 
@@ -324,7 +324,7 @@ vcourse/pc(盘点账号下全部课程，拿各门 saasCourseId —— 见 2.11)
 ## 6. 证据与相关物
 
 - 原始报文（不入库）：`data/_workspace/<profile>/sniff/quiz_load_*.jsonl`、`submit_*.jsonl`、`schedule_*.jsonl`、`*sniff*.jsonl`（含 UI「帮我批改」真实 cpa 请求，证实 openEnergyToEquity）。
-- 共享实现：`scripts/cdp/gaodun_paper_core.js`（buildUserAnswers / canon/qual/full 答案提炼 / doPaperViaApi）；入口 `api_do_paper.js`、`batch_redo_papers.js`；连接见 `connect_browser.js`（脚本索引见 [scripts/README.md](../../../scripts/README.md)）。
-- 课程发现：`scripts/cdp/fetch_user_space_courses.js`（拉 vcourse/pc 全课程清单，台账 `data/_workspace/_account/user-space/account_courses.json`，见 2.11）。
+- 共享实现：`code/scripts/cdp/gaodun_paper_core.js`（buildUserAnswers / canon/qual/full 答案提炼 / doPaperViaApi）；入口 `api_do_paper.js`、`batch_redo_papers.js`；连接见 `connect_browser.js`（脚本索引见 [code/scripts/README.md](../../../code/scripts/README.md)）。
+- 课程发现：`code/scripts/cdp/fetch_user_space_courses.js`（拉 vcourse/pc 全课程清单，台账 `data/_workspace/_account/user-space/account_courses.json`，见 2.11）。
 - 2026-09-02 主观闭环侦查蓝本与响应快照留存于本机 `/tmp`（hw_empty_sub/hw_cpa_clean/hw_rest_clean/retry6/decisive/finish6 等，临时可弃）。
 - 连接与抓包：[浏览器 CDP 连接手册](../tools/browser-cdp-connect-guide.md)；做题任务怎么执行（前置准备/枚举作业/批量与单卷/回查/异常分流/UI 兜底/知识反哺）：[做题/交卷任务执行指南](../guides/exam-workflow.md)。

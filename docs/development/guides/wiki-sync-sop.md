@@ -48,10 +48,10 @@
 ## 1. 同步前检查（必做）
 
 1. **本地成品过校验门**：
-   - `python3 scripts/okf_validate.py "<课程知识详解目录>"` 硬错误 E=0；
+   - `python3 code/scripts/okf_validate.py "<课程知识详解目录>"` 硬错误 E=0；
    - 章 README 五要素、知识点篇四节结构齐全（模板见 [../templates/KNOWLEDGE_BASE_TEMPLATE.md](../templates/KNOWLEDGE_BASE_TEMPLATE.md)）。
 2. **配置卡合法且指向新空间**：
-   - `python3 scripts/knowledge/course_profile.py <profile>` 能正常打印（校验 key / primaryCourse.saasCourseId / subject.id / paths.localRoot）；
+   - `python3 code/scripts/knowledge/course_profile.py <profile>` 能正常打印（校验 key / primaryCourse.saasCourseId / subject.id / paths.localRoot）；
    - `wiki.spaceId=7686897234545249236`、`wiki.rootParentNodeToken=K4Icw…nth`；已建过的课有 `courseNodeToken/courseObjToken`，未建的课这两项留空（建树自动回写）；
    - `paths.localRoot` 与 `primaryCourse.name` 自洽，**一卡一课**，禁止改 cpa 卡 localRoot 借指名师课。
 3. **⚠️ 换空间重建先归档旧 map（最易踩）**：若该 profile 的 `data/_workspace/<profile>/logs/wiki_node_map.tsv` 是**老空间**遗留，先改名归档（如 `wiki_node_map.oldspace.tsv`），否则建树按标题幂等会命中老 token、不在新容器建树。会计 map 已是新空间，**禁止重置**。
@@ -64,7 +64,7 @@
 ## 2. 第一步：建树（课程容器 + 章/点/全局，只建结构不写正文）
 
 ```bash
-python3 scripts/knowledge/build_tree.py <profile>
+python3 code/scripts/knowledge/build_tree.py <profile>
 ```
 
 脚本行为（幂等，可反复续跑）：
@@ -85,7 +85,7 @@ python3 scripts/knowledge/build_tree.py <profile>
 先预检（不写飞书），确认条目数与映射齐全：
 
 ```bash
-python3 scripts/knowledge/resync_wiki_content.py --profile <profile> --dry-run
+python3 code/scripts/knowledge/resync_wiki_content.py --profile <profile> --dry-run
 ```
 
 应输出 `待处理文件 N 个（map 共 M 个标题）`，其中 **N = M + 1**（多 1 个课程首页 `__COURSE_HOMEPAGE__`），且无"无 obj 映射"。
@@ -94,13 +94,13 @@ python3 scripts/knowledge/resync_wiki_content.py --profile <profile> --dry-run
 
 ```bash
 # Supervisor 模式：worker 写满 20 篇即退出，Supervisor 立即拉起新 worker（不长休眠）；总篇数自动=map行数+首页；连续 5 次无进展才短休 30s，done 数达标自退
-nohup bash scripts/knowledge/run_resync_batches.sh <profile> 20 75 > /tmp/resync_<profile>.out 2>&1 &
+nohup bash code/scripts/knowledge/run_resync_batches.sh <profile> 20 75 > /tmp/resync_<profile>.out 2>&1 &
 tail -f data/_workspace/<profile>/logs/resync_wiki.log
 ```
 
 - 每篇成功落 `data/_workspace/<profile>/logs/resync_done/<safe标题>.done`，课程首页落 `__COURSE_HOMEPAGE__.done`；断点续跑、任意中断可重入，`--force` 才全量重刷。
-- 正文写入前自动剥离顶部 OKF frontmatter（飞书读者看不到 YAML），相对链接经 `scripts/wiki_link_resolve.py` 转 `<cite>`（resync 已显式传 `WIKI_MAP`，勿绕过）。
-- 备用驱动 `scripts/knowledge/sync_with_restart.sh <profile> [max_new] [interval] [batch_pause] [batch_rest]`（前台 tee 日志，参数含义见脚本头）。
+- 正文写入前自动剥离顶部 OKF frontmatter（飞书读者看不到 YAML），相对链接经 `code/scripts/wiki_link_resolve.py` 转 `<cite>`（resync 已显式传 `WIKI_MAP`，勿绕过）。
+- 备用驱动 `code/scripts/knowledge/sync_with_restart.sh <profile> [max_new] [interval] [batch_pause] [batch_rest]`（前台 tee 日志，参数含义见脚本头）。
 
 ### 重新建树后（删旧节点重建）
 
@@ -108,7 +108,7 @@ map 会更新，但旧 `resync_done/` 标记仍在；为防"只同步了章 READ
 
 ```bash
 rm -rf data/_workspace/<profile>/logs/resync_done/
-nohup bash scripts/knowledge/run_resync_batches.sh <profile> 20 75 > /tmp/resync_<profile>.out 2>&1 &
+nohup bash code/scripts/knowledge/run_resync_batches.sh <profile> 20 75 > /tmp/resync_<profile>.out 2>&1 &
 ```
 
 ### 限流处置（转发代理，非飞书账号/token/内容问题）
@@ -126,18 +126,18 @@ nohup bash scripts/knowledge/run_resync_batches.sh <profile> 20 75 > /tmp/resync
 
 ```bash
 # 4.1 结构验收：本地 / 飞书容器树 / map 三方一致（计数动态，不写死）
-python3 scripts/knowledge/verify_wiki_tree.py <profile>
+python3 code/scripts/knowledge/verify_wiki_tree.py <profile>
 # 期望退出码 0："结构完全一致（N 子页，顶层 T，无重复/无错挂） ✅"
 
 # 4.2 正文回读：逐篇全新进程 docs +fetch，证明首页+子页都非空、标题对得上
-python3 scripts/knowledge/verify_wiki_content.py <profile>
+python3 code/scripts/knowledge/verify_wiki_content.py <profile>
 # 出 data/_workspace/<profile>/logs/content_readback.tsv
 # 判级：去空白 <100=EMPTY，<300=THIN，其余 OK；拉取失败=FETCH_FAIL
 # 期望：EMPTY=0、FETCH_FAIL=0（THIN 逐个确认是否本就该短），退出码 0
 ```
 
 - 回读撞限流出现少量 `FETCH_FAIL` 时，冷却后只补拉非 OK 篇：
-  `python3 scripts/knowledge/verify_wiki_content.py <profile> --refill`（会计课实测冷却约 8 分钟后 12 篇 56 秒补齐）。
+  `python3 code/scripts/knowledge/verify_wiki_content.py <profile> --refill`（会计课实测冷却约 8 分钟后 12 篇 56 秒补齐）。
 - 数量口径自检：`map 行数 + 1（首页）= resync_done 数 = 回读总篇数`；本地 `知识详解` 下 md 总数 = map 行数 + 1（根 README）。
 - 链接形态（cite/坏链）另按 [wiki-link-verification-sop.md](./wiki-link-verification-sop.md) 抽验；内容结构按 [wiki-content-verification-sop.md](./wiki-content-verification-sop.md)。
 - 任一项不过：先修本地源，再重跑 resync（结构问题用 build_tree 补建），**不得手工改飞书后谎报完成**。
@@ -187,11 +187,11 @@ lark-cli docs +update --doc <obj> --command overwrite --doc-format markdown --co
 | 节点台账 map | `data/_workspace/<profile>/logs/wiki_node_map.tsv` |
 | 正文 done 断点 | `data/_workspace/<profile>/logs/resync_done/*.done`（含 `__COURSE_HOMEPAGE__.done`） |
 | 正文回读报告 | `data/_workspace/<profile>/logs/content_readback.tsv` |
-| 建树脚本 | `scripts/knowledge/build_tree.py` |
-| 正文同步 | `scripts/knowledge/resync_wiki_content.py` |
-| 分批驱动 | `scripts/knowledge/run_resync_batches.sh`、`scripts/knowledge/sync_with_restart.sh` |
-| 双验收 | `scripts/knowledge/verify_wiki_tree.py`、`scripts/knowledge/verify_wiki_content.py` |
-| 链接解析 | `scripts/wiki_link_resolve.py` |
+| 建树脚本 | `code/scripts/knowledge/build_tree.py` |
+| 正文同步 | `code/scripts/knowledge/resync_wiki_content.py` |
+| 分批驱动 | `code/scripts/knowledge/run_resync_batches.sh`、`code/scripts/knowledge/sync_with_restart.sh` |
+| 双验收 | `code/scripts/knowledge/verify_wiki_tree.py`、`code/scripts/knowledge/verify_wiki_content.py` |
+| 链接解析 | `code/scripts/wiki_link_resolve.py` |
 
 ## 参考
 

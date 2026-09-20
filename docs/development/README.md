@@ -70,7 +70,7 @@ docs/development/
 
 ## 脚本位置
 
-> 所有脚本统一放在 `scripts/` 目录，详细说明见 [scripts/README.md](../../scripts/README.md)
+> 所有脚本统一放在 `code/scripts/` 目录，详细说明见 [code/scripts/README.md](../../code/scripts/README.md)
 
 ---
 

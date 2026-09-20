@@ -170,26 +170,26 @@ curl -s "https://pan.baidu.com/rest/2.0/xpan/file?method=list&access_token=<TOKE
 
 #### 上传文件（分片上传）
 
-使用 `scripts/baidu_upload.py` 脚本：
+使用 `code/scripts/baidu_upload.py` 脚本：
 
 ```bash
 # 上传文件
-BAIDU_ENC_PASS=<主密码> python3 scripts/baidu_upload.py upload <本地文件> <网盘路径>
+BAIDU_ENC_PASS=<主密码> python3 code/scripts/baidu_upload.py upload <本地文件> <网盘路径>
 
 # 列出目录
-BAIDU_ENC_PASS=<主密码> python3 scripts/baidu_upload.py list <网盘目录>
+BAIDU_ENC_PASS=<主密码> python3 code/scripts/baidu_upload.py list <网盘目录>
 
 # 重命名文件/目录
-BAIDU_ENC_PASS=<主密码> python3 scripts/baidu_upload.py rename <网盘路径> <新名称>
+BAIDU_ENC_PASS=<主密码> python3 code/scripts/baidu_upload.py rename <网盘路径> <新名称>
 
 # 删除文件/目录
-BAIDU_ENC_PASS=<主密码> python3 scripts/baidu_upload.py delete <网盘路径>
+BAIDU_ENC_PASS=<主密码> python3 code/scripts/baidu_upload.py delete <网盘路径>
 
 # 创建目录
-BAIDU_ENC_PASS=<主密码> python3 scripts/baidu_upload.py mkdir <网盘目录>
+BAIDU_ENC_PASS=<主密码> python3 code/scripts/baidu_upload.py mkdir <网盘目录>
 
 # 兼容旧用法（等同于 upload）
-BAIDU_ENC_PASS=<主密码> python3 scripts/baidu_upload.py <本地文件> <网盘路径>
+BAIDU_ENC_PASS=<主密码> python3 code/scripts/baidu_upload.py <本地文件> <网盘路径>
 ```
 
 流程：precreate（预创建）→ upload（4MB分片上传）→ create（合并）。支持 MD5 秒传和断点续传。
@@ -208,7 +208,7 @@ BAIDU_ENC_PASS=<主密码> python3 scripts/baidu_upload.py <本地文件> <网�
 >
 > - `rtype` 在 **precreate 和 create 两步都要传**，放在 POST body（与 path/size/block_list 一起，官方示例即 `-d` 表单）。
 > - `ondup` 是 **filemanager 复制/移动（copy/move）接口** 的参数，对上传三步接口**完全无效**；误传 ondup 不会报错，只会静默走默认 rtype=1，产生大量 `_时间戳` 改名文件。
-> - `scripts/baidu_upload.py` 已在 precreate/create 固定 `rtype=3`；若将来看到网盘出现 `xxx_20260906_*.md` 这类文件，先检查 rtype 是否被改回。
+> - `code/scripts/baidu_upload.py` 已在 precreate/create 固定 `rtype=3`；若将来看到网盘出现 `xxx_20260906_*.md` 这类文件，先检查 rtype 是否被改回。
 > - 通用参数 `access_token` 必须在 URL query 里；业务参数在 body。
 
 #### 删除文件/文件夹

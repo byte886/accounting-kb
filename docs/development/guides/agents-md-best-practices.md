@@ -69,7 +69,7 @@ AGENTS.md 应该只包含以下四类内容：
 /references/            # 长篇参考资料，仅在需要时读取
   data-model.md
   deployment.md
-/scripts/               # 确定性验证脚本
+/code/scripts/               # 确定性验证脚本
   run-tests.sh
 ```
 

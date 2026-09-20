@@ -14,9 +14,9 @@
 - **Shell脚本**：bash 3.2 兼容（Mac自带版本），set -euo pipefail
 - **Python脚本**：类型注解，函数式优先，避免全局状态
 - **文件名**：`.py/.sh/.js` 一律全小写 `snake_case`（下划线分词，禁止连字符与大写），如 `baidu_upload.py`、`check_directory_structure.sh`；唯一例外是 Git 固定名 `pre-commit`。详见 `docs/project-management/standards/NAMING_CONVENTION.md` 第九章 9.4（依据 PEP 8）
-- **所有脚本放 `scripts/` 目录**，禁止散落在各子目录
+- **所有脚本放 `code/scripts/` 目录**，禁止散落在各子目录
 - **产出落点受控**：脚本只把成品写到正式目录；运行数据写 `data/`、日志/完成哨兵写 `logs/`、临时中转写 `/tmp` 或模块内 `.tmp_*/`，不得在业务目录散落点开头的缓存文件（落点分类见 PROJECT_STRUCTURE_MAINTENANCE.md 2.1）
-- **临时目录自清**：批处理脚本建的临时中转目录必须 `cleanup()+trap cleanup EXIT` 兜底删除，保证正常/报错/Ctrl-C 都不留残（断点续跑凭证例外，不得删）；每新增一类运行产物，必须同步 `.gitignore` 与 `scripts/pre-commit` 的 `ARTIFACT_RE`
+- **临时目录自清**：批处理脚本建的临时中转目录必须 `cleanup()+trap cleanup EXIT` 兜底删除，保证正常/报错/Ctrl-C 都不留残（断点续跑凭证例外，不得删）；每新增一类运行产物，必须同步 `.gitignore` 与 `code/scripts/pre-commit` 的 `ARTIFACT_RE`
 
 ## 二、文档规范
 

@@ -82,7 +82,7 @@ knowledge-base/organized-content/_34chapters/讲NN/
 ### 步骤0　定位原料、确认不缺料
 
 1. 按 1.1/1.2 列清本讲：转写、讲义/OCR（含跨讲来源）、旧产物、N套卷子M道题。
-2. **先跑课件映射校验**：`python3 scripts/verify_lecture_map.py` 必须退出 0（legacy=0、无 missing/unlisted）；若报 legacy（旧命名件）或缺失，先按 standards 2.2 去重/补料，校验不过不进入生成。
+2. **先跑课件映射校验**：`python3 code/scripts/verify_lecture_map.py` 必须退出 0（legacy=0、无 missing/unlisted）；若报 legacy（旧命名件）或缺失，先按 standards 2.2 去重/补料，校验不过不进入生成。
 3. 对照 WORKFLOW「每讲流程检查清单」确认原料状态；原料缺失先补原料，不带着缺口生成。
 4. 若有多份疑似重复件（同一课件的旧命名 + 标准命名 PDF/OCR），按 standards 2.2.6 取证：PDF 比 md5、OCR 去标题行后做内容 diff（标准件等同或更优才删旧件，移废纸篓不硬删），重复只取一份，不必全文重读。
 

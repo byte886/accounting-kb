@@ -68,7 +68,7 @@ status: stable
 
 ## 学习状态与采集顺序
 - `learnStatus` / 用户空间 `wareStatus`（"1"已开课/"0"未开课）、`learnStatusDesc` 区分进度；显示"**待学习**"的内容**不是不录，而是放到最后处理**。
-- 开工前先调用户空间 `ep-course/.../space/vcourse/pc` 盘点账号全部课程（无分页、一次全量），精简台账落 `data/_workspace/_account/user-space/account_courses.json`（覆盖式、不入库）；脚本 `scripts/cdp/fetch_user_space_courses.js`。
+- 开工前先调用户空间 `ep-course/.../space/vcourse/pc` 盘点账号全部课程（无分页、一次全量），精简台账落 `data/_workspace/_account/user-space/account_courses.json`（覆盖式、不入库）；脚本 `code/scripts/cdp/fetch_user_space_courses.js`。
 - 本账号 2026-09-07 实测 CPA 共 8 门：26 考季 VIPCPA 税法/会计 + 名师专业课六科（税法17247、会计17244、战略17249、审计17245、财管17246、经济法17248）。
 
 ## 来源与下钻

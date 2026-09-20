@@ -23,22 +23,22 @@
 3. 课程目录 `知识详解/NN_模块组/{官方知识点}.md` — 知识点单篇（一篇 4 节，含题答解析）
 4. `docs/development/guides/knowledge-detail-build-sop.md` — 题答如何加工成知识详解
 5. CPA 层 `通用做题思路解析.md`、课程层 `知识详解/课程做题思路解析.md` — 做题方法论
-6. `scripts/cdp/api_do_paper.js` — 纯接口做卷（单卷推荐）；`scripts/cdp/batch_redo_papers.js` — 批量补做；`scripts/cdp/do_sprint_paper.js` — 冲刺模考 6 卷
+6. `code/scripts/cdp/api_do_paper.js` — 纯接口做卷（单卷推荐）；`code/scripts/cdp/batch_redo_papers.js` — 批量补做；`code/scripts/cdp/do_sprint_paper.js` — 冲刺模考 6 卷
 
 ### 视频下载/压缩
 1. `docs/WORKFLOW.md` 第2节
 2. `docs/development/tools/video-processing.md` — 压缩参数、CRF测试结果
-3. `scripts/compress.sh` — 压缩脚本
+3. `code/scripts/compress.sh` — 压缩脚本
 
 ### 文档下载
 1. `docs/WORKFLOW.md` 第3节
 2. `docs/development/tools/document-download.md` — CDN直链获取、curl后台下载、完整性校验
-3. `scripts/batch_ocr.sh` — OCR脚本（下载后提取文字）
+3. `code/scripts/batch_ocr.sh` — OCR脚本（下载后提取文字）
 
 ### 视频转文字
 1. `docs/WORKFLOW.md` 第5节
 2. `docs/development/tools/transcription.md` — 转写方案对比、FunASR使用
-3. `scripts/transcribe_pipeline.py` — 转写管道
+3. `code/scripts/transcribe_pipeline.py` — 转写管道
 
 ### 知识系统构建（四阶段）
 **总览入口（先看这个）**：`docs/development/knowledge/knowledge-sop-overview.md` — 知识详解全流程 SOP 统一入口，按 写什么/怎么写/怎么生成/怎么同步/怎么验证/模板/来源 串联下列文档。
@@ -52,7 +52,7 @@
 ### 百度网盘同步
 1. `docs/WORKFLOW.md` 第4节
 2. `docs/development/api/netdisk-setup.md` — 网盘API配置、上传脚本使用
-3. `scripts/baidu_upload.py` — 上传脚本
+3. `code/scripts/baidu_upload.py` — 上传脚本
 
 ### 遇到问题/异常
 1. `grep -rn "关键词" docs/` — 搜索相关文档
@@ -72,7 +72,7 @@
 6. `docs/project-management/standards/DOC_SYNC_CHECKLIST.md` — 文档同步清单
 7. `docs/project-management/standards/NAMING_CONVENTION.md` — 命名规范
 8. `docs/project-management/decisions/README.md` — 架构决策记录（ADR）索引，做重要决策前先查看历史决策
-9. `docs/project-management/memory/index.md`、`log.md` — 工程记忆 bundle：稳定结论变化时同步对应 concept 并记 log，跑 `scripts/okf_validate.py` 校验（ADR-017）
+9. `docs/project-management/memory/index.md`、`log.md` — 工程记忆 bundle：稳定结论变化时同步对应 concept 并记 log，跑 `code/scripts/okf_validate.py` 校验（ADR-017）
 
 ### 飞书知识库整理 / 维护
 1. `docs/development/guides/feishu-knowledge-base-maintenance.md` — 盘点分类、结构整理SOP、父节点导航规范与覆盖校验（先读）
@@ -147,7 +147,7 @@
 | **工程记忆 bundle 入口** | `docs/project-management/memory/index.md` | OKF v0.2 跨会话记忆导航：架构/链路/治理/对照 13 篇 concept 索引（ADR-017/018） |
 | 工程记忆概念页 | `docs/project-management/memory/concepts/*.md` | 稳定结论 + 指向源 ADR/规范的相对指针，不复制正文；机器初编、人核后加 verified |
 | 工程记忆变更线 | `docs/project-management/memory/log.md` | 记忆层自身结构变更，倒序；业务流水看根 CHANGELOG |
-| OKF 一致性校验器 | `scripts/okf_validate.py` | vendored 零依赖校验，提交前 `python3 scripts/okf_validate.py docs/project-management/memory`，E 必须为 0 |
+| OKF 一致性校验器 | `code/scripts/okf_validate.py` | vendored 零依赖校验，提交前 `python3 code/scripts/okf_validate.py docs/project-management/memory`，E 必须为 0 |
 
 ### 三、参考资料（Reference — 查什么）
 
@@ -159,7 +159,7 @@
 | 文档同步清单 | `docs/project-management/standards/DOC_SYNC_CHECKLIST.md` | 同步时机、更新内容 |
 | 状态查询协议 | `docs/project-management/standards/PROJECT_STATUS_QUERY.md` | 意图分类、模糊表达映射、标准响应格式 |
 | 大任务执行规范 | `docs/project-management/standards/BATCH_TASK_EXECUTION.md` | 检查点、预警、异常恢复 |
-| 脚本说明 | `scripts/README.md` | 所有脚本的用途、参数、可靠性 |
+| 脚本说明 | `code/scripts/README.md` | 所有脚本的用途、参数、可靠性 |
 | 开发文档索引 | `docs/development/README.md` | 开发文档快速索引 |
 | 高顿作业接口档案 | `docs/development/api/gaodun-exam-api.md` | 做题链路接口契约、ID映射、JWT鉴权与最小作答时长风控（接口为主路线） |
 | 项目管理索引 | `docs/project-management/README.md` | 项目管理文档快速索引 |
@@ -224,9 +224,9 @@
 **新增**：
 - `docs/project-management/decisions/ADR-018-名师课ep3取流解密平台路由与平台字幕替代转写.md`
 - 工程记忆 2 篇 concept：`memory/concepts/workflow-ep3-vod-decryption.md`（ep3 取流/FHD/VTT 链路）、`standard-dynamic-observation.md`（动态交互取证方法论）；bundle 由 11 篇增至 13 篇
-- 脚本 `scripts/cdp/ep3_download_videos.js`（ep3 视频+字幕薄编排，复用 capture/解密）；`capture_video_key.js` 扩展支持 ep3 与 FHD
+- 脚本 `code/scripts/cdp/ep3_download_videos.js`（ep3 视频+字幕薄编排，复用 capture/解密）；`capture_video_key.js` 扩展支持 ep3 与 FHD
 
-**更新**：`video-processing.md`（新增"名师课 ep3"小节 + 相关脚本/参考文档）、`WORKFLOW.md`（阶段①按 saasCourseType 分流、工具表）、memory `index.md/log.md`、正课视频与课程 profile 两篇 concept 补分流、`scripts/README.md`、ADR README 索引。
+**更新**：`video-processing.md`（新增"名师课 ep3"小节 + 相关脚本/参考文档）、`WORKFLOW.md`（阶段①按 saasCourseType 分流、工具表）、memory `index.md/log.md`、正课视频与课程 profile 两篇 concept 补分流、`code/scripts/README.md`、ADR README 索引。
 
 **原则**：正课 glive(16) 维持 H.265+FunASR；名师课 ep3(13) 用 FHD-1080P + 平台 VTT 字幕免转写；平台适配器抽象与 5 科推广留 EP3-06（L1 先出方案）。
 
@@ -235,9 +235,9 @@
 **新增**：
 - `docs/project-management/decisions/ADR-017-采用OKF作为工程记忆格式层.md`
 - 工程记忆 bundle：`docs/project-management/memory/{index.md, log.md, concepts/（10 篇）}`
-- vendored 零依赖校验器 `scripts/okf_validate.py`（不依赖全局技能）
+- vendored 零依赖校验器 `code/scripts/okf_validate.py`（不依赖全局技能）
 
-**更新**：根 `AGENTS.md`（第 2 章必读顺序、3.10 新会话恢复顺序、新增 3.11 工程记忆与项目自包含）、`scripts/pre-commit`（新增 OKF 校验段）、本地图对应登记。
+**更新**：根 `AGENTS.md`（第 2 章必读顺序、3.10 新会话恢复顺序、新增 3.11 工程记忆与项目自包含）、`code/scripts/pre-commit`（新增 OKF 校验段）、本地图对应登记。
 
 **原则**：只叠加格式层、不复制 ADR/规范正文、不平行重建；知识详解 108 篇 frontmatter（Bundle A）后置试点，不在本次批量回填。
 

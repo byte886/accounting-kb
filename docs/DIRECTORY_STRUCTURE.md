@@ -50,7 +50,7 @@ gaodun-course-knowledge-base/
 ├── project-management/            # 项目管理：只放 active/ 两份跨课全局活态台账（TASK_STATUS/ISSUES）；单课过程件在 data/_workspace
 ├── config/
 │   └── courses/                    # 课程档案卡 profile（一门课一个 JSON，脚本统一读取，换课只换卡，见 parallel-toolkit-design）
-├── scripts/                       # 可执行脚本（下载/压缩/转写/OCR/上传/做题/校验，snake_case）
+├── code/scripts/                       # 可执行脚本（下载/压缩/转写/OCR/上传/做题/校验，snake_case）
 ├── transcription/                 # 转写工具链：requirements.txt 入库，venv/ 忽略
 ├── .secrets/                      # 加密凭证（*.enc；*.json/*.txt 忽略）
 ├── data/                          # 本地运行数据，整体 gitignore（见第二章）：「高顿」课程库实体目录（ADR-021 去软链）+「_workspace」唯一运行时工作区
@@ -106,7 +106,7 @@ CPA 层（跨课）另有一份：`data/高顿/CPA/通用做题思路解析.md`�
 
 ### 2.2 统一运行时工作区 data/_workspace（ADR-016）
 
-工作区**不绑定某一门课**：账号/跨课级共享件放 `_account/`，每门课的过程件放以 profile key 命名的子目录；"是否过程件（进不进工作区）"与"属于哪门课（哪个 profile 子目录）"是两件正交的事。脚本统一经 `scripts/cdp/load_profile.js` 的 `accountDir/accountAuthDir/workspaceDir/workspaceDirFor` 取路径，禁止再硬编码 `data/cdp-sniff` 等旧目录。
+工作区**不绑定某一门课**：账号/跨课级共享件放 `_account/`，每门课的过程件放以 profile key 命名的子目录；"是否过程件（进不进工作区）"与"属于哪门课（哪个 profile 子目录）"是两件正交的事。脚本统一经 `code/scripts/cdp/load_profile.js` 的 `accountDir/accountAuthDir/workspaceDir/workspaceDirFor` 取路径，禁止再硬编码 `data/cdp-sniff` 等旧目录。
 
 ```
 data/_workspace/
@@ -137,7 +137,7 @@ data/_workspace/
 ### 2.3 边界与例外
 
 - 课程目录（`data/高顿`）只放成品与永久原料；任何运行时过程件都进 `data/_workspace`，不在课程目录、data 根或仓库根新建过程目录。
-- `.secrets/*.enc`：加密、跨课复用，留仓库根；`node_modules/`、`transcription/venv/`：工具链标准位置，留原位 + gitignore；`package.json`/`requirements.txt` 与 `scripts/` 入 Git。
+- `.secrets/*.enc`：加密、跨课复用，留仓库根；`node_modules/`、`transcription/venv/`：工具链标准位置，留原位 + gitignore；`package.json`/`requirements.txt` 与 `code/scripts/` 入 Git。
 - **仓库根不产生运行日志或断点目录**（含工程编排 / 同步脚本，2026-09-08 起取代旧"编排层日志可放仓库根 logs/"的约定）：所有 `*.log`、断点 `.done`、转写临时工作区一律进 `data/_workspace/<profile>/`；账号级 / 跨课共享脚本没有明确 profile 时用 `data/_workspace/_shared/`。脚本统一用可覆盖的工作区变量（`GAODUN_COURSE_PROFILE` / `WS_DIR`），**禁止硬编码仓库根 `logs/`、`transcription/.parallel_work`、`transcription/.qv_work`**。
 
 ### 2.4 旧散落件最终去向（2026-09-07 迁移落定）
@@ -199,7 +199,7 @@ CPA备考知识库/
 先 `grep -r 关键词 docs/` + 查 DOCUMENTATION_MAP 确认无重复；按 Diátaxis 判型、按 NAMING 第九章定文件名与归属目录；预计≥3 个同类文件才新建子目录；建好后更新文档地图与目录 README。
 
 ### 5.3 删除文档前（强制）
-先 `grep -r 文档名 docs/ scripts/` 查引用，先改/删引用再删；评估是否已融入他文、有无追溯价值；删后更新文档地图与所有引用。
+先 `grep -r 文档名 docs/ code/scripts/` 查引用，先改/删引用再删；评估是否已融入他文、有无追溯价值；删后更新文档地图与所有引用。
 
 ### 5.4 调整目录前（强制）
 先评估必要性（职责重叠/文件过多/新类型无归属/结构重大变化），产出"前结构→后结构→逐文件移动路径→引用更新清单→文档更新清单"，执行后用 grep 验证无旧路径残留；改名用 `git mv` 保留历史。

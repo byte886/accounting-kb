@@ -432,14 +432,14 @@
 ### 4.3 工具使用
 
 - **统一使用已有工具**：禁止重复创建或使用其他工具
-  - 视频下载解密：`scripts/download_decrypt.js`
-  - 视频压缩：`scripts/compress.sh`
-  - 讲义OCR：`scripts/batch_ocr.sh`
-  - 音频转写：`scripts/transcribe_pipeline.py`
-  - 网盘上传：`scripts/baidu_upload.py`
-  - 做题（单卷）：`scripts/cdp/api_do_paper.js`
-  - 做题（批量）：`scripts/cdp/batch_redo_papers.js`
-  - 冲刺模考：`scripts/cdp/do_sprint_paper.js`
+  - 视频下载解密：`code/scripts/download_decrypt.js`
+  - 视频压缩：`code/scripts/compress.sh`
+  - 讲义OCR：`code/scripts/batch_ocr.sh`
+  - 音频转写：`code/scripts/transcribe_pipeline.py`
+  - 网盘上传：`code/scripts/baidu_upload.py`
+  - 做题（单卷）：`code/scripts/cdp/api_do_paper.js`
+  - 做题（批量）：`code/scripts/cdp/batch_redo_papers.js`
+  - 冲刺模考：`code/scripts/cdp/do_sprint_paper.js`
 - **OCR统一工具**：macOS Vision框架
 - **浏览器操作**：使用Playwright附加到已登录Chrome（Extension模式），不新开窗口（新窗口没有登录状态）
 - **下载方式**：使用后台下载（curl），不弹出Chrome下载确认框

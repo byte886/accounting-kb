@@ -33,7 +33,7 @@ status: stable
 
 - 启动某科视频上传的充要条件：**该科全部 `*_video.mp4` 经 ffprobe 为 hevc（非 hevc 计数=0）且当前没在压该科**（2026-09-17 由"等压缩进程整体结束"放宽为按科）。"没在压该科"判据：本机看该科 videos 下有无 `.compress_tmp*`（一个 compress 进程可带多个 `--course`，不能只看进程名）；目标机看门按 `pgrep --course <科>`。**正在压的那一科**绝不探测/上传（压几讲传几讲会让网盘同科 h264/hevc 混杂）；其他科全 hevc 即可与在压科并行上传，整机一次只传一科。
 - 在跑检测只匹配带解释器前缀的真进程（`pgrep -f 'python3 .*compress_ep3_videos\.py'`、`'bash .*sync_ep3_ready\.sh'`）；裸 `pgrep -f 脚本名` 会误匹配命令行含该文本的 grep/外层 shell（含运维查询命令）而漏拉压缩。
-- `scripts/sync_ep3_ready.sh <profile> 1 videos` 的 ready_filter 只挑"完整讲"（每个 `*_meta.json` 有对应非空 `*_video.mp4`）、**不判编码**；所以编码门控必须在调用方（本机 `ep3_local_supervisor.sh`、目标机 `target_netdisk_watch.sh`）实现，不能指望 sync 脚本。
+- `code/scripts/sync_ep3_ready.sh <profile> 1 videos` 的 ready_filter 只挑"完整讲"（每个 `*_meta.json` 有对应非空 `*_video.mp4`）、**不判编码**；所以编码门控必须在调用方（本机 `ep3_local_supervisor.sh`、目标机 `target_netdisk_watch.sh`）实现，不能指望 sync 脚本。
 - 链路：`sync_ep3_ready.sh`（读 config 的 localRoot/remoteRoot、挑完整讲）→ `sync_course_netdisk.sh`（xargs -P 并发派生 upload_one）→ `upload_course.sh`（讲内串行逐文件，过滤 transcript.json/*.tmp/*.log/.DS_Store）→ `baidu_upload.py`（precreate/upload/create，分片串行、MD5 秒传、固定 rtype=3）。
 
 ## hevc 覆盖早期 h264：清视频 done + rtype=3
@@ -50,7 +50,7 @@ status: stable
 
 ## 终态核验：只认 verify、不信 done
 
-- done 只证明"某次上传动作完成"，不证明网盘当前是 hevc。权威核验：`BAIDU_ENC_PASS=… python3 scripts/verify_netdisk_final.py <本地课程根> <网盘课程根> [-x 知识详解]`（递归比对目录/文件集合与**字节大小**，rc=0 才完全一致）。脚本默认排除点开头隐藏/缓存（`.ep3cache` 等，`os.walk` 必须原地剪枝 `dirnames[:]`）；**原始资源滚动备份阶段**知识详解尚在生成/走飞书，用 `-x/--exclude 知识详解`（可重复）显式排除，不拿半成品卡视频备份完成判定；课程完整 finalize、知识详解定稿传云后，再跑一次**不带 -x** 的两层（原始资源+知识详解）全量核验。`scripts/netdisk_verify_summary.py <核验日志...>` 分类汇总（讲义缺/不一致、视频缺、视频大小不一致、其中网盘是旧大版、缺讲目录、垃圾分片）。
+- done 只证明"某次上传动作完成"，不证明网盘当前是 hevc。权威核验：`BAIDU_ENC_PASS=… python3 code/scripts/verify_netdisk_final.py <本地课程根> <网盘课程根> [-x 知识详解]`（递归比对目录/文件集合与**字节大小**，rc=0 才完全一致）。脚本默认排除点开头隐藏/缓存（`.ep3cache` 等，`os.walk` 必须原地剪枝 `dirnames[:]`）；**原始资源滚动备份阶段**知识详解尚在生成/走飞书，用 `-x/--exclude 知识详解`（可重复）显式排除，不拿半成品卡视频备份完成判定；课程完整 finalize、知识详解定稿传云后，再跑一次**不带 -x** 的两层（原始资源+知识详解）全量核验。`code/scripts/netdisk_verify_summary.py <核验日志...>` 分类汇总（讲义缺/不一致、视频缺、视频大小不一致、其中网盘是旧大版、缺讲目录、垃圾分片）。
 - 网盘文件无法 ffprobe；识别网盘残留 h264 靠大小——本地 hevc 显著小于 h264（实测样本约 1/13），核验"大小不一致且网盘更大（旧大版）"即需 reset 后覆盖重传。
 - 已验证：审计 257、战略 129（2026-09-16）、**经济法 314（2026-09-18，课程根 `-x 知识详解` 核验 rc=0：205 目录/1348 文件本地=网盘，视频 0 缺/0 大小不一致/0 旧大版）**全 hevc 上云。
 - 2026-09-17 按科滚动生效：经济法 314 全 hevc 后，在税法仍压缩时即启动上传（本机进入"压税法 + 传经济法"并行）。

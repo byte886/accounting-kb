@@ -31,7 +31,7 @@
 
 - [ ] 旧名在活文档 0 残留（历史报告/ADR/CHANGELOG 轨迹保留）
 - [ ] 相对链接 0 真实断链（教学占位链接已逐一确认）
-- [ ] 文档类型 ↔ 文件名风格 0 不自洽（`scripts/check_naming_consistency.py`）
+- [ ] 文档类型 ↔ 文件名风格 0 不自洽（`code/scripts/check_naming_consistency.py`）
 - [ ] 目录树（DIRECTORY_STRUCTURE、各 README）与实际一致
 - [ ] pre-commit 五项检查通过
 - [ ] 汇总数字由明细现算、前后一致

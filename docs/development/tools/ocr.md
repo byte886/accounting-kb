@@ -17,8 +17,8 @@
 
 - **OCR 引擎**：[RapidOCR](https://github.com/RapidAI/RapidOCR)（PP-OCRv6 的 ONNX Runtime 封装，CPU 跑，免费开源）
 - **PDF 转图片**：PyMuPDF（200 DPI）
-- **主脚本**：`scripts/ocr/ocr_pdf_rapid.py`
-- **批量入口**：`scripts/batch_ocr.sh`（单本 PDF）、`scripts/ocr/run_ocr_all.sh`（整门课）
+- **主脚本**：`code/scripts/ocr/ocr_pdf_rapid.py`
+- **批量入口**：`code/scripts/batch_ocr.sh`（单本 PDF）、`code/scripts/ocr/run_ocr_all.sh`（整门课）
 - **Python 环境**：项目根 `.venv-ocr/`（Python 3.12）
 
 ### 2.2 环境搭建（一次性）
@@ -37,14 +37,14 @@ cd <项目根>
 
 单本 PDF：
 ```bash
-bash scripts/batch_ocr.sh "<讲义.pdf>" [输出目录]
+bash code/scripts/batch_ocr.sh "<讲义.pdf>" [输出目录]
 # 等价于：
-.venv-ocr/bin/python scripts/ocr/ocr_pdf_rapid.py "<讲义.pdf>" --out "<讲义>_OCR.md"
+.venv-ocr/bin/python code/scripts/ocr/ocr_pdf_rapid.py "<讲义.pdf>" --out "<讲义>_OCR.md"
 ```
 
 整门课批量：
 ```bash
-COURSE_PROFILE=ep3-econlaw-2026 bash scripts/ocr/run_ocr_all.sh [--dry]
+COURSE_PROFILE=ep3-econlaw-2026 bash code/scripts/ocr/run_ocr_all.sh [--dry]
 ```
 
 ### 2.4 性能（实测，2026-09-20）
@@ -87,7 +87,7 @@ COURSE_PROFILE=ep3-econlaw-2026 bash scripts/ocr/run_ocr_all.sh [--dry]
 | 跨平台 | 仅 macOS | 全平台 |
 | 脚本 | `ocr_vision.swift`（已退役保留） | `ocr_pdf_rapid.py` |
 
-旧 `scripts/ocr/ocr_vision.swift` 保留备查，不再默认调用。
+旧 `code/scripts/ocr/ocr_vision.swift` 保留备查，不再默认调用。
 
 ## 4. 表格/公式/图表
 

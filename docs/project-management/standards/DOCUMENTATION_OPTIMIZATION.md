@@ -141,9 +141,9 @@
 | 变更类型 | 必须执行的驱动动作 | 说明 |
 |----------|-------------------|------|
 | **新增文档** | 1. 更新 `docs/DOCUMENTATION_MAP.md`<br>2. 检查是否需要新目录（参考 DIRECTORY_STRUCTURE.md 4.2节）<br>3. 如果涉及目录变更，更新 `docs/DIRECTORY_STRUCTURE.md`<br>4. 在父文档或相关文档中添加链接<br>5. **评估是否需要新增ADR**（如果是重要的架构决策） | 新增文档前必须先检查是否已有类似文档 |
-| **删除文档** | 1. 搜索所有引用：`grep -r "文档名" docs/ scripts/`<br>2. 更新所有引用（指向新位置或删除引用）<br>3. 更新 `docs/DOCUMENTATION_MAP.md`<br>4. 如果删除后目录为空，删除空目录<br>5. 如果涉及目录变更，更新 `docs/DIRECTORY_STRUCTURE.md`<br>6. **评估是否需要新增ADR**（如果是重要的架构决策） | 删除前必须检查引用关系 |
+| **删除文档** | 1. 搜索所有引用：`grep -r "文档名" docs/ code/scripts/`<br>2. 更新所有引用（指向新位置或删除引用）<br>3. 更新 `docs/DOCUMENTATION_MAP.md`<br>4. 如果删除后目录为空，删除空目录<br>5. 如果涉及目录变更，更新 `docs/DIRECTORY_STRUCTURE.md`<br>6. **评估是否需要新增ADR**（如果是重要的架构决策） | 删除前必须检查引用关系 |
 | **移动文档** | 1. 更新所有路径引用<br>2. 更新 `docs/DOCUMENTATION_MAP.md`<br>3. 更新 `docs/DIRECTORY_STRUCTURE.md`（如果涉及目录变更）<br>4. 验证所有链接有效<br>5. **评估是否需要新增ADR**（如果是重要的架构决策） | 移动等同于删除+新增，必须完整执行两边的动作 |
-| **调整目录结构** | 1. 制定调整方案（调整前后结构、文件移动路径、引用更新清单）<br>2. 执行移动<br>3. 更新所有路径引用<br>4. 更新 `docs/DOCUMENTATION_MAP.md`<br>5. 更新 `docs/DIRECTORY_STRUCTURE.md`<br>6. 验证：`grep -r "旧目录名" docs/ scripts/`<br>7. **评估是否需要新增ADR**（目录结构重大调整必须记录ADR） | 调整前必须评估必要性（参考 DIRECTORY_STRUCTURE.md 4.4节） |
+| **调整目录结构** | 1. 制定调整方案（调整前后结构、文件移动路径、引用更新清单）<br>2. 执行移动<br>3. 更新所有路径引用<br>4. 更新 `docs/DOCUMENTATION_MAP.md`<br>5. 更新 `docs/DIRECTORY_STRUCTURE.md`<br>6. 验证：`grep -r "旧目录名" docs/ code/scripts/`<br>7. **评估是否需要新增ADR**（目录结构重大调整必须记录ADR） | 调整前必须评估必要性（参考 DIRECTORY_STRUCTURE.md 4.4节） |
 | **优化文档内容** | 1. 如果内容移到其他文档，更新原文档为链接<br>2. 如果其他文档引用了优化前的内容，同步更新<br>3. 更新 `docs/DOCUMENTATION_MAP.md` 中的文档说明（如果有变化）<br>4. **评估是否需要新增ADR**（如果是重要的架构决策，如文档分解） | 内容优化可能涉及职责边界调整 |
 
 ---
@@ -216,7 +216,7 @@
 | **关联性** | 文档中的链接是否有效 | 抽样检查关键链接 | 失效则更新或删除 |
 | **关联性** | 是否存在文档孤岛（没有被任何文档引用） | `grep -r "文档名" --include="*.md" .` | 孤岛则在相关文档中添加引用 |
 | **结构** | 目录结构是否与DIRECTORY_STRUCTURE.md一致 | 对比实际目录与文档说明 | 不一致则更新文档或调整目录 |
-| **结构** | 命名是否符合NAMING_CONVENTION（类型↔命名、中文分隔符） | `python3 scripts/check_naming_consistency.py --regression` | 不自洽则按NAMING整改；批量改名走L1，先出清单确认 |
+| **结构** | 命名是否符合NAMING_CONVENTION（类型↔命名、中文分隔符） | `python3 code/scripts/check_naming_consistency.py --regression` | 不自洽则按NAMING整改；批量改名走L1，先出清单确认 |
 | **结构** | 是否存在空目录 | `find . -type d -empty` | 空目录则删除 |
 | **质量** | 是否存在重叠内容（两个文档讲同一件事） | 人工审查 + 关键词搜索 | 重叠则合并或明确分工 |
 | **质量** | 文档是否超过500行且内容跨领域 | `wc -l 文档名` + 内容审查 | 超过则评估是否需要分解 |

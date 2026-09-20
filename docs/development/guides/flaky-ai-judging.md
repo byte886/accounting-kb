@@ -89,9 +89,9 @@ cs=6 / 未判满
 
 | 位置 | 内容 |
 |---|---|
-| `scripts/cdp/gaodun_paper_core.js` | `correctSubjective`：三级文本补全 → best-of-N（`AI_CS6_RERUN`）→ `out.aiCeiling`；`buildUserAnswers` 按 `cpaBotType` 分 subjective/unsupported；`doPaperViaApi` 两层完成判据 fullScore/platformDone；并发 `AI_CONCURRENCY=3` + `mapLimit` 错峰 |
-| `scripts/cdp/refresh_inventory.js` | `inspectSubmitted` 只读复核：cs=6 且"我方答案≈标准答案"才计 ceiling，否则仍算真·非满分 |
-| `scripts/cdp/batch_redo_papers.js` / `api_do_paper.js` | 透传 aiCeiling、三态标签（✅满分 / 🟡平台最优 / ⏺未满分），ok=fullScore||platformDone |
+| `code/scripts/cdp/gaodun_paper_core.js` | `correctSubjective`：三级文本补全 → best-of-N（`AI_CS6_RERUN`）→ `out.aiCeiling`；`buildUserAnswers` 按 `cpaBotType` 分 subjective/unsupported；`doPaperViaApi` 两层完成判据 fullScore/platformDone；并发 `AI_CONCURRENCY=3` + `mapLimit` 错峰 |
+| `code/scripts/cdp/refresh_inventory.js` | `inspectSubmitted` 只读复核：cs=6 且"我方答案≈标准答案"才计 ceiling，否则仍算真·非满分 |
+| `code/scripts/cdp/batch_redo_papers.js` / `api_do_paper.js` | 透传 aiCeiling、三态标签（✅满分 / 🟡平台最优 / ⏺未满分），ok=fullScore||platformDone |
 | 接口细节 | 见 [gaodun-exam-api.md](../api/gaodun-exam-api.md) §2.6/§2.10/§5 |
 
 ---

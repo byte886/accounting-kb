@@ -124,7 +124,7 @@ git --version
 df -h /
 
 # 检查项目目录结构
-bash scripts/check_directory_structure.sh
+bash code/scripts/check_directory_structure.sh
 ```
 
 ---
@@ -133,10 +133,10 @@ bash scripts/check_directory_structure.sh
 
 1. 克隆仓库：`git clone <repo-url>`
 2. 安装依赖：`brew install ffmpeg node python@3.11`
-3. 搭建转写环境：`bash scripts/setup_transcription_env.sh`
+3. 搭建转写环境：`bash code/scripts/setup_transcription_env.sh`
 4. 放置数据目录：把课程数据放到项目内 `data/高顿/`（实体目录、整体 gitignore，可从百度网盘镜像拉回；2026-09-14 起不再用软链，见 ADR-021）
 5. 解密凭证：`secrets json .secrets/baidu_credentials.enc access_token`（全局命令 `secrets`，新机器先执行一次 `secrets install`）
-6. 验证：运行 `bash scripts/check_directory_structure.sh`
+6. 验证：运行 `bash code/scripts/check_directory_structure.sh`
 
 ---
 

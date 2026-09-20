@@ -46,7 +46,7 @@ echo "OK 单元名" > "$DONE_DIR/单元名.done"
 ### 3.2 用守护器启动
 
 ```bash
-nohup bash scripts/run_supervised.sh <任务名> \
+nohup bash code/scripts/run_supervised.sh <任务名> \
   "<单次执行命令>" \
   "<完成检测命令>" \
   > logs/supervisor_<任务名>.log 2>&1 &
@@ -56,8 +56,8 @@ disown
 **示例（网盘视频上传，39 个讲）**：
 
 ```bash
-nohup bash scripts/run_supervised.sh videos \
-  "bash scripts/sync_raw_resources.sh videos 2" \
+nohup bash code/scripts/run_supervised.sh videos \
+  "bash code/scripts/sync_raw_resources.sh videos 2" \
   "test \$(find logs/raw_done -name 'videos_*.done' | wc -l | tr -d ' ') -ge 39" \
   > logs/supervisor_videos.log 2>&1 &
 disown
@@ -70,12 +70,12 @@ ps -o pid,ppid,command -p <守护器PID>
 # PPID 应为 1（系统 init 接管）
 ```
 
-### 3.4 随时查进度（scripts/progress.sh）
+### 3.4 随时查进度（code/scripts/progress.sh）
 
 守护器在系统层运行，进度随时可查、只读不影响任务：
 
 ```bash
-bash scripts/progress.sh
+bash code/scripts/progress.sh
 ```
 
 一屏输出所有后台长任务的：进度条与百分比、守护器存活状态、**实时速率 / 平均单耗 / ETA 完成时刻**、正在处理的工作单元、最近日志。示例：
@@ -97,7 +97,7 @@ bash scripts/progress.sh
 2. **stall 检测**：守护器连续 3 轮（默认）进度无变化会判定异常并通知，避免任务卡死却无人知晓。
 3. **并发任务也可守护**：任务脚本内部用 `xargs -P N` 并发（见 [parallel-processing-guide.md](parallel-processing-guide.md)），守护器只管"整批是否全部完成"。
 4. **通知声音**：`sound name "Glass"`，可在系统设置中更换。
-5. **AI 会话恢复后查进度**：优先 `bash scripts/progress.sh`；只看单个任务可 `tail logs/supervisor_<任务名>.log` + `find logs/xxx_done -name '*.done' | wc -l`，不需要等待。
+5. **AI 会话恢复后查进度**：优先 `bash code/scripts/progress.sh`；只看单个任务可 `tail logs/supervisor_<任务名>.log` + `find logs/xxx_done -name '*.done' | wc -l`，不需要等待。
 
 ## 五、适用场景清单
 

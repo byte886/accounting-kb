@@ -227,7 +227,7 @@ lark-cli wiki +node-delete --node-token "<URL>" --yes
 
 **原因与识别（别误判）**：这是飞书账号级滑动窗口频控，不是 token 失效、不是权限 scope、不是内容问题（响应里没有 `Authorization failed` / 登录超时类错误，且窗口前的同类调用绝大多数成功）。固定步进 sleep、25 秒级短休眠都不足以恢复，需要 60-90 秒级冷却。排查先怀疑调用节奏，不要一失败就判定登录失效让用户重新登录。
 
-**最佳实践（建树四件套，已固化进 `scripts/knowledge/build_tree.py`，会计课从零多轮收敛到 169/169）**：
+**最佳实践（建树四件套，已固化进 `code/scripts/knowledge/build_tree.py`，会计课从零多轮收敛到 169/169）**：
 
 1. **组级缓存砍查询量**：进一个父节点只 `node-list` 一次、把全部直接子节点拉成本地 TSV，之后查重走本地（awk）不调网络；node-list 调用量从"每节点一次"（=节点数）降到"每组一次"（=组数，169 降到约 31）。
 2. **写操作指数退避重试**：`node-create` / `docs +update` 失败不立即放弃，按 4s/8s/12s 退避重试 3 次扛瞬时抖动；只对限流类现象重试，`invalid_parameters`/`not_found` 不用同参重复。
@@ -241,13 +241,13 @@ lark-cli wiki +node-delete --node-token "<URL>" --yes
 - **阈值更低**：纯写（无查询间隔）连续约 **15 篇**即触发，比建树 node-create 混合查询的 36-40 次更早（纯写密度高）。净写速率必须压到窗口恢复速率以下，稳态参数 `RESYNC_BATCH_SIZE=4 RESYNC_BATCH_PAUSE=120 RESYNC_INTERVAL=5`（每 4 篇休 120s、篇间 5s）。
 - **失败真实形态**：`{"ok":false,"error":{"type":"internal","subtype":"invalid_response","message":"API returned an invalid JSON response: response parse error: invalid character 'e' looking for beginning of value"}}`，进程 rc=5——飞书网关在窗口内返回**非 JSON 文本**（以字母 e 开头）。仍不是 token/权限/内容问题，不要让用户重新登录。
 - **恢复时长随累计深度递增**：浅窗口停写约 5 分钟；整晚密集写叠加失败重试会累积成深窗口，需**彻底静默约 15 分钟**。窗口内继续发请求会给窗口"续命"，固定短冷却反复试探反而恢复更慢。
-- **标准解法（已固化进 `scripts/knowledge/resync_wiki_content.py`）**：①每篇成功落 `logs/resync_done/<safe标题>.done`，重跑零 API 跳过、多轮只补未成功、不重复消耗写配额（`--force` 全量重刷）；②worker 内按错误类型分流——`ext err`/`parse temporary token`/`invalid_response`（非 JSON）原地只重试 1 次（2s±20% 抖动）再败 `exit 2` 交外层换新进程；HTTP 429 读 `Retry-After`；其他网络错最多 3 次（1→2→4→8→16s 封顶 30s，±20% 抖动）；③单进程写满 `RESYNC_MAX_NEW=20` 篇主动退出；④每次失败打印 rc 与原始返回。收敛判据：`ls logs/resync_done | wc -l` = 总数、进程自然退出。
+- **标准解法（已固化进 `code/scripts/knowledge/resync_wiki_content.py`）**：①每篇成功落 `logs/resync_done/<safe标题>.done`，重跑零 API 跳过、多轮只补未成功、不重复消耗写配额（`--force` 全量重刷）；②worker 内按错误类型分流——`ext err`/`parse temporary token`/`invalid_response`（非 JSON）原地只重试 1 次（2s±20% 抖动）再败 `exit 2` 交外层换新进程；HTTP 429 读 `Retry-After`；其他网络错最多 3 次（1→2→4→8→16s 封顶 30s，±20% 抖动）；③单进程写满 `RESYNC_MAX_NEW=20` 篇主动退出；④每次失败打印 rc 与原始返回。收敛判据：`ls logs/resync_done | wc -l` = 总数、进程自然退出。
 
 > **根因更正与最终方案（2026-09-12 凌晨会计 169 篇收尾时终查，以此为准）**：上面对"飞书账号写窗口、停写静默即恢复"的判断**不准确**。
 >
 > - **真正根因**：沙箱里 `lark-cli` 并非直连飞书，而是经豆包转发代理 `DOUBAO_OFFICE_FORWARD_PROXY`（`www.doubao.com/alice/office/sandbox/lark_cli/proxy`）访问。**代理层对"单个进程/会话的累计请求数"有限流**，累计到阈值后对后续请求返回非 JSON 纯文本错误（以字母 e 开头），lark-cli 解析失败即报 `invalid_response ... invalid character 'e'`、rc=5。这不是飞书账号限流、不是 token、不是权限、不是内容、不是 locale/stdin 管道/nohup 环境。
 > - **决定性判别证据**：长期后台脚本连续跑到失败时，①停掉后用**全新 shell 手动单发同一篇立即成功**；②前台一次性 Python subprocess 连续 10 篇全成功、nohup 单篇也成功，唯独**长期单进程累计十几篇后必失败**；③彻底静默 30 分钟后，旧进程第一发仍失败，而换新进程立即成功——所以**决定因素是"新进程=新代理会话"，不是静默时长**。
-> - **最终方案：Worker Supervisor 模式**（`scripts/knowledge/run_resync_batches.sh`，财管 145 篇实测收敛）：worker（`resync_wiki_content.py`）退出后 Supervisor **立即拉起新 worker**，不做长休眠；连续 `RESYNC_FAIL_MAX=5` 次无进展重启（`rc≠0` 或本轮新增=0）才短休 `RESYNC_COOLDOWN=30s`；done 数达标（=map行数+1）Supervisor 自退；done 列表落 `logs/resync_done/*.done` 持久化，任意中断/重入不丢。
+> - **最终方案：Worker Supervisor 模式**（`code/scripts/knowledge/run_resync_batches.sh`，财管 145 篇实测收敛）：worker（`resync_wiki_content.py`）退出后 Supervisor **立即拉起新 worker**，不做长休眠；连续 `RESYNC_FAIL_MAX=5` 次无进展重启（`rc≠0` 或本轮新增=0）才短休 `RESYNC_COOLDOWN=30s`；done 数达标（=map行数+1）Supervisor 自退；done 列表落 `logs/resync_done/*.done` 持久化，任意中断/重入不丢。
 > - **排查口诀**：再遇到 `invalid_response` / rc=5 / 非 JSON（e 开头），**先停脚本用全新 shell 手动单发同一篇对照**——新进程成功即代理层累计限流，直接走批次法；不要误判飞书账号、不要让用户重新登录、不要只靠一味加长静默。
 > - **第二层根因与 Supervisor 固化（2026-09-20 财管 145 篇 + 经济法 81 篇后定版，以此为准）**：外层 shell 凭证老化问题由 Supervisor 自动拉起新 worker 解决，无需人工手动换 shell——worker 写满 `RESYNC_MAX_NEW=20` 篇即 `exit 0`，Supervisor 立即起新 python 进程；连续 5 次无进展才短休 30s；done 列表持久化。进程内错误分类与指数退避+抖动（见上条）保留。财管/经济法实测收敛良好。
 > - **同场另一个严重 bug（resolver 漏传 WIKI_MAP）**：`resync_wiki_content.py` 用 subprocess 调 `wiki_link_resolve.py` 时一度没传 `WIKI_MAP`，resolver 回退到不存在的仓库根 `logs/`、映射为空，导致 169 篇的 `./相对链接` **全部没转成 `<cite>`、飞书端退化成不可点纯文本**（写入却 ok，极隐蔽）。教训：①跨脚本 subprocess 必须显式传齐它依赖的环境变量/路径，不能假设默认值在当前 profile 成立；②resolver 映射为空、resync 处理后仍残留 `](./` 链接都已加 fail-loud 告警；③批量写入后必须 `docs +fetch` **回读飞书端**确认内链真的是 `<cite doc-id=...>`，不能只看写入 ok。

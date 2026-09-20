@@ -125,12 +125,12 @@
 
 **核心价值观（强制）：以精简并删除历史冗余为荣，以堆彻重复实现为耻。**
 
-- **代码/脚本**：新增脚本前必须检查是否已有同类实现；发现 0 引用的一次性脚本、旧版已替代脚本、重复实现时，主动清理（移废纸篓带时间戳，不硬删），同步更新 scripts/README.md 与相关文档引用
+- **代码/脚本**：新增脚本前必须检查是否已有同类实现；发现 0 引用的一次性脚本、旧版已替代脚本、重复实现时，主动清理（移废纸篓带时间戳，不硬删），同步更新 code/scripts/README.md 与相关文档引用
 - **文档**：新增文档前必须检查职责是否已被现有文档承担（见 3.4 防重复建设门禁）；发现过时文档、已废弃 SOP、重复内容时，标注退役或清理，不保留"以防万一"的僵尸文档
 - **结构**：定期检查目录结构是否合理，空目录、空章节、0 条目分类不保留（如"计算/综合大题（0 道大题、0 个小问）"这类空标题必须删除）
 - **"不改写历史"的适用边界（别用过头）**：
   - **只保护编年/记录体**——`CHANGELOG.md`、ADR（`decisions/`）、`memory/log.md`、git 提交历史、任务报告原文：价值在如实记录"当时怎么定/发生了什么"，**只增不改**；结论被取代时在新 ADR/新条目说明，或在旧文末尾加一行"演进注记"指向前文，不抹原文（即便其引用了已删脚本/旧结构）。
-  - **不保护现行规范/手册/活态台账**——AGENTS、README、WORKFLOW、REQUIREMENTS、guides/tools、standards、DOCUMENTATION_MAP 的现行清单、TASK_STATUS/ISSUES、scripts/README：价值在"**当前正确**"，其中**完全过期、被取代、失效、写死的旧数字直接删/改**，不承担历史职责；被删内容在 git 历史与 CHANGELOG 永久可溯，不在现行文档里留僵尸。
+  - **不保护现行规范/手册/活态台账**——AGENTS、README、WORKFLOW、REQUIREMENTS、guides/tools、standards、DOCUMENTATION_MAP 的现行清单、TASK_STATUS/ISSUES、code/scripts/README：价值在"**当前正确**"，其中**完全过期、被取代、失效、写死的旧数字直接删/改**，不承担历史职责；被删内容在 git 历史与 CHANGELOG 永久可溯，不在现行文档里留僵尸。
   - **判据看段落性质、不看整份文件**：同一文件内现行条文保持当前态，只有其中专门带日期的"更新记录/变更日志/整改轨迹"小节才按编年体只增；拿不准一段算编年还是现行时，先当现行清理并在 CHANGELOG 留一行。
 - 测试文件、临时日志、残留目录及时清理
 - 完成任务后检查是否有中间产物需要清理
@@ -212,8 +212,8 @@
 - **只读用法**：新会话按第 2 章顺序读 `memory/index.md` 定位，再沿 concept 的「来源与下钻」读源 ADR/规范；**concept 只写结论与相对指针、不复制源文档正文**，冲突时以源文档为准。
 - **维护时机**：当 ADR/规范/链路的**稳定结论**发生变化时，同步修订对应 concept 并在 `memory/log.md` 倒序记一行；易变值（进度、计数、当天日期、SHA、剩余权益）**不进记忆**，需要时实时读台账。
 - **信任标注**：AI 机器初编/改写的 concept 不得写 `verified: human`（不冒充人核）；只有用户实际审核后才补 `verified: { by: "human:<id>", at }`。
-- **机械校验（提交前必过）**：`python3 scripts/okf_validate.py docs/project-management/memory`，硬错误 E 必须为 0（已挂入 `scripts/pre-commit`）；警告 W 需逐条确认。
-- **项目自包含 / 可移植（硬约束）**：工程运行**不得依赖全局 `~/Doubao/AGENTS.md` 或任何全局技能**——校验器等工具一律 vendor 进本仓库 `scripts/`，规则与指针只引用仓库内相对路径；保证仅 clone 本仓库、换一个 Agent 也能按自身文档接手。
+- **机械校验（提交前必过）**：`python3 code/scripts/okf_validate.py docs/project-management/memory`，硬错误 E 必须为 0（已挂入 `code/scripts/pre-commit`）；警告 W 需逐条确认。
+- **项目自包含 / 可移植（硬约束）**：工程运行**不得依赖全局 `~/Doubao/AGENTS.md` 或任何全局技能**——校验器等工具一律 vendor 进本仓库 `code/scripts/`，规则与指针只引用仓库内相对路径；保证仅 clone 本仓库、换一个 Agent 也能按自身文档接手。
 
 ### 3.12 知识详解 OKF frontmatter（格式层延伸，强制）
 
@@ -225,9 +225,9 @@
   - `ChapterIndex`：章 README（每个模块组/章一篇）
 - **标准档字段**：`type` + `title` + `description` + `tags` + `sources`（讲义 OCR / 题目 paperId）+ `generated`（`process:knowledge-build`）+ `status: stable` + `stale_after`（新教材发布前复审，默认 `2027-03-31T23:59:59+08:00`）+ 自定义 key（`chapter` / `exam_season` / `question_count` / `point_count` / `scope`）
 - **与正文分工**：frontmatter 是机器权威（结构化元数据、可校验、可查询）；正文顶部 `>` Context Block 保留为人读展示（飞书读者看到的就是它），二者内容对齐、不重复维护；正文四节结构（知识拆解 / 考试指导 / 题答解析 / 学员补充）一律不动
-- **飞书同步自动剥离**：`scripts/knowledge/resync_wiki_content.py` 写入飞书前自动剥离顶部 frontmatter（`strip_frontmatter()`，仅认文件顶部连续 `---...---`），飞书读者不看到 YAML；剥离后正文与原文逐字一致。新增 / 改写知识详解后必须重跑 resync 同步
+- **飞书同步自动剥离**：`code/scripts/knowledge/resync_wiki_content.py` 写入飞书前自动剥离顶部 frontmatter（`strip_frontmatter()`，仅认文件顶部连续 `---...---`），飞书读者不看到 YAML；剥离后正文与原文逐字一致。新增 / 改写知识详解后必须重跑 resync 同步
 - **信任标注**：机器初编的 frontmatter 不写 `verified: human`（不冒充人核）；用户实际审核后才补 `verified: { by: "human:<id>", at }`
-- **校验与推广**：`python3 scripts/okf_validate.py <知识详解目录>`，硬错误 E 必须为 0；新课全量推广前先试点 3–5 篇定模板，随迭代补、不一次性批量。Context Block 题量/点数解析口径（冒号可选、全文正则）、飞书批量同步的 token 退避批次等实现细节见知识生成 SOP 与 `resync_wiki_content.py` 脚本注释，不在此复述
+- **校验与推广**：`python3 code/scripts/okf_validate.py <知识详解目录>`，硬错误 E 必须为 0；新课全量推广前先试点 3–5 篇定模板，随迭代补、不一次性批量。Context Block 题量/点数解析口径（冒号可选、全文正则）、飞书批量同步的 token 退避批次等实现细节见知识生成 SOP 与 `resync_wiki_content.py` 脚本注释，不在此复述
 
 ---
 
@@ -276,9 +276,9 @@
 
 ### 4.1 操作禁止
 
-- ❌ **不要用Chrome浏览器手动下载文件**——必须用脚本（`scripts/download_decrypt.js`或curl）后台下载
+- ❌ **不要用Chrome浏览器手动下载文件**——必须用脚本（`code/scripts/download_decrypt.js`或curl）后台下载
 - ❌ **不要在一个Bash命令中做多道题**——每个命令只做一道题，避免超时移到后台导致输出丢失
-- ✅ **做题必须用纯接口脚本**——`scripts/cdp/api_do_paper.js`（单卷）/`scripts/cdp/batch_redo_papers.js`（批量）/`scripts/cdp/do_sprint_paper.js`（冲刺模考），零 UI 点选
+- ✅ **做题必须用纯接口脚本**——`code/scripts/cdp/api_do_paper.js`（单卷）/`code/scripts/cdp/batch_redo_papers.js`（批量）/`code/scripts/cdp/do_sprint_paper.js`（冲刺模考），零 UI 点选
 - ❌ **不要跳过"做题前查询知识库"步骤**——必须先读对应知识库文档再答题
 - ❌ **不要自行关闭用户打开的Chrome窗口**——只关闭Playwright管理的多余tab页
 

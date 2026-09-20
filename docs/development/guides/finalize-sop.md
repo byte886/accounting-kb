@@ -45,7 +45,7 @@
 
 3. **知识来源原料先归位再备份（重要）**：`papers/`（接口采集的试卷题答 JSON，含题目/标准答案/解析/知识点标签）与 `notes-raw/`（用户笔记与留言原件）虽位于 `data/_workspace/<profile>/`，但本质是**知识来源原料、不是可丢弃过程件**。清 `_workspace` 前必须先把它们复制归位到 `原始资源/papers/`、`原始资源/user-notes/`（Desktop 与 data 两份都归位），随本步骤一并传网盘；归位并核对一致后，`_workspace` 内的原件才允许在步骤 3 清。最终 `原始资源/` 为四类：`notes/`（讲义 PDF+OCR）、`videos/`（video.mp4+transcript.md）、`papers/`（题答 JSON）、`user-notes/`（笔记留言原件）；
 
-4. 命令：`BAIDU_ENC_PASS=*** python3 scripts/baidu_upload.py`（凭证 `.secrets/baidu_credentials.enc`，国内直连）；分片上传 + MD5 秒传、断点续传；同名覆盖 precreate/create 都传 `rtype=3`（见 netdisk-setup.md）；
+4. 命令：`BAIDU_ENC_PASS=*** python3 code/scripts/baidu_upload.py`（凭证 `.secrets/baidu_credentials.enc`，国内直连）；分片上传 + MD5 秒传、断点续传；同名覆盖 precreate/create 都传 `rtype=3`（见 netdisk-setup.md）；
 
 5. 传后核对本地↔网盘**文件数与大小**一致，且要**逐讲核对到文件类型**：videos 每讲必须同时有 `video.mp4` 和 `transcript.md`（不能只核 mp4 数量，本课程曾出现单讲漏传 transcript.md）；papers/user-notes 按文件名集合 diff；改名走 rename 级联、不重传。
 
@@ -53,7 +53,7 @@
 
 名师课（ep3）视频先离线重压为 hevc（见 [video-processing.md](../tools/video-processing.md) 双机小节），再**按科滚动**覆盖网盘早期传过的 h264（某科全 hevc 即传、不等其他科压完）。这是对上面步骤 1 第 4 条的特化，**优先级高于"传了就行"**：
 
-1. **按科滚动门控（防 h264 混传，最重要；2026-09-17 由"整科等压缩结束"放宽）**：一门课必须**全部** `*_video.mp4` 经 ffprobe 为 hevc（非 hevc 计数=0）**且当前没在压该科**，即可上传该科视频——**不必等同一压缩任务里的其他科目压完**（上传走限速网络、压缩吃 CPU、目录按 profile 隔离，可与另一科压缩并行；整机一次仍只传一科）。"在压该科"判据：本机看该科 videos 下有无 `.compress_tmp*`（一个 compress 进程可带多个 `--course`，不能只看进程名），目标机看门按 `pgrep --course <科>`；**正在压的那一科绝不探测/上传**（压几讲传几讲会让同科 h264/hevc 混杂）。`scripts/sync_ep3_ready.sh <profile> 1 videos` 的 ready_filter 只挑"完整讲"（meta 与非空视频齐备）、**不判编码**，编码门控必须在调用方实现（本机 `scripts/ep3_local_supervisor.sh`、目标机 `logs/target_netdisk_watch.sh`）。在跑检测只匹配带解释器前缀的真进程（`pgrep -f 'python3 .*compress_ep3_videos\.py'`、`'bash .*sync_ep3_ready\.sh'`），裸 `pgrep -f 脚本名` 会误匹配命令行含该文本的 grep/外层 shell 而漏拉。链路：`sync_ep3_ready.sh` → `sync_course_netdisk.sh`（xargs -P 派生）→ `upload_course.sh`（讲内串行）→ `baidu_upload.py`。
+1. **按科滚动门控（防 h264 混传，最重要；2026-09-17 由"整科等压缩结束"放宽）**：一门课必须**全部** `*_video.mp4` 经 ffprobe 为 hevc（非 hevc 计数=0）**且当前没在压该科**，即可上传该科视频——**不必等同一压缩任务里的其他科目压完**（上传走限速网络、压缩吃 CPU、目录按 profile 隔离，可与另一科压缩并行；整机一次仍只传一科）。"在压该科"判据：本机看该科 videos 下有无 `.compress_tmp*`（一个 compress 进程可带多个 `--course`，不能只看进程名），目标机看门按 `pgrep --course <科>`；**正在压的那一科绝不探测/上传**（压几讲传几讲会让同科 h264/hevc 混杂）。`code/scripts/sync_ep3_ready.sh <profile> 1 videos` 的 ready_filter 只挑"完整讲"（meta 与非空视频齐备）、**不判编码**，编码门控必须在调用方实现（本机 `code/scripts/ep3_local_supervisor.sh`、目标机 `logs/target_netdisk_watch.sh`）。在跑检测只匹配带解释器前缀的真进程（`pgrep -f 'python3 .*compress_ep3_videos\.py'`、`'bash .*sync_ep3_ready\.sh'`），裸 `pgrep -f 脚本名` 会误匹配命令行含该文本的 grep/外层 shell 而漏拉。链路：`sync_ep3_ready.sh` → `sync_course_netdisk.sh`（xargs -P 派生）→ `upload_course.sh`（讲内串行）→ `baidu_upload.py`。
 
 2. **清视频 done + rtype=3 覆盖**：早期 h264 已传并留 done，sync 见 done 会跳过。某科全 hevc **首次**上传前执行 `reset_videos_done_once`：删 `data/_workspace/<profile>/logs/netdisk_done/` 下所有**非 `notes__` 前缀**的视频 `.done`（**保留 `notes__` 讲义标记**），强制 hevc 全量重传、precreate/create 都传 `rtype=3` 同名覆盖；每科只清一次（标志 `data/_workspace/_account/ep3/supervisor/<prof>.videoreset`，目标机在 `netdisk_watch/`）。注意 done 文件名前缀是**阶段名**（如"全面精讲"），不是字面"videos"，仅讲义那次前缀是 `notes__`。
 

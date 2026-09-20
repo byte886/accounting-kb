@@ -46,7 +46,7 @@ vcourse/pc（盘点账号全部课程、拿 saasCourseId）
 - **纯采集知识来源**：redo-paper / paper-analysis 取题面、标准答案、官方解析即可（注意 redo 有"新建实例、times+1"副作用，redo 后必须 submit 闭环，不可中断）。
 - **交卷/AI 批改是外部写操作**：会改平台成绩、扣 AI 权益，属需用户授权的动作；冲刺模考（48 题/标题含"冲刺模考"）基础阶段硬排除、最后阶段才处理。
 - 采集到的题面/答案/解析是末期知识库的客观来源；**自动化过程产生的错题不作来源**。
-- 脚本：共享实现 `scripts/cdp/gaodun_paper_core.js`（含 `findJwt` 按 mtime 取最新 token）；单卷 `api_do_paper.js`、批量 `batch_redo_papers.js`（默认 dry-run，内置 553649434 token 自愈重试）；token 刷新 `refresh_auth_token.js`；课程清单 `fetch_user_space_courses.js`。默认**优先用本地已采数据**，不重复联网。
+- 脚本：共享实现 `code/scripts/cdp/gaodun_paper_core.js`（含 `findJwt` 按 mtime 取最新 token）；单卷 `api_do_paper.js`、批量 `batch_redo_papers.js`（默认 dry-run，内置 553649434 token 自愈重试）；token 刷新 `refresh_auth_token.js`；课程清单 `fetch_user_space_courses.js`。默认**优先用本地已采数据**，不重复联网。
 
 ## 来源与下钻
 - [高顿作业接口档案](../../../development/api/gaodun-exam-api.md)（逐接口字段、错误码字典、已验证/待验证清单——实现前必读）

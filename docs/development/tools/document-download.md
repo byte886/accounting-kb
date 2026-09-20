@@ -145,7 +145,7 @@ pdfinfo docs/讲义.pdf | grep Pages
 - **OCR方案**：macOS Vision框架（系统原生免费，中文识别效果好），**不是tesseract**
 - **工具**：Swift编译的`/tmp/ocr_vision` + PyMuPDF（200 DPI）
 - **性能**：116页约2分钟，每页约1秒
-- **批量脚本**：`scripts/batch_ocr.sh`
+- **批量脚本**：`code/scripts/batch_ocr.sh`
 - **详细文档**：[ocr.md](./ocr.md)
 
 ### 5.2 执行前检查清单
@@ -172,7 +172,7 @@ pdfinfo docs/讲义.pdf | grep Pages
 
 | 类型 | 名称 | 位置 |
 |------|------|------|
-| 脚本 | 批量OCR | `scripts/batch_ocr.sh` |
+| 脚本 | 批量OCR | `code/scripts/batch_ocr.sh` |
 | 文档 | OCR指南 | [ocr.md](./ocr.md) |
 | 文档 | 命名规范 | [../../project-management/standards/NAMING_CONVENTION.md](../../project-management/standards/NAMING_CONVENTION.md) |
 | 文档 | 主工作流 | [../../WORKFLOW.md](../../WORKFLOW.md) 第3节 |

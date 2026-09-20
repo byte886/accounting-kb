@@ -46,8 +46,8 @@ docs/project-management/memory/
 
 ### 4. 项目自包含 / 可移植（对应用户硬约束）
 
-- 把零第三方依赖的校验器**复制进项目** `scripts/okf_validate.py`（系统 python3 直接跑），运行时**不依赖** `~/Doubao/skills` 下的技能；头部注明 vendored 来源与"勿本地改逻辑以免与上游脱节"。
-- 校验接入项目**自有** `scripts/pre-commit`（新增 OKF 段，E 级硬错误阻断提交）；项目 `AGENTS.md` 增加记忆 bundle 的采用声明与恢复顺序，**只引用项目内相对路径**。
+- 把零第三方依赖的校验器**复制进项目** `code/scripts/okf_validate.py`（系统 python3 直接跑），运行时**不依赖** `~/Doubao/skills` 下的技能；头部注明 vendored 来源与"勿本地改逻辑以免与上游脱节"。
+- 校验接入项目**自有** `code/scripts/pre-commit`（新增 OKF 段，E 级硬错误阻断提交）；项目 `AGENTS.md` 增加记忆 bundle 的采用声明与恢复顺序，**只引用项目内相对路径**。
 - **不动**全局 `~/Doubao/PROFILE.md`、不要求全局技能在场；全局 `~/Doubao/AGENTS.md` 里既有的一行 okf 指针可保留，但工程运行不依赖它。
 - 新会话 / 新 Agent 的恢复顺序：根 `AGENTS.md`（规则）→ `memory/index.md`（定位）→ 根 `CHANGELOG.md`（最近变更）→ 按需沿 concept 的"来源与下钻"读源文档，不整库灌入。
 
@@ -74,6 +74,6 @@ docs/project-management/memory/
 ## 参考
 
 - 记忆 bundle：[../memory/index.md](../memory/index.md)、[../memory/log.md](../memory/log.md)
-- 项目内校验器：`scripts/okf_validate.py`（vendored from okf-wiki v0.2，零依赖；上游规范 Google Cloud Open Knowledge Format v0.2，Apache-2.0）
-- 质量门：`scripts/pre-commit`；变更分级与精简原则见 [../standards/NAMING_CONVENTION.md](../standards/NAMING_CONVENTION.md) 与根 `AGENTS.md` 3.2/3.7
+- 项目内校验器：`code/scripts/okf_validate.py`（vendored from okf-wiki v0.2，零依赖；上游规范 Google Cloud Open Knowledge Format v0.2，Apache-2.0）
+- 质量门：`code/scripts/pre-commit`；变更分级与精简原则见 [../standards/NAMING_CONVENTION.md](../standards/NAMING_CONVENTION.md) 与根 `AGENTS.md` 3.2/3.7
 - 相关范式决策：[ADR-012](./ADR-012-三层解耦与按知识点聚合.md)、[ADR-016](./ADR-016-统一运行时工作区与按profile分区.md)

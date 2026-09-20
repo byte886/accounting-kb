@@ -11,8 +11,8 @@ sources:
     resource: ../../standards/NAMING_CONVENTION.md
     title: 命名规范与文档类型标注
   - id: precommit
-    resource: ../../../../scripts/pre-commit
-    title: scripts/pre-commit 提交质量门
+    resource: ../../../../code/scripts/check/pre-commit
+    title: code/scripts/pre-commit 提交质量门
 generated: { by: "doubao/okf-wiki", at: "2026-09-07T20:30:00+08:00" }
 status: stable
 ---
@@ -30,7 +30,7 @@ status: stable
 
 ## 二、"不改写历史"的适用边界（别用过头；权威表述见 AGENTS §3.7）
 - **只保护编年/记录体**：ADR、CHANGELOG、memory/log、git 历史、任务报告原文——只增不改；结论被演进时在新 ADR/新条目说明，或旧文末尾加演进指针，不抹原文。
-- **不保护现行规范/手册/活态台账**（AGENTS、README、WORKFLOW、SOP、standards、DOCUMENTATION_MAP 现行清单、TASK_STATUS/ISSUES、scripts/README）：价值在"当前正确"，其中过期/被取代/失效/写死旧数字直接删改，不承担历史职责，可溯性由 git + CHANGELOG 兜底。
+- **不保护现行规范/手册/活态台账**（AGENTS、README、WORKFLOW、SOP、standards、DOCUMENTATION_MAP 现行清单、TASK_STATUS/ISSUES、code/scripts/README）：价值在"当前正确"，其中过期/被取代/失效/写死旧数字直接删改，不承担历史职责，可溯性由 git + CHANGELOG 兜底。
 - 判据看段落性质而非整份文件：现行条文保持当前态，仅文件内专门带日期的"更新记录/变更日志/整改轨迹"小节按编年体只增。
 
 ## 三、命名规则（权威见 NAMING_CONVENTION）
@@ -46,11 +46,11 @@ status: stable
 - **删除一律 `mv` 到带时间戳的回收站，不硬删**；文件/目录变化同步检查 `.gitignore`。
 
 ## 五、质量门：机械 + 人工，且工程自包含
-- **机械门**：`scripts/pre-commit`（安装：`cp scripts/pre-commit .git/hooks/pre-commit && chmod +x`）在提交前自动查大文件/敏感信息/运行产物（硬拦截）、文档关联、相对链接与类型词、命名一致性（多为警告）；OKF 记忆 bundle 另跑 `python3 scripts/okf_validate.py docs/project-management/memory`，E 必须为 0。
+- **机械门**：`code/scripts/pre-commit`（安装：`cp code/scripts/pre-commit .git/hooks/pre-commit && chmod +x`）在提交前自动查大文件/敏感信息/运行产物（硬拦截）、文档关联、相对链接与类型词、命名一致性（多为警告）；OKF 记忆 bundle 另跑 `python3 code/scripts/okf_validate.py docs/project-management/memory`，E 必须为 0。
 - **人工语义体检不可省**（AGENTS 3.9）：pre-commit 检不出内容过时、职责重复、台账与实际不符、文件去留价值；大任务后仍须按 DOCUMENTATION_OPTIMIZATION 第十二章人工体检，**不得因 pre-commit 通过就跳过**。
-- **自包含 / 可移植（硬约束）**：工程不依赖全局 `~/Doubao/AGENTS.md` 或全局技能即可跑通——校验器等工具要 vendor 进项目 `scripts/`，规则写项目内文档；换一个 Agent/换一台机器，按仓库自身文档就能接手。
+- **自包含 / 可移植（硬约束）**：工程不依赖全局 `~/Doubao/AGENTS.md` 或全局技能即可跑通——校验器等工具要 vendor 进项目 `code/scripts/`，规则写项目内文档；换一个 Agent/换一台机器，按仓库自身文档就能接手。
 
 ## 来源与下钻
 - [项目根 AGENTS.md](../../../../AGENTS.md)（3.2 分级、3.4 防重复、3.7 精简、3.9 健康度）
 - [命名规范与文档类型标注](../../standards/NAMING_CONVENTION.md)
-- [scripts/pre-commit](../../../../scripts/pre-commit)
+- [code/scripts/pre-commit](../../../../code/scripts/check/pre-commit)

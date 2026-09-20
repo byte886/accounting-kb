@@ -41,7 +41,7 @@
 
 ```bash
 # 生成待处理列表（每行一个任务）；process_one.sh 是"处理单条任务"的示例占位脚本名，落地时替换为本项目真实脚本
-cat pending.txt | xargs -P 3 -n 1 bash scripts/process_one.sh
+cat pending.txt | xargs -P 3 -n 1 bash code/scripts/process_one.sh
 ```
 
 - xargs 由内核管理并发和任务分发，**无竞态、自动负载均衡**（哪个进程空闲就拿下一个）

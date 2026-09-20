@@ -38,7 +38,7 @@
 
 本项目落地：
 - 阶段内：`xargs -P N` 做动态调度（内核级，无竞态，子进程退出即启动下一个）
-- 阶段间：`scripts/watch_stage_done.sh` 做事件监听（60秒轮询产物数量，达到预期写标记文件，空窗≤1分钟）
+- 阶段间：`code/scripts/watch_stage_done.sh` 做事件监听（60秒轮询产物数量，达到预期写标记文件，空窗≤1分钟）
 - 总调度：agent 维护 DAG 状态，收到完成标记后检查下游依赖是否满足，满足即启动
 
 **反例教训**：初期用人工30分钟巡检，压缩07:49完成但09:02才发现，空窗1小时13分钟。改用事件监听后空窗降到≤1分钟。
@@ -85,7 +85,7 @@
 
 ```bash
 # 生成待处理列表（每行一个任务）；process_one.sh 是"处理单条任务"的示例占位脚本名，落地时替换为本项目真实脚本
-cat pending.txt | xargs -P 3 -n 1 bash scripts/process_one.sh
+cat pending.txt | xargs -P 3 -n 1 bash code/scripts/process_one.sh
 ```
 
 - 由内核管理并发和任务分发，**无竞态、自动负载均衡**（哪个进程空闲就拿下一个）
@@ -122,5 +122,5 @@ cat pending.txt | xargs -P 3 -n 1 bash scripts/process_one.sh
 
 - [project-dag.md](../project-dag.md) — 本项目完整 DAG
 - [parallel-processing-guide.md](../performance/parallel-processing-guide.md) — CPU密集任务并发度反向评估详细指南
-- [watch_stage_done.sh](../../../scripts/watch_stage_done.sh) — 通用阶段完成事件监听脚本
+- [watch_stage_done.sh](../../../code/scripts/pipeline/watch_stage_done.sh) — 通用阶段完成事件监听脚本
 - ~~chapter-mapping-draft.md（旧"按讲映射"方法论，已废弃，被 ADR-012 的"官方模块组→知识点"取代）~~

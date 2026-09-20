@@ -6,7 +6,7 @@
 > **读者**：AI代理（开发工程师）与用户
 
 > 这是一份**跨项目通用**的 macOS 自动化方法：如何程序化读取/操作其他 App 的原生控件、可靠点击系统弹窗，并在**多显示器**环境下点得准。
-> 本项目的直接应用是自动点掉 Chrome「要允许远程调试吗？」弹窗（脚本 `scripts/cdp/press_allow.applescript`，被 CDP 连接模块调用，见 [浏览器 CDP 连接手册](../tools/browser-cdp-connect-guide.md)），但方法适用于任何原生 App 自动化场景。
+> 本项目的直接应用是自动点掉 Chrome「要允许远程调试吗？」弹窗（脚本 `code/scripts/cdp/press_allow.applescript`，被 CDP 连接模块调用，见 [浏览器 CDP 连接手册](../tools/browser-cdp-connect-guide.md)），但方法适用于任何原生 App 自动化场景。
 
 ---
 
@@ -78,7 +78,7 @@ AXPress 的目标是元素引用（AXUIElement），不是坐标。无论元素�
 
 ## 5. 本项目落地：自动点 Chrome 远程调试授权
 
-`scripts/cdp/press_allow.applescript`（系统自带 `osascript`，零安装）。最终实现是踩过三个坑后定下的，这三个坑都是**可迁移到任何原生 App 自动化的通用规律**。
+`code/scripts/cdp/press_allow.applescript`（系统自带 `osascript`，零安装）。最终实现是踩过三个坑后定下的，这三个坑都是**可迁移到任何原生 App 自动化的通用规律**。
 
 ### 5.1 只遍历「弹窗 sheet」，绝不递归整窗 / 网页区（性能命门）
 
@@ -105,11 +105,11 @@ AXPress 的目标是元素引用（AXUIElement），不是坐标。无论元素�
 调用（Node 内，单次硬超时 2500ms）：
 ```js
 const { execFile } = require('child_process');
-execFile('osascript', ['scripts/cdp/press_allow.applescript'], { timeout: 2500 }, (e, out) => { /* ... */ });
+execFile('osascript', ['code/scripts/cdp/press_allow.applescript'], { timeout: 2500 }, (e, out) => { /* ... */ });
 ```
 手工调试：
 ```bash
-osascript scripts/cdp/press_allow.applescript     # 有弹窗 pressed=true 并点掉；无弹窗 pressed=false、退出码 0
+osascript code/scripts/cdp/press_allow.applescript     # 有弹窗 pressed=true 并点掉；无弹窗 pressed=false、退出码 0
 ```
 
 ---

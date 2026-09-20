@@ -11,11 +11,11 @@
 
 ## 2026-09-18
 
-- **Update（workflow-netdisk-hevc-sync）**：上云完成判定口径修正为**只判日志最后一轮**（总管 `log_done`、目标机看门；跨轮 `>>` 累积日志里早期轮次的瞬时失败行不得永久卡住 done，经济法 189 讲已齐却被历史失败行卡住反复重拉即此）；终态核验 `verify_netdisk_final.py` 默认排除点开头隐藏/缓存（修 `os.walk` 未原地剪枝致 `.ep3cache/keycache.json` 误报缺失），新增 `-x/--exclude` 供原始资源阶段显式排除尚在生成的 `知识详解`（定稿两层全量核验时不带 -x，不硬编码抹掉知识详解）。经济法 314 hevc 上云课程根 `-x 知识详解` 核验 rc=0（205 目录/1348 文件）。finalize-sop 步骤1、scripts/README、CHANGELOG 同步。AI 编译，未标 verified。
+- **Update（workflow-netdisk-hevc-sync）**：上云完成判定口径修正为**只判日志最后一轮**（总管 `log_done`、目标机看门；跨轮 `>>` 累积日志里早期轮次的瞬时失败行不得永久卡住 done，经济法 189 讲已齐却被历史失败行卡住反复重拉即此）；终态核验 `verify_netdisk_final.py` 默认排除点开头隐藏/缓存（修 `os.walk` 未原地剪枝致 `.ep3cache/keycache.json` 误报缺失），新增 `-x/--exclude` 供原始资源阶段显式排除尚在生成的 `知识详解`（定稿两层全量核验时不带 -x，不硬编码抹掉知识详解）。经济法 314 hevc 上云课程根 `-x 知识详解` 核验 rc=0（205 目录/1348 文件）。finalize-sop 步骤1、code/scripts/README、CHANGELOG 同步。AI 编译，未标 verified。
 
 ## 2026-09-17
 
-- **Update（workflow-netdisk-hevc-sync / workflow-video-hevc-compression）**：网盘门控由"整科全 hevc 且压缩进程结束才传"放宽为**按科滚动**（某科全 hevc 且没在压该科即传、可与他科压缩并行、整机一次一科；本机以该科 videos 下无 `.compress_tmp` 判"没在压"，目标机按 `--course` 进程判）；上传限速经 `networkQuality -s` 实测（两台共享上行 34.6Mbps、满载响应 Low：延迟 1.5s/40RPM）由 1000k 定值 **1100k**（两台各 1100k、同时传最坏合计占上行 ~52%，留约一半给豆包）；总管/看门在跑检测改为只匹配带 `python3`/`bash` 前缀的真进程，根除裸 `pgrep -f 脚本名` 误匹配 grep/外层 shell 的漏拉。对应 ADR-022 文末"演进注记（2026-09-17）"，finalize-sop 步骤 1、video-processing、scripts/README 同步；经济法已在税法压缩中按科先行上传。AI 编译，未标 verified。
+- **Update（workflow-netdisk-hevc-sync / workflow-video-hevc-compression）**：网盘门控由"整科全 hevc 且压缩进程结束才传"放宽为**按科滚动**（某科全 hevc 且没在压该科即传、可与他科压缩并行、整机一次一科；本机以该科 videos 下无 `.compress_tmp` 判"没在压"，目标机按 `--course` 进程判）；上传限速经 `networkQuality -s` 实测（两台共享上行 34.6Mbps、满载响应 Low：延迟 1.5s/40RPM）由 1000k 定值 **1100k**（两台各 1100k、同时传最坏合计占上行 ~52%，留约一半给豆包）；总管/看门在跑检测改为只匹配带 `python3`/`bash` 前缀的真进程，根除裸 `pgrep -f 脚本名` 误匹配 grep/外层 shell 的漏拉。对应 ADR-022 文末"演进注记（2026-09-17）"，finalize-sop 步骤 1、video-processing、code/scripts/README 同步；经济法已在税法压缩中按科先行上传。AI 编译，未标 verified。
 
 ## 2026-09-16
 
@@ -56,4 +56,4 @@
 
 - **Creation**：建立工程记忆 bundle（ADR-017），初版编译 10 篇 concept——架构 4、链路 4、治理 1、对照索引 1；结论全部从既有 ADR-002/003/005/007/010/012/013/014/015/016、standards 与接口档案编译，未新增事实。
 - 初版由 AI 编译，`generated.by=doubao/okf-wiki`、**未标 verified（machine-confirmed，待人核）**；人核通过后再逐篇加 `verified: human:`。
-- 校验器 `scripts/okf_validate.py` 自 okf-wiki 技能 vendor 进项目（零第三方依赖），工程自包含、不依赖全局技能。
+- 校验器 `code/scripts/okf_validate.py` 自 okf-wiki 技能 vendor 进项目（零第三方依赖），工程自包含、不依赖全局技能。

@@ -379,7 +379,7 @@ point_count: {n}
 
 > 考季：2026 · 科目：税法 · 主讲：蔡俊峻
 > 结构：14 章 / 92 知识点 · 更新 YYYY-MM-DD
-> 本页由 scripts/knowledge/build_course_overview.py 生成，勿手改
+> 本页由 code/scripts/knowledge/build_course_overview.py 生成，勿手改
 
 > 导航：本页章节名与全局资料均为飞书内部文档引用，点击在新标签页打开；需同一窗口连续阅读时，请用左侧知识库目录树（点节点当前窗口切换、展开章节可见全部知识点）。
 

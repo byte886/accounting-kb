@@ -120,7 +120,7 @@ print(kp.most\_common())
 
 3. **三、题答解析（脚本渲染、不手抄）**：收本知识点**全部**题，但不由 AI 转抄——`render_point_qa.py <步骤1聚合JSON>` 机械生成第三节（客观题逐题；主观题按大题 bigStem 分组、下钻小问 (1)(n)，答案/算式取小问 analysisText，每题标来源卷与 paperId）；AI 只校核、不改题面/答案/算式，**剔除自动化 AI 错题**。**计算大题以"大题"为不可拆单位全收、不折叠**，靠 `#### 大题N` 导航。公式/规则放第一节、具体算式放第三节，不重复堆叠。
 
-4. **四、学员补充**：从 notes-raw 提炼高价值讨论 / 助记 / 易错补充（去掉点赞数、采集过程残留）；**无内容则整节省略**。冲突不覆盖正文，按 sources 权威度处理。notes-raw 的 `notes_by_knowledge_point.json` 由 `collect_user_notes.js`（采集）→ `build_notes_mapping.py`（映射到本篇、剥身份字段）生成，聚合卷/近义名走 `notes-raw/alias.json`，勿手工拼中间件（链路见 scripts/README「用户笔记子链」）。
+4. **四、学员补充**：从 notes-raw 提炼高价值讨论 / 助记 / 易错补充（去掉点赞数、采集过程残留）；**无内容则整节省略**。冲突不覆盖正文，按 sources 权威度处理。notes-raw 的 `notes_by_knowledge_point.json` 由 `collect_user_notes.js`（采集）→ `build_notes_mapping.py`（映射到本篇、剥身份字段）生成，聚合卷/近义名走 `notes-raw/alias.json`，勿手工拼中间件（链路见 code/scripts/README「用户笔记子链」）。
 
 5. **拼接成篇**：AI 写"头部"（Context Block ＋ 一、知识拆解 ＋ 二、考试指导 ＋ `## 三、题答解析` 标题），再与 render 产物、`## 关联知识点`（位于三、题答解析之后、四、学员补充之前；同组兄弟篇相对链接，未生成可先挂前向链接）、`## 四、学员补充` 拼接为最终 .md；头部与题答分离，避免 AI 转抄算式出错。
 
@@ -254,7 +254,7 @@ D=知识详解; find "\$D" -name '\*.md' | while read f; do d=\$(dirname "\$f");
 
 1. **结构对账（先于动笔）**：以官方大纲为结构权威——`data/_workspace/<profile>/manifest/course-manifest.json` 的 `knowledge.groups[].code / pointIndex`；正课无 course-manifest 时用 `manifest/syllabus_full.json` 加采集口径。现算本地章/点数逐项对账，多出或缺失的篇先查清原因（重复、错拆、漏点），**不新增、不丢失任何官方点，不改官方点名**。
 2. **整目录备份（覆盖前强制）**：把该课 `知识详解/` 整体快照到 `data/_workspace/<profile>/regen-backup/<YYYYMMDD-HHMM>/`，核对篇数一致、备份可读后才允许覆盖。旧稿只作只读参照（可借鉴表述），结构与事实以官方大纲和原料为准。
-3. **同名同结构原地重写**：章/点的**文件名、标题、层级保持不变**，只重写/加深正文——保证飞书节点树与 `wiki_node_map.tsv` 稳定，后续同步是正文覆盖、不是重建。仍按 §三 多智能体逐章闭环（生成 → 独立检查按 6 维审 → 打回重写 ≤2 次 → 协调者介入），每章过 `scripts/okf_validate.py` 硬错误 E=0 才进下一章；四节写法、题答渲染、章 README、全局篇分别按 §二、模板库与写作风格指南。
+3. **同名同结构原地重写**：章/点的**文件名、标题、层级保持不变**，只重写/加深正文——保证飞书节点树与 `wiki_node_map.tsv` 稳定，后续同步是正文覆盖、不是重建。仍按 §三 多智能体逐章闭环（生成 → 独立检查按 6 维审 → 打回重写 ≤2 次 → 协调者介入），每章过 `code/scripts/okf_validate.py` 硬错误 E=0 才进下一章；四节写法、题答渲染、章 README、全局篇分别按 §二、模板库与写作风格指南。
 4. **取材按课型走现成规范**：正课＝讲义 OCR + 视频转写 + 已采集 papers + 学员笔记；名师课(ep3)＝一套主干精讲 OCR + 平台 VTT（[organization §2.12](../knowledge/knowledge-base-organization.md)）。**做题账号风控冻结：不新做题、不造题、不凑 question_count**；题答只用已采集 papers、由 `render_point_qa.py` 渲染；无题可采的点按规范标 N/A，不虚构题量。
 5. **整门审核与自检**：全部章完成后做 §四 内容深度审核（抽 15–20 篇、6 维打分）+ §五 全量自检；计数一律现算，与官方大纲、papers 逐项对平。
 6. **人工闸口（必须停下，不得自行越过）**：向用户交《闸口报告》＝官方 vs 本地计数对账、`okf_validate` E=0、6 维评分与问题闭环清单、3–5 篇前后对比、备份路径。等用户明确回"通过"或"打回+章节"；打回只重做指定章并复检。

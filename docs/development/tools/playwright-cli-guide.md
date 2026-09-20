@@ -312,7 +312,7 @@ npx playwright cli -s=ga attach --extension=chrome
 对于常用的命令组合，可以封装成脚本：
 ```bash
 #!/bin/bash
-# scripts/playwright-connect.sh
+# code/scripts/playwright-connect.sh
 # 连接到高顿教育浏览器会话
 
 export PLAYWRIGHT_MCP_EXTENSION_TOKEN=<token>

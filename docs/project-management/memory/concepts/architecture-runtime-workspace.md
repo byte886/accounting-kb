@@ -8,8 +8,8 @@ sources:
     resource: ../../decisions/ADR-016-统一运行时工作区与按profile分区.md
     title: ADR-016 统一运行时工作区与按 profile 分区
   - id: load-profile
-    resource: ../../../../scripts/cdp/load_profile.js
-    title: scripts/cdp/load_profile.js 路径收口函数
+    resource: ../../../../code/scripts/cdp/load_profile.js
+    title: code/scripts/cdp/load_profile.js 路径收口函数
 generated: { by: "doubao/okf-wiki", at: "2026-09-07T20:30:00+08:00" }
 status: stable
 ---
@@ -37,7 +37,7 @@ data/_workspace/
 - **课程目录只留两层**：`原始资源/` + `知识详解/`，不再在旁边堆 notes / cdp-sniff / logs。
 
 ## 关键规则
-- **路径收口函数**在 `scripts/cdp/load_profile.js`：`WORKSPACE_ROOT / currentKey / accountDir / accountAuthDir / workspaceDir / workspaceDirFor`。新脚本一律调用它们取路径。
+- **路径收口函数**在 `code/scripts/cdp/load_profile.js`：`WORKSPACE_ROOT / currentKey / accountDir / accountAuthDir / workspaceDir / workspaceDirFor`。新脚本一律调用它们取路径。
 - `gaodun_paper_core.findJwt()` 缺省从 `_account/auth` 倒序提取 JWT。
 - **分级生命周期替代一刀切清退**：不同子目录按用途决定保留/可重建/可清，不再"每次跑完全删"。
 - `paper_index.json` 缺失是**可重建的预期状态**（联网从 syllabus/redo 重算），不是错误。
@@ -50,5 +50,5 @@ data/_workspace/
 
 ## 来源与下钻
 - [ADR-016 统一运行时工作区与按 profile 分区](../../decisions/ADR-016-统一运行时工作区与按profile分区.md)（完整契约、迁移记录、收口函数清单）
-- 收口实现：[scripts/cdp/load_profile.js](../../../../scripts/cdp/load_profile.js)
+- 收口实现：[code/scripts/cdp/load_profile.js](../../../../code/scripts/cdp/load_profile.js)
 - 上层存储版图见 [四地存储分工](architecture-storage-layout.md)；课程 key 从哪起见 [课程 profile 与 ID 对照](reference-course-profiles.md)。

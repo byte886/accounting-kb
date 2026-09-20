@@ -2,7 +2,7 @@
 
 > **目的**：课程知识系统 finalize 后，验证百度网盘、本地目录、飞书知识库三地完全一致，并清理临时文件和无价值元数据，确保无遗漏、无冗余、无敏感信息残留。
 > **适用场景**：每门课程 finalize 后、大规模同步后、定期巡检。
-> **工具**：`scripts/verify_netdisk_final.py`（网盘自动化递归对比）、`wiki-link-verification-sop.md`（飞书链接验证）。
+> **工具**：`code/scripts/verify_netdisk_final.py`（网盘自动化递归对比）、`wiki-link-verification-sop.md`（飞书链接验证）。
 
 ## 一、检查时机
 
@@ -19,13 +19,13 @@
 ```bash
 cd <仓库根>
 export BAIDU_ENC_PASS=<密码>
-python3 scripts/verify_netdisk_final.py <本地课程根> <网盘课程根>
+python3 code/scripts/verify_netdisk_final.py <本地课程根> <网盘课程根>
 ```
 
 **示例（税法课）**：
 ```bash
 export BAIDU_ENC_PASS=<主密码>
-python3 scripts/verify_netdisk_final.py \
+python3 code/scripts/verify_netdisk_final.py \
     "data/高顿/CPA/【26考季】VIPCPA系列-税法（蔡俊峻老师）" \
     "/apps/CPA课程归档/会计知识库/高顿/CPA/【26考季】VIPCPA系列-税法（蔡俊峻老师）"
 ```
@@ -34,7 +34,7 @@ python3 scripts/verify_netdisk_final.py \
 
 **退出码**：`0` = 通过，`1` = 发现差异，`2` = 参数或环境错误。
 
-分类汇总多份核验日志：`python3 scripts/netdisk_verify_summary.py <核验日志...>`（讲义缺/不一致、视频缺、视频大小不一致、其中"网盘旧大版"、缺讲目录、垃圾分片）。
+分类汇总多份核验日志：`python3 code/scripts/netdisk_verify_summary.py <核验日志...>`（讲义缺/不一致、视频缺、视频大小不一致、其中"网盘旧大版"、缺讲目录、垃圾分片）。
 
 #### 2.1.1 hevc 覆盖 h264 场景的核验要点（2026-09-16，ADR-022）
 
@@ -46,7 +46,7 @@ python3 scripts/verify_netdisk_final.py \
 
 ### 2.2 手动 fallback
 
-脚本不可用时，逐层执行 `python3 scripts/baidu_upload.py list <目录>`，与本地 `find`/`ls` 结果对比顶层结构、文件计数、大小抽样。
+脚本不可用时，逐层执行 `python3 code/scripts/baidu_upload.py list <目录>`，与本地 `find`/`ls` 结果对比顶层结构、文件计数、大小抽样。
 
 ## 三、本地临时文件清理
 
@@ -59,7 +59,7 @@ finalize 后必须检查并清理本地临时文件，**清理前必须先列清
 | `logs/parallel_test/` | 并发度测试临时文件 | 测试结果入文档后，可删 `audio.wav` 等大文件，保留 `.log` 和 `transcript.md/json` 作为证据 |
 | `logs/<一次性测试目录>/` | 临时测试输出 | 确认结果已记录后可删 |
 | `data/.DS_Store` | macOS 系统文件 | 可删 |
-| `scripts/_tmp_*.sh` / `_tmp_*.js` | 一次性临时脚本 | 执行完毕后可删 |
+| `code/scripts/_tmp_*.sh` / `_tmp_*.js` | 一次性临时脚本 | 执行完毕后可删 |
 | `/tmp/upload*.sh` / `/tmp/run_*.sh` | 一次性临时脚本 | 执行完毕后可删 |
 
 ### 3.2 需保留项（不可删）
@@ -151,7 +151,7 @@ finalize 后必须检查并清理本地临时文件，**清理前必须先列清
 ```bash
 find <本地videos> -name "transcript.json" | while read f; do
     rel="${f#<本地videos>/}"
-    python3 scripts/baidu_upload.py upload "$f" "<网盘videos>/$rel"
+    python3 code/scripts/baidu_upload.py upload "$f" "<网盘videos>/$rel"
 done
 ```
 

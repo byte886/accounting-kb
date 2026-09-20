@@ -46,7 +46,7 @@ data/
 
 ### 2. 脚本统一经收口函数取路径，禁止再硬编码散落目录
 
-`scripts/cdp/load_profile.js` 新增并导出：`WORKSPACE_ROOT`、`currentKey`、`accountDir`、`accountAuthDir`、`workspaceDir`、`workspaceDirFor`。`gaodun_paper_core.findJwt(dir)` 在缺参时统一从 `data/_workspace/_account/auth` 取最新鉴权 jsonl。全部活跃脚本（14 个 Node、4 个 Shell、4 个 Python）改为经这些函数定位；一次性历史迁移工具 `scripts/migrate/*` 保留旧路径不动（仅历史用途，文档标注）。
+`code/scripts/cdp/load_profile.js` 新增并导出：`WORKSPACE_ROOT`、`currentKey`、`accountDir`、`accountAuthDir`、`workspaceDir`、`workspaceDirFor`。`gaodun_paper_core.findJwt(dir)` 在缺参时统一从 `data/_workspace/_account/auth` 取最新鉴权 jsonl。全部活跃脚本（14 个 Node、4 个 Shell、4 个 Python）改为经这些函数定位；一次性历史迁移工具 `code/scripts/migrate/*` 保留旧路径不动（仅历史用途，文档标注）。
 
 ### 3. 分层生命周期替代"工作区整体一刀切清退"
 
@@ -78,8 +78,8 @@ data/
 
 - [ADR-012 三层解耦与按知识点聚合](ADR-012-三层解耦与按知识点聚合.md)（本决策修订其工作区位置）
 - [DIRECTORY_STRUCTURE 第二章](../../DIRECTORY_STRUCTURE.md)
-- 收口实现：`scripts/cdp/load_profile.js`、`scripts/cdp/gaodun_paper_core.js#findJwt`
+- 收口实现：`code/scripts/cdp/load_profile.js`、`code/scripts/cdp/gaodun_paper_core.js#findJwt`
 
 ---
 
-> **2026-09-08 演进注记**：正文第 49 行所述"一次性历史迁移工具 `scripts/migrate/*` 保留旧路径不动"已随项目管理分层治理调整——`scripts/migrate/`（align_m0 / build_course_manifest / migrate_resources / verify_migration）为税法存量迁移定格快照、现役零调用、会计 manifest 由独立的 `cdp/refresh_inventory.js` 生成，故整体清理出工作树（移入带时间戳废纸篓，git 历史永久保留可复现性）。本 ADR 记录的运行时收口决策不变。
+> **2026-09-08 演进注记**：正文第 49 行所述"一次性历史迁移工具 `code/scripts/migrate/*` 保留旧路径不动"已随项目管理分层治理调整——`code/scripts/migrate/`（align_m0 / build_course_manifest / migrate_resources / verify_migration）为税法存量迁移定格快照、现役零调用、会计 manifest 由独立的 `cdp/refresh_inventory.js` 生成，故整体清理出工作树（移入带时间戳废纸篓，git 历史永久保留可复现性）。本 ADR 记录的运行时收口决策不变。
