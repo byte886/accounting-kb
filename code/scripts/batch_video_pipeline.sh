@@ -7,7 +7,7 @@ set -euo pipefail
 
 PROFILE="cpa-accounting-2026"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 LOG_DIR="$PROJECT_DIR/data/_workspace/$PROFILE/logs"
 mkdir -p "$LOG_DIR"
 
@@ -73,7 +73,7 @@ for idx in $(seq $START_IDX $END_IDX); do
   LEC_DIR="$(dirname "$VIDEO_DIR")"              # .vfetch 的父目录 = dl-tmp/NN_讲名（工作区）
   LEC_NAME="$(basename "$LEC_DIR")"
   RAW_DIR="$COURSE_ROOT/原始资源/videos/$LEC_NAME"  # 税法同款成品归位
-  VENV_PY="$PROJECT_DIR/transcription/venv/bin/python"
+  VENV_PY="$PROJECT_DIR/code/venvs/transcription/bin/python"
 
   # 步骤2：压缩（先压到 .vfetch/video.mp4）
   echo "  [2/4] 压缩视频 (merged.ts -> video.mp4)..."

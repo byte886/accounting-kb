@@ -7,7 +7,7 @@
 # 断点续跑：已有 >1000 字 transcript 跳过转写；已有 video.mp4 跳过压缩。
 set -uo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-PY="$ROOT/transcription/venv/bin/python"
+PY="$ROOT/code/venvs/transcription/bin/python"
 PIPE="$ROOT/scripts/transcribe_pipeline.py"
 RP="${GAODUN_COURSE_PROFILE:-cpa-tax-2026}"
 SV="$ROOT/data/_workspace/$RP/tmp/download/sprint-videos"

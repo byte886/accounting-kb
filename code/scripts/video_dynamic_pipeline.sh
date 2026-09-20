@@ -30,12 +30,12 @@ set -uo pipefail
 
 PROFILE="cpa-accounting-2026"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 WS="$PROJECT_DIR/data/_workspace/$PROFILE"
 COURSE_ROOT="$PROJECT_DIR/data/高顿/CPA/【26考季】VIPCPA系列-会计（罗翔老师）"
 VIDEOS="$COURSE_ROOT/原始资源/videos"
 LOGD="$WS/logs"; RUND="$WS/run/dyn"; TMPBASE="$WS/dl-tmp"
-VENV_PY="$PROJECT_DIR/transcription/venv/bin/python"
+VENV_PY="$PROJECT_DIR/code/venvs/transcription/bin/python"
 mkdir -p "$LOGD" "$RUND" "$TMPBASE"
 
 TICK="${TICK:-15}"; K="${K:-2}"; D_MAX="${D_MAX:-2}"; RESERVE="${RESERVE:-4}"

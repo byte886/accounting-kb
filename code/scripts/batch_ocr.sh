@@ -26,12 +26,12 @@ if [ $# -ge 2 ]; then OUTPUT_DIR="$2"; else OUTPUT_DIR="$(dirname "$PDF_PATH")";
 
 [ -f "$PDF_PATH" ] || { echo "[错误] PDF不存在: $PDF_PATH" >&2; exit 1; }
 
-# 选 Python：项目 .venv-ocr（RapidOCR 装在这里）
-VENV_PY="$PROJECT_DIR/.venv-ocr/bin/python"
+# 选 Python：项目 code/venvs/ocr（RapidOCR 装在这里）
+VENV_PY="$PROJECT_DIR/code/venvs/ocr/bin/python"
 if [ ! -x "$VENV_PY" ]; then
-  echo "[错误] .venv-ocr 不存在。请先执行:" >&2
-  echo "  /usr/local/bin/python3.12 -m venv $PROJECT_DIR/.venv-ocr" >&2
-  echo "  $PROJECT_DIR/.venv-ocr/bin/pip install rapidocr onnxruntime pymupdf" >&2
+  echo "[错误] code/venvs/ocr 不存在。请先执行:" >&2
+  echo "  /usr/local/bin/python3.12 -m venv $PROJECT_DIR/code/venvs/ocr" >&2
+  echo "  $PROJECT_DIR/code/venvs/ocr/bin/pip install rapidocr onnxruntime pymupdf" >&2
   exit 1
 fi
 

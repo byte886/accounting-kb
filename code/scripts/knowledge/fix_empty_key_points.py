@@ -8,7 +8,7 @@ import re
 import sys
 from pathlib import Path
 
-REPO = str(__import__("pathlib").Path(__file__).resolve().parent.parent.parent)
+REPO = str(__import__("pathlib").Path(__file__).resolve().parent.parent.parent.parent)
 
 # 需要修复的章节列表
 CHAPTERS_TO_FIX = [

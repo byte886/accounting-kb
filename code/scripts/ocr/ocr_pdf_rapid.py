@@ -4,7 +4,7 @@
 替换原 macOS Vision 方案。优势：跨平台、pip 一条命令装、中文/数字混排更准。
 
 用法:
-  .venv-ocr/bin/python scripts/ocr/ocr_pdf_rapid.py <pdf路径> [--out <md路径>] [--dpi 200]
+  code/venvs/ocr/bin/python scripts/ocr/ocr_pdf_rapid.py <pdf路径> [--out <md路径>] [--dpi 200]
 
 输出格式与旧 batch_ocr.sh 一致：
   # <书名>（OCR文字稿）

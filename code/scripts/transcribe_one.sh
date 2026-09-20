@@ -3,7 +3,7 @@
 # 用法: bash scripts/transcribe_one.sh <讲目录绝对路径>
 set -uo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PY="$ROOT/transcription/venv/bin/python"
+PY="$ROOT/code/venvs/transcription/bin/python"
 PIPE="$ROOT/scripts/transcribe_pipeline.py"
 RP="${GAODUN_COURSE_PROFILE:-_shared}"
 WORK="$ROOT/data/_workspace/$RP/tmp/parallel_work"

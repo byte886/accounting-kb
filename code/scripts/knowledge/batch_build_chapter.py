@@ -27,7 +27,7 @@ from pathlib import Path
 from datetime import datetime
 
 # 项目根目录
-PROJECT_ROOT = Path(__file__).parent.parent.parent
+PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "knowledge"))
 
 from course_profile import load_profile  # noqa: E402

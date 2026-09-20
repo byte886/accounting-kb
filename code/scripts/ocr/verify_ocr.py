@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """verify_ocr.py — 复核讲义 OCR 完整性：每份 docs/*.pdf 的实际页数，
 应与 docs_text/<名>_OCR.md 中 `## 第N页` 分节数一致（允许相等；少于即残缺）。
-用法: transcription/venv/bin/python scripts/ocr/verify_ocr.py
+用法: code/venvs/transcription/bin/python scripts/ocr/verify_ocr.py
 输出: 逐份 OK/残缺清单 + 汇总，残缺时退出码 1。
 """
 import re, sys, pathlib, os

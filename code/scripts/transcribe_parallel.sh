@@ -15,7 +15,7 @@ set -uo pipefail
 export LANG="${LANG:-en_US.UTF-8}"
 export LC_ALL="${LC_ALL:-en_US.UTF-8}"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PY="$ROOT/transcription/venv/bin/python"
+PY="$ROOT/code/venvs/transcription/bin/python"
 PIPE="$ROOT/scripts/transcribe_pipeline.py"
 # 加载课程配置（环境变量可覆盖默认值）
 # shellcheck source=course_config.sh

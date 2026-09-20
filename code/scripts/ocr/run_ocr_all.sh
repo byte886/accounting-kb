@@ -19,10 +19,10 @@ NOTES="$COURSE/原始资源/notes"
 DRY=0; [ "${1:-}" = "--dry" ] && DRY=1
 
 if [ ! -d "$NOTES" ]; then echo "[run_ocr] notes 目录不存在: $NOTES" >&2; exit 1; fi
-if [ ! -x "$ROOT/.venv-ocr/bin/python" ]; then
-  echo "[run_ocr] .venv-ocr 不存在。请先执行:" >&2
-  echo "  /usr/local/bin/python3.12 -m venv $ROOT/.venv-ocr" >&2
-  echo "  $ROOT/.venv-ocr/bin/pip install rapidocr onnxruntime pymupdf" >&2
+if [ ! -x "$ROOT/code/venvs/ocr/bin/python" ]; then
+  echo "[run_ocr] code/venvs/ocr 不存在。请先执行:" >&2
+  echo "  /usr/local/bin/python3.12 -m venv $ROOT/code/venvs/ocr" >&2
+  echo "  $ROOT/code/venvs/ocr/bin/pip install rapidocr onnxruntime pymupdf" >&2
   exit 1
 fi
 TODO=0; SKIP=0

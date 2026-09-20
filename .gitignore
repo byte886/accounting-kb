@@ -1,73 +1,30 @@
-# ============================================================
-# .gitignore — 本仓库「不入库产物」清单（按本项目实际产物梳理，只留确定会反复产生的）
-# ------------------------------------------------------------
-# 维护约定（详见 docs/project-management/standards/PROJECT_STRUCTURE_MAINTENANCE.md
-#           「2.1 产物落点与忽略模式表」）：
-#   1. 只有源码、正式文档、模板、必要配置入库；运行产物、环境、数据、高频大媒体不入库。
-#   2. 只忽略「确定反复产生且确定不入库」的；低频/几乎不产生的类型不预先忽略，
-#      真出现时作为 untracked 冒头，由 scripts/pre-commit 第 3 项警告兜底。
-#   3. 新增一类运行产物时「两处同步」：本文件加一条 + scripts/pre-commit 的 ARTIFACT_RE，
-#      不确定就跑 bash scripts/check_git_hygiene.sh 体检。
-# ============================================================
+# 虚拟环境
+code/venvs/
 
-# --- 操作系统 / 编辑器（固定 macOS + VSCode）---
-.DS_Store
-.vscode/
+# OCR venv（历史路径）
+.venv-ocr/
 
-# --- 依赖与虚拟环境（任意位置都不入库，靠 requirements.txt / package.json 重建）---
-node_modules/
-venv/
-.venv/
-env/
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 
-# --- 环境变量与密钥（明文不入库；.secrets 下 .enc 加密件显式放行）---
-.env
-.secrets/*.json
-.secrets/*.txt
-!*.enc
+# Node
+node_modules/
 
-# --- 视频下载/转码链路产物（分片、解密分片、HLS、合并成品、提取音轨、segments 目录）---
-*.ts
-*.dec.ts
-*.mp4
-*.m3u8
-*.wav
-segments/
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
 
-# --- 讲义原件 PDF（成品走网盘，不入库）---
-*.pdf
-
-# --- 通用临时 / 备份 / 合并冲突产物 ---
-*.tmp
-*.bak
-*.orig
-_workspace/
-
-# --- 运行日志与阶段完成哨兵（本地运行状态；进度正式记录在 project-management/active 台账）---
-*.log
-logs/
-
-# --- 数据与抓包（data/ 是外部数据目录，题源 papers、cdp-sniff 等都在其内，整体不入库）---
+# 数据（不入库）
 data/
 
-# --- 转写模块运行期产物（运行中转已统一 data/_workspace/<course>/tmp，由 data/ 整体忽略；下列为历史输出目录兜底）---
-transcription/.tmp_*/
-transcription/.transcribe_done
-transcription/transcripts_full/
-transcription/transcripts/
+# 日志
+logs/
 
-# --- 浏览器自动化运行缓存（Playwright CLI 兜底路线）---
-.playwright-cli/
-
-# --- 临时工作名默认忽略；测试计划/测试模板是正式文档，显式放行 ---
-# 注意：macOS 文件系统大小写不敏感，test_* 会同时命中大写 TEST_*，故下面逐条 ! 放行
-test_*
-!project-management/test-plans/
-!project-management/test-plans/测试计划_*.md
-!docs/development/templates/TEST_PLAN_TEMPLATE.md
-
-# --- OCR 断点缓存（RapidOCR/旧Vision共用，<pdf名>.pages/<N>.txt）---
-*.pages/
-.venv-ocr/
+# 临时
+*.tmp
+*.bak
+*.old
