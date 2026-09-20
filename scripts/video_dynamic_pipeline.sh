@@ -29,7 +29,8 @@
 set -uo pipefail
 
 PROFILE="cpa-accounting-2026"
-PROJECT_DIR="/Users/wenjiechen/Desktop/gaodun-course-knowledge-base"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 WS="$PROJECT_DIR/data/_workspace/$PROFILE"
 COURSE_ROOT="$PROJECT_DIR/data/高顿/CPA/【26考季】VIPCPA系列-会计（罗翔老师）"
 VIDEOS="$COURSE_ROOT/原始资源/videos"
