@@ -16,7 +16,7 @@ import time
 from pathlib import Path
 
 LARK_CLI = "/Users/wenjiechen/Library/Application Support/Doubao/Profile 2/sandbox_envs_dir/envs/9cbd27d1-c9f2-42e9-95ab-39d1071b7981/override_dlcs/bin/lark-cli"
-REPO = "/Users/wenjiechen/Doubao/chats/2026-08-26/new-chat/gaodun-course-knowledge-base"
+REPO = "/Users/wenjiechen/Desktop/gaodun-course-knowledge-base"
 
 # 六科配置
 COURSES = [

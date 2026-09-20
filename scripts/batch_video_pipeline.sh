@@ -6,7 +6,7 @@
 set -euo pipefail
 
 PROFILE="cpa-accounting-2026"
-PROJECT_DIR="/Users/wenjiechen/Doubao/chats/2026-08-26/new-chat/gaodun-course-knowledge-base"
+PROJECT_DIR="/Users/wenjiechen/Desktop/gaodun-course-knowledge-base"
 LOG_DIR="$PROJECT_DIR/data/_workspace/$PROFILE/logs"
 mkdir -p "$LOG_DIR"
 

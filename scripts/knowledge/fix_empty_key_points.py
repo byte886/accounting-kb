@@ -8,7 +8,7 @@ import re
 import sys
 from pathlib import Path
 
-REPO = "/Users/wenjiechen/Doubao/chats/2026-08-26/new-chat/gaodun-course-knowledge-base"
+REPO = "/Users/wenjiechen/Desktop/gaodun-course-knowledge-base"
 
 # 需要修复的章节列表
 CHAPTERS_TO_FIX = [

@@ -29,7 +29,7 @@
 set -uo pipefail
 
 PROFILE="cpa-accounting-2026"
-PROJECT_DIR="/Users/wenjiechen/Doubao/chats/2026-08-26/new-chat/gaodun-course-knowledge-base"
+PROJECT_DIR="/Users/wenjiechen/Desktop/gaodun-course-knowledge-base"
 WS="$PROJECT_DIR/data/_workspace/$PROFILE"
 COURSE_ROOT="$PROJECT_DIR/data/高顿/CPA/【26考季】VIPCPA系列-会计（罗翔老师）"
 VIDEOS="$COURSE_ROOT/原始资源/videos"
