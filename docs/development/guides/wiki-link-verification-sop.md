@@ -88,7 +88,7 @@ PY
 
 ```bash
 # 任意一篇经 wiki_link_resolve.py 转换后，应只剩 cite、无残留相对链接
-cat "data/.../知识详解/01_税法总论/README.md" | python3 code/scripts/wiki_link_resolve.py
+cat "data/.../知识详解/01_税法总论/README.md" | python3 code/scripts/check/wiki_link_resolve.py
 # 预期：[标题](./标题.md) 全部变为 <cite type="doc" doc-id="obj_token"/>
 # stderr 不应出现"未找到节点映射"
 ```
@@ -176,7 +176,7 @@ PY
 ## 参考
 
 - 节点台账：`logs/wiki_node_map.tsv`（标题 / node / obj / parent，已去重）
-- 链接解析：`code/scripts/wiki_link_resolve.py`（相对链接 → cite，stdin/stdout 过滤器）
+- 链接解析：`code/scripts/check/wiki_link_resolve.py`（相对链接 → cite，stdin/stdout 过滤器）
 - 总览页生成：`code/scripts/knowledge/build_course_overview.py`（`--format xml` 飞书 / `--format markdown` 本地源）
 - 内容重同步：`code/scripts/knowledge/resync_wiki_content.py`（只覆盖内容、不建节点，`--dry-run` 预检；写入前自动剥离知识详解顶部 OKF frontmatter，飞书不显示 YAML）
 - 首次建树（课程容器→章/全局篇→知识点）：`code/scripts/knowledge/build_tree.py <profile>`（配置驱动，新 8 课模型，见 [wiki-sync-sop.md](wiki-sync-sop.md)）

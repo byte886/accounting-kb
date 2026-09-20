@@ -56,7 +56,7 @@
 
 新增 `code/scripts/cdp/ep3_download_videos.js` 只做编排（枚举 → getVideoInfo → live/resource → 取 key → 下载解密 → ffmpeg 合并 → 下 VTT/转 transcript），其中：
 - 取 key 复用扩展后的 `code/scripts/cdp/capture_video_key.js`（已支持 ep3：`gp.play()` + 点 1080P，输出顶层为数组的 SD/FHD 双 key）；
-- 分片下载 + AES 解密 + 合并零改动复用 `code/scripts/download_decrypt.js`；
+- 分片下载 + AES 解密 + 合并零改动复用 `code/scripts/video/download_decrypt.js`；
 - ffmpeg `-c copy` 直接封装为 mp4（分片本身已是 h264/aac，FHD 无需再重压）；
 - 断点续跑、key 按 `videoId:res` 缓存、单讲失败不中断批量（fails.json）、临时 `_work` 用完即清、`--dual-teacher` 时文件加老师前缀（目录不分老师，对齐 B 方案）。
 

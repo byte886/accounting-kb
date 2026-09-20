@@ -212,7 +212,7 @@
 - **只读用法**：新会话按第 2 章顺序读 `memory/index.md` 定位，再沿 concept 的「来源与下钻」读源 ADR/规范；**concept 只写结论与相对指针、不复制源文档正文**，冲突时以源文档为准。
 - **维护时机**：当 ADR/规范/链路的**稳定结论**发生变化时，同步修订对应 concept 并在 `memory/log.md` 倒序记一行；易变值（进度、计数、当天日期、SHA、剩余权益）**不进记忆**，需要时实时读台账。
 - **信任标注**：AI 机器初编/改写的 concept 不得写 `verified: human`（不冒充人核）；只有用户实际审核后才补 `verified: { by: "human:<id>", at }`。
-- **机械校验（提交前必过）**：`python3 code/scripts/okf_validate.py docs/project-management/memory`，硬错误 E 必须为 0（已挂入 `code/scripts/pre-commit`）；警告 W 需逐条确认。
+- **机械校验（提交前必过）**：`python3 code/scripts/check/okf_validate.py docs/project-management/memory`，硬错误 E 必须为 0（已挂入 `code/scripts/pre-commit`）；警告 W 需逐条确认。
 - **项目自包含 / 可移植（硬约束）**：工程运行**不得依赖全局 `~/Doubao/AGENTS.md` 或任何全局技能**——校验器等工具一律 vendor 进本仓库 `code/scripts/`，规则与指针只引用仓库内相对路径；保证仅 clone 本仓库、换一个 Agent 也能按自身文档接手。
 
 ### 3.12 知识详解 OKF frontmatter（格式层延伸，强制）
@@ -227,7 +227,7 @@
 - **与正文分工**：frontmatter 是机器权威（结构化元数据、可校验、可查询）；正文顶部 `>` Context Block 保留为人读展示（飞书读者看到的就是它），二者内容对齐、不重复维护；正文四节结构（知识拆解 / 考试指导 / 题答解析 / 学员补充）一律不动
 - **飞书同步自动剥离**：`code/scripts/knowledge/resync_wiki_content.py` 写入飞书前自动剥离顶部 frontmatter（`strip_frontmatter()`，仅认文件顶部连续 `---...---`），飞书读者不看到 YAML；剥离后正文与原文逐字一致。新增 / 改写知识详解后必须重跑 resync 同步
 - **信任标注**：机器初编的 frontmatter 不写 `verified: human`（不冒充人核）；用户实际审核后才补 `verified: { by: "human:<id>", at }`
-- **校验与推广**：`python3 code/scripts/okf_validate.py <知识详解目录>`，硬错误 E 必须为 0；新课全量推广前先试点 3–5 篇定模板，随迭代补、不一次性批量。Context Block 题量/点数解析口径（冒号可选、全文正则）、飞书批量同步的 token 退避批次等实现细节见知识生成 SOP 与 `resync_wiki_content.py` 脚本注释，不在此复述
+- **校验与推广**：`python3 code/scripts/check/okf_validate.py <知识详解目录>`，硬错误 E 必须为 0；新课全量推广前先试点 3–5 篇定模板，随迭代补、不一次性批量。Context Block 题量/点数解析口径（冒号可选、全文正则）、飞书批量同步的 token 退避批次等实现细节见知识生成 SOP 与 `resync_wiki_content.py` 脚本注释，不在此复述
 
 ---
 
@@ -276,7 +276,7 @@
 
 ### 4.1 操作禁止
 
-- ❌ **不要用Chrome浏览器手动下载文件**——必须用脚本（`code/scripts/download_decrypt.js`或curl）后台下载
+- ❌ **不要用Chrome浏览器手动下载文件**——必须用脚本（`code/scripts/video/download_decrypt.js`或curl）后台下载
 - ❌ **不要在一个Bash命令中做多道题**——每个命令只做一道题，避免超时移到后台导致输出丢失
 - ✅ **做题必须用纯接口脚本**——`code/scripts/cdp/api_do_paper.js`（单卷）/`code/scripts/cdp/batch_redo_papers.js`（批量）/`code/scripts/cdp/do_sprint_paper.js`（冲刺模考），零 UI 点选
 - ❌ **不要跳过"做题前查询知识库"步骤**——必须先读对应知识库文档再答题

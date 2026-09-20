@@ -114,12 +114,12 @@
 | 任务 | 统一使用 |
 |------|----------|
 | 连接日常 Chrome（主通道，ADR-010） | `code/scripts/cdp/connect_browser.js`（puppeteer-core 经 CDP 连已登录日常 Chrome，免重登） |
-| 视频下载解密 | `code/scripts/download_decrypt.js`（glive/ep3 共用） |
+| 视频下载解密 | `code/scripts/video/download_decrypt.js`（glive/ep3 共用） |
 | 名师课 ep3 视频+字幕采集（type=13） | `code/scripts/cdp/ep3_download_videos.js`（FHD-1080P + 平台 VTT 字幕，免 FunASR；ADR-018） |
-| 视频压缩（仅正课 glive） | `code/scripts/compress.sh`（ep3 FHD 用 ffmpeg -c copy，不重压） |
-| 讲义 OCR | `code/scripts/batch_ocr.sh` |
-| 音频转写 | `code/scripts/transcribe_pipeline.py` |
-| 网盘上传 | `code/scripts/baidu_upload.py` |
+| 视频压缩（仅正课 glive） | `code/scripts/video/compress.sh`（ep3 FHD 用 ffmpeg -c copy，不重压） |
+| 讲义 OCR | `code/scripts/ocr/batch_ocr.sh` |
+| 音频转写 | `code/scripts/transcribe/transcribe_pipeline.py` |
+| 网盘上传 | `code/scripts/netdisk/baidu_upload.py` |
 | 做题/交卷（接口主链路） | `code/scripts/cdp/api_do_paper.js`（syllabus→redo取答案→submit交卷→exam-report回查） |
 | 做题/交卷（纯接口主链路） | `cdp/api_do_paper.js`（单卷）、`cdp/batch_redo_papers.js`（批量，内置 token 失效自愈重试）、`cdp/do_sprint_paper.js`（冲刺） |
 | 鉴权 token 自愈 | `cdp/refresh_auth_token.js`（从已登录日常 Chrome 自动抓新 authentication；findJwt 按文件 mtime 取最新） |

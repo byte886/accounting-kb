@@ -140,7 +140,7 @@
 2. **manifest 先钉死再读 OCR**：按 2.1 口径从 manifest 取出本章每个 point 的 title / lessonDirs（跨几讲），再用 `awk 'NR>=a&&NR<=b&&/^第[一二三四五六]节/'` 在主干 OCR 里定位章/节行边界（下一章起点 = 本章结束行），把每个 point 映射到确定行区间。
 3. **大 OCR 单文件分段 Read**：主干 OCR 常达 3 万行，单次按约 150–210 行分段读尽该 point 区间后立即成稿，不凭记忆写；续用前先 grep/awk **复核行边界**（文件未变但行号要当场再确认）。
 4. **OCR 噪声还原**：macOS Vision OCR 含页眉乱码、表格被拆成多行碎片、数字/方向（同向反向）错位，成稿按审计准则规范表述与语境还原，不照抄错位方向/数字；定义以讲义 OCR 为准、转写仅补考频口诀。
-5. **一章一闭环**：本章全部 point 成稿 → 手写章 README（type:ChapterIndex、point_count）→ `python3 code/scripts/okf_validate.py "<章目录>"` 要求硬错误 E=0（W80 指向未写章的前向链接、W81 顶层孤儿页属预期）→ 磁盘 find 现算计数 → 回写 `three_tracks_status.md` 与 TASK_STATUS → 一个章一个 commit 并 push。
+5. **一章一闭环**：本章全部 point 成稿 → 手写章 README（type:ChapterIndex、point_count）→ `python3 code/scripts/check/okf_validate.py "<章目录>"` 要求硬错误 E=0（W80 指向未写章的前向链接、W81 顶层孤儿页属预期）→ 磁盘 find 现算计数 → 回写 `three_tracks_status.md` 与 TASK_STATUS → 一个章一个 commit 并 push。
 
 ---
 

@@ -296,7 +296,7 @@ node code/scripts/cdp/api_do_paper.js <paperId 或 标题关键字> [最小停�
    `node code/scripts/cdp/download_question_videos.js all`
    JWT 取 **SD** m3u8（转写对分辨率不敏感，SD 又快又小；要高清改 res=FHD 需播放器切档另抓 key）→解析全局 IV→并发下载→逐片 `AES-128-CBC` 解密（校验首字节 0x47=MPEG-TS 同步字节）→顺序合并 merged.ts。**完成后必须 ffprobe 校验时长 == 接口 duration**。
 3. **remux + 并发转写**
-   `ffmpeg -i merged.ts -c copy -bsf:a aac_adtstoasc video.mp4`（TS→MP4 必须带 aac_adtstoasc），再 `bash code/scripts/transcribe_qvideos.sh 6`（FunASR，本机约 20x 实时、单进程约 2 核 3.3G，20 逻辑核默认并发 6）。
+   `ffmpeg -i merged.ts -c copy -bsf:a aac_adtstoasc video.mp4`（TS→MP4 必须带 aac_adtstoasc），再 `bash code/scripts/transcribe/transcribe_qvideos.sh 6`（FunASR，本机约 20x 实时、单进程约 2 核 3.3G，20 逻辑核默认并发 6）。
 4. **归置到课程目录两层桶（下载只是到工作区 data/_workspace/<profile>/tmp/download/sprint-videos，成品必须归位）**
    成品三件套（video.mp4 + transcript.md/json）移入课程目录 `原始资源/videos/`，延续正课 `NN_讲次/` 扁平范式、正课已到 39，冲刺顺延：40–42 为三套整卷视频解析、43–49 为题目级大题讲解（`43_冲刺模考01-题目讲解-卷烟厂消费税` 等，大题中文名取 redo 题面）；6 卷题答在分流阶段从 redo 精简为 `原始资源/papers/`。归位后 data/_workspace/<profile>/tmp/download/sprint-videos 的 `.vfetch`（merged.ts+分片，可由脚本重下）移废纸篓。**网盘不在此步传**：按 [finalize-sop.md](finalize-sop.md)，等知识详解生成自检通过后随"原始资源+知识详解"整层一次性镜像。
 

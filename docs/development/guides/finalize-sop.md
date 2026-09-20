@@ -45,7 +45,7 @@
 
 3. **知识来源原料先归位再备份（重要）**：`papers/`（接口采集的试卷题答 JSON，含题目/标准答案/解析/知识点标签）与 `notes-raw/`（用户笔记与留言原件）虽位于 `data/_workspace/<profile>/`，但本质是**知识来源原料、不是可丢弃过程件**。清 `_workspace` 前必须先把它们复制归位到 `原始资源/papers/`、`原始资源/user-notes/`（Desktop 与 data 两份都归位），随本步骤一并传网盘；归位并核对一致后，`_workspace` 内的原件才允许在步骤 3 清。最终 `原始资源/` 为四类：`notes/`（讲义 PDF+OCR）、`videos/`（video.mp4+transcript.md）、`papers/`（题答 JSON）、`user-notes/`（笔记留言原件）；
 
-4. 命令：`BAIDU_ENC_PASS=*** python3 code/scripts/baidu_upload.py`（凭证 `.secrets/baidu_credentials.enc`，国内直连）；分片上传 + MD5 秒传、断点续传；同名覆盖 precreate/create 都传 `rtype=3`（见 netdisk-setup.md）；
+4. 命令：`BAIDU_ENC_PASS=*** python3 code/scripts/netdisk/baidu_upload.py`（凭证 `.secrets/baidu_credentials.enc`，国内直连）；分片上传 + MD5 秒传、断点续传；同名覆盖 precreate/create 都传 `rtype=3`（见 netdisk-setup.md）；
 
 5. 传后核对本地↔网盘**文件数与大小**一致，且要**逐讲核对到文件类型**：videos 每讲必须同时有 `video.mp4` 和 `transcript.md`（不能只核 mp4 数量，本课程曾出现单讲漏传 transcript.md）；papers/user-notes 按文件名集合 diff；改名走 rename 级联、不重传。
 

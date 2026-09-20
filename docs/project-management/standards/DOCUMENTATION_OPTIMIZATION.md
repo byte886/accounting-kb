@@ -216,7 +216,7 @@
 | **关联性** | 文档中的链接是否有效 | 抽样检查关键链接 | 失效则更新或删除 |
 | **关联性** | 是否存在文档孤岛（没有被任何文档引用） | `grep -r "文档名" --include="*.md" .` | 孤岛则在相关文档中添加引用 |
 | **结构** | 目录结构是否与DIRECTORY_STRUCTURE.md一致 | 对比实际目录与文档说明 | 不一致则更新文档或调整目录 |
-| **结构** | 命名是否符合NAMING_CONVENTION（类型↔命名、中文分隔符） | `python3 code/scripts/check_naming_consistency.py --regression` | 不自洽则按NAMING整改；批量改名走L1，先出清单确认 |
+| **结构** | 命名是否符合NAMING_CONVENTION（类型↔命名、中文分隔符） | `python3 code/scripts/check/check_naming_consistency.py --regression` | 不自洽则按NAMING整改；批量改名走L1，先出清单确认 |
 | **结构** | 是否存在空目录 | `find . -type d -empty` | 空目录则删除 |
 | **质量** | 是否存在重叠内容（两个文档讲同一件事） | 人工审查 + 关键词搜索 | 重叠则合并或明确分工 |
 | **质量** | 文档是否超过500行且内容跨领域 | `wc -l 文档名` + 内容审查 | 超过则评估是否需要分解 |

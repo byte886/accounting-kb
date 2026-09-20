@@ -178,7 +178,7 @@ data/_workspace/
 > 1. **只此一处写规则**：其它任何文档（含 `CODE_STYLE.md`、`DIRECTORY_STRUCTURE.md`、`DOCUMENTATION_GUIDE.md`、各目录 README、`code/scripts/README.md`、目录树注释）涉及命名处**只引用本章、不复述阈值或清单**，避免多处复述导致互相矛盾（曾出现 code/scripts/README 把 1MB/10MB 误写成 50MB）；规则变更只改本章。
 > 2. **判型以正文实质为准**：头部「文档类型」仅作声明，与正文实质冲突时以实质为准并回头修正头部（见 9.1.1，code-style 即此类）。
 >
-> 第一~八章的课程/网盘/飞书命名与本章并行，互不覆盖。巡检 / 改名影响面 / 整改回归用 `code/scripts/check_naming_consistency.py`。
+> 第一~八章的课程/网盘/飞书命名与本章并行，互不覆盖。巡检 / 改名影响面 / 整改回归用 `code/scripts/check/check_naming_consistency.py`。
 
 ### 9.1 总原则
 

@@ -254,7 +254,7 @@ D=知识详解; find "\$D" -name '\*.md' | while read f; do d=\$(dirname "\$f");
 
 1. **结构对账（先于动笔）**：以官方大纲为结构权威——`data/_workspace/<profile>/manifest/course-manifest.json` 的 `knowledge.groups[].code / pointIndex`；正课无 course-manifest 时用 `manifest/syllabus_full.json` 加采集口径。现算本地章/点数逐项对账，多出或缺失的篇先查清原因（重复、错拆、漏点），**不新增、不丢失任何官方点，不改官方点名**。
 2. **整目录备份（覆盖前强制）**：把该课 `知识详解/` 整体快照到 `data/_workspace/<profile>/regen-backup/<YYYYMMDD-HHMM>/`，核对篇数一致、备份可读后才允许覆盖。旧稿只作只读参照（可借鉴表述），结构与事实以官方大纲和原料为准。
-3. **同名同结构原地重写**：章/点的**文件名、标题、层级保持不变**，只重写/加深正文——保证飞书节点树与 `wiki_node_map.tsv` 稳定，后续同步是正文覆盖、不是重建。仍按 §三 多智能体逐章闭环（生成 → 独立检查按 6 维审 → 打回重写 ≤2 次 → 协调者介入），每章过 `code/scripts/okf_validate.py` 硬错误 E=0 才进下一章；四节写法、题答渲染、章 README、全局篇分别按 §二、模板库与写作风格指南。
+3. **同名同结构原地重写**：章/点的**文件名、标题、层级保持不变**，只重写/加深正文——保证飞书节点树与 `wiki_node_map.tsv` 稳定，后续同步是正文覆盖、不是重建。仍按 §三 多智能体逐章闭环（生成 → 独立检查按 6 维审 → 打回重写 ≤2 次 → 协调者介入），每章过 `code/scripts/check/okf_validate.py` 硬错误 E=0 才进下一章；四节写法、题答渲染、章 README、全局篇分别按 §二、模板库与写作风格指南。
 4. **取材按课型走现成规范**：正课＝讲义 OCR + 视频转写 + 已采集 papers + 学员笔记；名师课(ep3)＝一套主干精讲 OCR + 平台 VTT（[organization §2.12](../knowledge/knowledge-base-organization.md)）。**做题账号风控冻结：不新做题、不造题、不凑 question_count**；题答只用已采集 papers、由 `render_point_qa.py` 渲染；无题可采的点按规范标 N/A，不虚构题量。
 5. **整门审核与自检**：全部章完成后做 §四 内容深度审核（抽 15–20 篇、6 维打分）+ §五 全量自检；计数一律现算，与官方大纲、papers 逐项对平。
 6. **人工闸口（必须停下，不得自行越过）**：向用户交《闸口报告》＝官方 vs 本地计数对账、`okf_validate` E=0、6 维评分与问题闭环清单、3–5 篇前后对比、备份路径。等用户明确回"通过"或"打回+章节"；打回只重做指定章并复检。

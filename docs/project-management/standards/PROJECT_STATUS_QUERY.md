@@ -101,7 +101,7 @@
 | Q4 | 文档/操作查询 | 某某文档在哪里、怎么操作某某、流程是什么 | `docs/DOCUMENTATION_MAP.md` + `docs/WORKFLOW.md` |
 | Q5 | 项目概览查询 | 项目现在什么情况、总结一下、整体进度 | `README.md` + `TASK_STATUS.md` + 最近的任务报告 |
 | Q6 | 决策/历史查询 | 为什么这样做、之前做了什么决定、历史记录 | `docs/project-management/decisions/`（ADR）+ `data/_workspace/<course>/task-reports/` |
-| Q7 | 项目维护检查（执行型） | 让AI实际做结构/文档检查、分级、修复并出报告（区别于Q3只"问"有哪些维护） | `PROJECT_STRUCTURE_MAINTENANCE.md` + `DOCUMENTATION_OPTIMIZATION.md`第12章 + `DIRECTORY_STRUCTURE.md` + `code/scripts/check_directory_structure.sh` + `code/scripts/check_naming_consistency.py` |
+| Q7 | 项目维护检查（执行型） | 让AI实际做结构/文档检查、分级、修复并出报告（区别于Q3只"问"有哪些维护） | `PROJECT_STRUCTURE_MAINTENANCE.md` + `DOCUMENTATION_OPTIMIZATION.md`第12章 + `DIRECTORY_STRUCTURE.md` + `code/scripts/check/check_directory_structure.sh` + `code/scripts/check/check_naming_consistency.py` |
 
 ---
 
@@ -323,7 +323,7 @@
 **Q7 项目维护检查（执行型）的执行流程**（不是返回一段文本，而是动手执行）：
 ```
 1. 先读 AGENTS/README/TASK_STATUS，以及 PROJECT_STRUCTURE_MAINTENANCE、DOCUMENTATION_OPTIMIZATION 第12章、DIRECTORY_STRUCTURE
-2. 结构与命名检查：运行 code/scripts/check_directory_structure.sh，对照 DIRECTORY_STRUCTURE 查文件归属、空目录、.gitignore；运行 code/scripts/check_naming_consistency.py（--regression）查类型↔命名一致性、中文分隔符与相对断链
+2. 结构与命名检查：运行 code/scripts/check/check_directory_structure.sh，对照 DIRECTORY_STRUCTURE 查文件归属、空目录、.gitignore；运行 code/scripts/check/check_naming_consistency.py（--regression）查类型↔命名一致性、中文分隔符与相对断链
 3. 文档健康度：按11项清单逐项查 完整性/关联性/结构/质量/维护；所有结论来自实际扫描或复算，不凭对话记忆
 4. 问题分级：小问题（断链、过时数字、漏登记）直接修；结构性/拿不准的（目录改名、流程或hook变更、文档拆分）列方案先问用户；用户要求"只读/体检"则一律不改
 5. 改后用不同方式复扫验证（重跑脚本、断链扫描），确认无回退、无新增问题

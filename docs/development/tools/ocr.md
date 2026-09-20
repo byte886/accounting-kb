@@ -18,7 +18,7 @@
 - **OCR 引擎**：[RapidOCR](https://github.com/RapidAI/RapidOCR)（PP-OCRv6 的 ONNX Runtime 封装，CPU 跑，免费开源）
 - **PDF 转图片**：PyMuPDF（200 DPI）
 - **主脚本**：`code/scripts/ocr/ocr_pdf_rapid.py`
-- **批量入口**：`code/scripts/batch_ocr.sh`（单本 PDF）、`code/scripts/ocr/run_ocr_all.sh`（整门课）
+- **批量入口**：`code/scripts/ocr/batch_ocr.sh`（单本 PDF）、`code/scripts/ocr/run_ocr_all.sh`（整门课）
 - **Python 环境**：项目根 `.venv-ocr/`（Python 3.12）
 
 ### 2.2 环境搭建（一次性）
@@ -37,7 +37,7 @@ cd <项目根>
 
 单本 PDF：
 ```bash
-bash code/scripts/batch_ocr.sh "<讲义.pdf>" [输出目录]
+bash code/scripts/ocr/batch_ocr.sh "<讲义.pdf>" [输出目录]
 # 等价于：
 .venv-ocr/bin/python code/scripts/ocr/ocr_pdf_rapid.py "<讲义.pdf>" --out "<讲义>_OCR.md"
 ```

@@ -78,7 +78,7 @@
 1. **两处同步**：新增一类运行产物时，`.gitignore` 加一条规则，**同时**把同名特征补进 `code/scripts/pre-commit` 的 `ARTIFACT_RE` 模式表——后者是漏配 ignore 时的兜底硬拦截，二者互为备份。
 2. **脚本自清**：批处理脚本的临时中转目录用 `trap 'rm -rf "$tmp"' EXIT` 兜底，正常结束 / 报错 / Ctrl-C 都不留残；但**断点续跑凭证例外**（如外部课程库 `.vfetch/merged.ts` 要保留给下一轮续跑，禁止 trap 删）。
 
-**三个工具分工**：提交瞬间 pre-commit 自动拦截增量；`bash code/scripts/check_git_hygiene.sh` 随时做全量只读体检（被跟踪运行产物 / 未跟踪项分类 / 大文件 / 仓库体积）；`.gitignore` 是日常忽略清单。
+**三个工具分工**：提交瞬间 pre-commit 自动拦截增量；`bash code/scripts/check/check_git_hygiene.sh` 随时做全量只读体检（被跟踪运行产物 / 未跟踪项分类 / 大文件 / 仓库体积）；`.gitignore` 是日常忽略清单。
 
 ### 2.2 数据分层模型（L0–L4）与产物生命周期
 
@@ -167,7 +167,7 @@ L3 默认不入库，但**同时满足三问**的"轻量派生/路由元数据"�
 
 ### 3.3 自动化
 
-过滤在 `code/scripts/upload_course.sh` 的 `SKIP_PATTERNS` 生效（并发版 `sync_course_netdisk.sh` 逐讲调用它；底层 `baidu_upload.py` 只负责单文件 API 调用、不做过滤）。当前过滤清单：
+过滤在 `code/scripts/netdisk/upload_course.sh` 的 `SKIP_PATTERNS` 生效（并发版 `sync_course_netdisk.sh` 逐讲调用它；底层 `baidu_upload.py` 只负责单文件 API 调用、不做过滤）。当前过滤清单：
 - 验证/过程类：`VERIFICATION.md`、`VERIFICATION_*.md`、`验证报告_*.md`、`验证_*.md`、`SYNC_REPORT_*.md`、`同步报告_*.md`
 - 飞书同步派生源：`课程总览.md`（飞书课程根总览页的本地 markdown 源，由 `code/scripts/knowledge/build_course_overview.py --format markdown` 生成、`--format xml` 推飞书；无脚本消费落盘 md、可随时再生成，故不落课程库根、不传网盘；需要时现场重新生成）
 - 转写原始数据：`transcript.json`（可读版 `transcript.md` 正常上传）
@@ -299,7 +299,7 @@ L3 默认不入库，但**同时满足三问**的"轻量派生/路由元数据"�
 
 - [ ] 旧名在"活文档"中 0 残留（历史报告 / ADR / CHANGELOG 中的轨迹性旧名保留）
 - [ ] 相对链接 0 个真实断链（模板里的教学占位链接除外，且需逐一确认确为占位）
-- [ ] 文档类型 ↔ 文件名风格 0 不自洽（脚本 `code/scripts/check_naming_consistency.py`）
+- [ ] 文档类型 ↔ 文件名风格 0 不自洽（脚本 `code/scripts/check/check_naming_consistency.py`）
 - [ ] 目录树（DIRECTORY_STRUCTURE、各 README）与实际文件一致
 - [ ] pre-commit 五项检查通过
 - [ ] 汇总数字（总数 / 改名 / 移动 / 删除）由明细现算、前后一致

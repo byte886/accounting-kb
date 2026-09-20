@@ -41,7 +41,7 @@ status: stable
 - 产物：`subtitle.vtt`（**原始稿，属原始资源、原样保留**）+ `transcript.md`（去时间轴/相邻去重/200–400 字饱满分段，格式 `# video` + `> 平台字幕(VTT，免转写)|时长|约N字` + `## 第N段`，对齐正课）。
 
 ## 脚本与边界
-- 薄编排 `code/scripts/cdp/ep3_download_videos.js`（`--list`/`--learning-url`/批量；默认 FHD；断点续跑、单讲失败不中断、双老师文件名前缀），取 key 复用 `code/scripts/cdp/capture_video_key.js`（输出**顶层数组** `[{quality,m3u8,keyAscii}]`），解密零改动复用 `code/scripts/download_decrypt.js`，ffmpeg `-c copy`（FHD 分片本就是 h264/aac，不再重压）。
+- 薄编排 `code/scripts/cdp/ep3_download_videos.js`（`--list`/`--learning-url`/批量；默认 FHD；断点续跑、单讲失败不中断、双老师文件名前缀），取 key 复用 `code/scripts/cdp/capture_video_key.js`（输出**顶层数组** `[{quality,m3u8,keyAscii}]`），解密零改动复用 `code/scripts/video/download_decrypt.js`，ffmpeg `-c copy`（FHD 分片本就是 h264/aac，不再重压）。
 - **★ 长跑必须防睡眠，不要裸 nohup**：裸 `nohup node ep3_download_videos …` 会在 Mac 空闲睡眠 / 日常 Chrome 的 CDP 瞬断时**零报错静默终止**（日志停在"取 key"、无崩溃栈、无结束标记；曾停约 8h 只落 36/261）。
 - **两种长跑调度器，按规模选**：
   - **单 profile 单梯度兜底** — `code/scripts/cdp/run_ep3_videos_supervised.sh <profile> <梯度> <目标数> [--dual-teacher]`：`caffeinate -i` 防睡眠、每轮断点续跑（已下幂等跳过 / 上轮 capture 失败自动重试 / 没跑到的继续）、连续 3 轮成品数不增长写 `[NOTIFY]❌` 退出（个别讲反复取不到 key 时人工看明细、不空转），PPID=1 脱离 AI 会话；目标数取该梯度 outline 实测 videoTotal。

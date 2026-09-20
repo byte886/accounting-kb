@@ -311,7 +311,7 @@ cp code/scripts/pre-commit .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
 ```
 
-> 运行产物模式表 `ARTIFACT_RE` 与根 `.gitignore` 互为备份，新增一类运行产物时两处同步（依据 PROJECT_STRUCTURE_MAINTENANCE 2.1）。pre-commit 只查本次暂存（增量拦截）；需要排查存量时跑只读的全量体检 `bash code/scripts/check_git_hygiene.sh`。
+> 运行产物模式表 `ARTIFACT_RE` 与根 `.gitignore` 互为备份，新增一类运行产物时两处同步（依据 PROJECT_STRUCTURE_MAINTENANCE 2.1）。pre-commit 只查本次暂存（增量拦截）；需要排查存量时跑只读的全量体检 `bash code/scripts/check/check_git_hygiene.sh`。
 
 ### 9.4 跳过检查（特殊情况）
 

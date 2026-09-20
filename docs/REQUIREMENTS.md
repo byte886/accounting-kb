@@ -432,11 +432,11 @@
 ### 4.3 工具使用
 
 - **统一使用已有工具**：禁止重复创建或使用其他工具
-  - 视频下载解密：`code/scripts/download_decrypt.js`
-  - 视频压缩：`code/scripts/compress.sh`
-  - 讲义OCR：`code/scripts/batch_ocr.sh`
-  - 音频转写：`code/scripts/transcribe_pipeline.py`
-  - 网盘上传：`code/scripts/baidu_upload.py`
+  - 视频下载解密：`code/scripts/video/download_decrypt.js`
+  - 视频压缩：`code/scripts/video/compress.sh`
+  - 讲义OCR：`code/scripts/ocr/batch_ocr.sh`
+  - 音频转写：`code/scripts/transcribe/transcribe_pipeline.py`
+  - 网盘上传：`code/scripts/netdisk/baidu_upload.py`
   - 做题（单卷）：`code/scripts/cdp/api_do_paper.js`
   - 做题（批量）：`code/scripts/cdp/batch_redo_papers.js`
   - 冲刺模考：`code/scripts/cdp/do_sprint_paper.js`

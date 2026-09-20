@@ -46,7 +46,7 @@ status: stable
 - **删除一律 `mv` 到带时间戳的回收站，不硬删**；文件/目录变化同步检查 `.gitignore`。
 
 ## 五、质量门：机械 + 人工，且工程自包含
-- **机械门**：`code/scripts/pre-commit`（安装：`cp code/scripts/pre-commit .git/hooks/pre-commit && chmod +x`）在提交前自动查大文件/敏感信息/运行产物（硬拦截）、文档关联、相对链接与类型词、命名一致性（多为警告）；OKF 记忆 bundle 另跑 `python3 code/scripts/okf_validate.py docs/project-management/memory`，E 必须为 0。
+- **机械门**：`code/scripts/pre-commit`（安装：`cp code/scripts/pre-commit .git/hooks/pre-commit && chmod +x`）在提交前自动查大文件/敏感信息/运行产物（硬拦截）、文档关联、相对链接与类型词、命名一致性（多为警告）；OKF 记忆 bundle 另跑 `python3 code/scripts/check/okf_validate.py docs/project-management/memory`，E 必须为 0。
 - **人工语义体检不可省**（AGENTS 3.9）：pre-commit 检不出内容过时、职责重复、台账与实际不符、文件去留价值；大任务后仍须按 DOCUMENTATION_OPTIMIZATION 第十二章人工体检，**不得因 pre-commit 通过就跳过**。
 - **自包含 / 可移植（硬约束）**：工程不依赖全局 `~/Doubao/AGENTS.md` 或全局技能即可跑通——校验器等工具要 vendor 进项目 `code/scripts/`，规则写项目内文档；换一个 Agent/换一台机器，按仓库自身文档就能接手。
 

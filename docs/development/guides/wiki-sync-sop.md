@@ -48,7 +48,7 @@
 ## 1. 同步前检查（必做）
 
 1. **本地成品过校验门**：
-   - `python3 code/scripts/okf_validate.py "<课程知识详解目录>"` 硬错误 E=0；
+   - `python3 code/scripts/check/okf_validate.py "<课程知识详解目录>"` 硬错误 E=0；
    - 章 README 五要素、知识点篇四节结构齐全（模板见 [../templates/KNOWLEDGE_BASE_TEMPLATE.md](../templates/KNOWLEDGE_BASE_TEMPLATE.md)）。
 2. **配置卡合法且指向新空间**：
    - `python3 code/scripts/knowledge/course_profile.py <profile>` 能正常打印（校验 key / primaryCourse.saasCourseId / subject.id / paths.localRoot）；
@@ -99,7 +99,7 @@ tail -f data/_workspace/<profile>/logs/resync_wiki.log
 ```
 
 - 每篇成功落 `data/_workspace/<profile>/logs/resync_done/<safe标题>.done`，课程首页落 `__COURSE_HOMEPAGE__.done`；断点续跑、任意中断可重入，`--force` 才全量重刷。
-- 正文写入前自动剥离顶部 OKF frontmatter（飞书读者看不到 YAML），相对链接经 `code/scripts/wiki_link_resolve.py` 转 `<cite>`（resync 已显式传 `WIKI_MAP`，勿绕过）。
+- 正文写入前自动剥离顶部 OKF frontmatter（飞书读者看不到 YAML），相对链接经 `code/scripts/check/wiki_link_resolve.py` 转 `<cite>`（resync 已显式传 `WIKI_MAP`，勿绕过）。
 - 备用驱动 `code/scripts/knowledge/sync_with_restart.sh <profile> [max_new] [interval] [batch_pause] [batch_rest]`（前台 tee 日志，参数含义见脚本头）。
 
 ### 重新建树后（删旧节点重建）
@@ -191,7 +191,7 @@ lark-cli docs +update --doc <obj> --command overwrite --doc-format markdown --co
 | 正文同步 | `code/scripts/knowledge/resync_wiki_content.py` |
 | 分批驱动 | `code/scripts/knowledge/run_resync_batches.sh`、`code/scripts/knowledge/sync_with_restart.sh` |
 | 双验收 | `code/scripts/knowledge/verify_wiki_tree.py`、`code/scripts/knowledge/verify_wiki_content.py` |
-| 链接解析 | `code/scripts/wiki_link_resolve.py` |
+| 链接解析 | `code/scripts/check/wiki_link_resolve.py` |
 
 ## 参考
 

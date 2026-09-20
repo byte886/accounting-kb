@@ -45,7 +45,7 @@ ffmpeg -i input.mp4 \
 ## 归位与边界
 - 压缩视频、音频、转写文稿都是**原始资源**，归本地大文件目录 + 百度网盘镜像，不进 Git、不直接同步飞书。
 - 转写文本只是知识来源之一，进入知识详解前仍要走"按知识点聚合 + 元数据剥离"。
-- 详细操作与脚本：`docs/development/tools/video-processing.md`、`docs/development/tools/transcription.md`；压缩 `code/scripts/compress.sh`，转写主管道 `code/scripts/transcribe_pipeline.py`（另有 transcribe_one/all/parallel 等 shell 包装；旧名 transcribe.py 已按 snake_case 更名）。
+- 详细操作与脚本：`docs/development/tools/video-processing.md`、`docs/development/tools/transcription.md`；压缩 `code/scripts/video/compress.sh`，转写主管道 `code/scripts/transcribe/transcribe_pipeline.py`（另有 transcribe_one/all/parallel 等 shell 包装；旧名 transcribe.py 已按 snake_case 更名）。
 
 ## 来源与下钻
 - [ADR-002 视频压缩标准](../../decisions/ADR-002-视频压缩标准.md)

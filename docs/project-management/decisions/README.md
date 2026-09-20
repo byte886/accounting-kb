@@ -109,7 +109,7 @@ ADR是一种轻量级的决策记录方式，帮助AI和人理解"为什么这�
 
 | ADR 中引用的脚本 | 状态 | 替代者 / 说明 | 涉及 ADR |
 |-------------------|------|---------------|----------|
-| `code/scripts/transcribe.py` | 已重命名 | → `code/scripts/transcribe_pipeline.py`（FunASR 转写管道） | ADR-003 |
+| `code/scripts/transcribe.py` | 已重命名 | → `code/scripts/transcribe/transcribe_pipeline.py`（FunASR 转写管道） | ADR-003 |
 | `code/scripts/setup-data-symlink.sh` | 已重命名 | → `code/scripts/setup_data_symlink.sh`（snake_case；仍自动创建 `data/高顿` 软链，支持 `--check`，并非改手动） | ADR-005 |
 | `code/scripts/cdp/sniff_demo.js` | 已不存在 | 一次性 CDP 抓包演示脚本，功能已整合进 `code/scripts/cdp/connect_browser.js` | ADR-010 |
 | `code/scripts/verify_lecture_map.py` | 已删除 | 随 `lecture-resource-map.json` 退役（commit f5c5373），课程路由由 `course-manifest.json` 取代 | ADR-011 |

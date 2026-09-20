@@ -28,17 +28,17 @@
 ### 视频下载/压缩
 1. `docs/WORKFLOW.md` 第2节
 2. `docs/development/tools/video-processing.md` — 压缩参数、CRF测试结果
-3. `code/scripts/compress.sh` — 压缩脚本
+3. `code/scripts/video/compress.sh` — 压缩脚本
 
 ### 文档下载
 1. `docs/WORKFLOW.md` 第3节
 2. `docs/development/tools/document-download.md` — CDN直链获取、curl后台下载、完整性校验
-3. `code/scripts/batch_ocr.sh` — OCR脚本（下载后提取文字）
+3. `code/scripts/ocr/batch_ocr.sh` — OCR脚本（下载后提取文字）
 
 ### 视频转文字
 1. `docs/WORKFLOW.md` 第5节
 2. `docs/development/tools/transcription.md` — 转写方案对比、FunASR使用
-3. `code/scripts/transcribe_pipeline.py` — 转写管道
+3. `code/scripts/transcribe/transcribe_pipeline.py` — 转写管道
 
 ### 知识系统构建（四阶段）
 **总览入口（先看这个）**：`docs/development/knowledge/knowledge-sop-overview.md` — 知识详解全流程 SOP 统一入口，按 写什么/怎么写/怎么生成/怎么同步/怎么验证/模板/来源 串联下列文档。
@@ -52,7 +52,7 @@
 ### 百度网盘同步
 1. `docs/WORKFLOW.md` 第4节
 2. `docs/development/api/netdisk-setup.md` — 网盘API配置、上传脚本使用
-3. `code/scripts/baidu_upload.py` — 上传脚本
+3. `code/scripts/netdisk/baidu_upload.py` — 上传脚本
 
 ### 遇到问题/异常
 1. `grep -rn "关键词" docs/` — 搜索相关文档
@@ -72,7 +72,7 @@
 6. `docs/project-management/standards/DOC_SYNC_CHECKLIST.md` — 文档同步清单
 7. `docs/project-management/standards/NAMING_CONVENTION.md` — 命名规范
 8. `docs/project-management/decisions/README.md` — 架构决策记录（ADR）索引，做重要决策前先查看历史决策
-9. `docs/project-management/memory/index.md`、`log.md` — 工程记忆 bundle：稳定结论变化时同步对应 concept 并记 log，跑 `code/scripts/okf_validate.py` 校验（ADR-017）
+9. `docs/project-management/memory/index.md`、`log.md` — 工程记忆 bundle：稳定结论变化时同步对应 concept 并记 log，跑 `code/scripts/check/okf_validate.py` 校验（ADR-017）
 
 ### 飞书知识库整理 / 维护
 1. `docs/development/guides/feishu-knowledge-base-maintenance.md` — 盘点分类、结构整理SOP、父节点导航规范与覆盖校验（先读）
@@ -147,7 +147,7 @@
 | **工程记忆 bundle 入口** | `docs/project-management/memory/index.md` | OKF v0.2 跨会话记忆导航：架构/链路/治理/对照 13 篇 concept 索引（ADR-017/018） |
 | 工程记忆概念页 | `docs/project-management/memory/concepts/*.md` | 稳定结论 + 指向源 ADR/规范的相对指针，不复制正文；机器初编、人核后加 verified |
 | 工程记忆变更线 | `docs/project-management/memory/log.md` | 记忆层自身结构变更，倒序；业务流水看根 CHANGELOG |
-| OKF 一致性校验器 | `code/scripts/okf_validate.py` | vendored 零依赖校验，提交前 `python3 code/scripts/okf_validate.py docs/project-management/memory`，E 必须为 0 |
+| OKF 一致性校验器 | `code/scripts/check/okf_validate.py` | vendored 零依赖校验，提交前 `python3 code/scripts/check/okf_validate.py docs/project-management/memory`，E 必须为 0 |
 
 ### 三、参考资料（Reference — 查什么）
 
@@ -235,7 +235,7 @@
 **新增**：
 - `docs/project-management/decisions/ADR-017-采用OKF作为工程记忆格式层.md`
 - 工程记忆 bundle：`docs/project-management/memory/{index.md, log.md, concepts/（10 篇）}`
-- vendored 零依赖校验器 `code/scripts/okf_validate.py`（不依赖全局技能）
+- vendored 零依赖校验器 `code/scripts/check/okf_validate.py`（不依赖全局技能）
 
 **更新**：根 `AGENTS.md`（第 2 章必读顺序、3.10 新会话恢复顺序、新增 3.11 工程记忆与项目自包含）、`code/scripts/pre-commit`（新增 OKF 校验段）、本地图对应登记。
 
