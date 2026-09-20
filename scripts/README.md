@@ -856,8 +856,8 @@ python3 scripts/knowledge/collect_point_questions.py --all
 
 | 项目 | 说明 |
 |------|------|
-| **用途** | 外层循环每轮拉起**全新** python 进程（新代理会话），`RESYNC_MAX_NEW` 满即退出、轮间休眠；`run_resync_batches.sh` 另有 `MAX_ROUNDS`（默认 3）在外层 shell 凭证老化前主动退出、由全新 shell 重拉。总篇数自动 = map 行数 + 1（课程首页），done 断点任意中断/重入 |
-| **用法** | `bash scripts/knowledge/run_resync_batches.sh <profile> [每轮新写] [轮间休眠] [总篇数] [退避封顶] [单外层轮数]`；`bash scripts/knowledge/sync_with_restart.sh <profile> [max_new] [interval] [batch_pause] [batch_rest]` |
+| **用途** | Worker Supervisor 模式：拉起 python worker（新代理会话），worker 写满 `RESYNC_MAX_NEW`（默认 20）篇主动退出后，Supervisor **立即拉起新 worker**（不长休眠）；连续 `RESYNC_FAIL_MAX`（默认 5）次无进展重启才短休 `RESYNC_COOLDOWN`（默认 30s）。总篇数自动 = map 行数 + 1（课程首页），done 数达标 Supervisor 自退。done 列表落 `logs/resync_done/*.done` 持久化，任意中断/重入不丢、不重复耗配额 |
+| **用法** | `bash scripts/knowledge/run_resync_batches.sh <profile> [每轮新写=20]`；旋钮走环境变量 `RESYNC_FAIL_MAX=5 RESYNC_COOLDOWN=30`；`bash scripts/knowledge/sync_with_restart.sh <profile> [max_new] [interval] [batch_pause] [batch_rest]`（旧备用驱动） |
 | **相关** | resync_wiki_content.py、feishu-api.md（限流根因与参数） |
 
 ---

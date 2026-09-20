@@ -92,6 +92,7 @@
   "wiki": {
     "spaceId": "7686897234545249236",
     "rootParentNodeToken": "K4IcwWg6HidyY6k6Z8hcdmGFnth",
-    "_note": "courseNodeToken/courseObjToken 由 build_tree.py 建课程容器后自动回写，勿手填"
+    "courseNodeToken": "T6I7waMheiMoxokxHQHcNLzMnsf",
+    "courseObjToken": "CtqadEAhEoPWIOxihk9cENj8n6d"
   }
 }

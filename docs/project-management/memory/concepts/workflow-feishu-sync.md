@@ -49,7 +49,7 @@ status: stable
 - **链路（一门课一闭环、一门一验收）**：`build_tree.py <profile>`（幂等建全称容器并回写 `courseNodeToken/courseObjToken`，再在内容器建章→点→全局篇；根 README 不建子节点）→ `resync_wiki_content.py --profile` 分批写正文（**根 README 写入容器=课程首页**，done 名 `__COURSE_HOMEPAGE__.done`；frontmatter 自动剥离）→ 只读双验收 `verify_wiki_tree.py`（本地/map/飞书容器树三方一致，动态计数）+ `verify_wiki_content.py`（逐篇 docs +fetch，EMPTY<100/THIN<300/FETCH_FAIL，`--refill` 补非 OK）。数量口径：map 行数+1（首页）= done 数 = 回读篇数。
 - **换空间重建先归档旧 map**：老空间遗留 `wiki_node_map.tsv` 不改名，build_tree 会按标题幂等命中老 token、新容器为空；先改名 `.oldspace.tsv` 再建。
 - **标题以本地目录名/frontmatter title 为准**：会计第 17 章本地目录曾被截断成 `17_收入`（飞书/frontmatter 为全称），修法是改本地目录名+跨章相对链接+map 标题键（token 不变），不迁就错误短名。
-- **限流是豆包转发代理按"单进程累计请求"计，不是飞书账号/token/内容问题**：`invalid_response`/`parse temporary token`/rc=5 → 换新 python 进程即恢复；外层 shell 凭证约 3 轮老化，`run_resync_batches.sh <p> 20 75` 满 3 轮主动退出、用全新交互 shell 重拉（done 断点续）；单进程新写 20 篇实测 0 失败；回读 FETCH_FAIL 冷却约 8 分钟 `--refill`。旧"简单逐个脚本最可靠、复杂批量不行"结论已证伪（真因即代理累计限流）。
+- **限流是豆包转发代理按"单进程累计请求"计，不是飞书账号/token/内容问题**：`invalid_response`/`parse temporary token`/rc=5 → 换新 python 进程即恢复；`run_resync_batches.sh` 已是 Worker Supervisor 模式——worker 写满 20 篇主动退出后立即拉起新 worker（不长休眠），连续 5 次无进展才短休 30s，done 列表落文件持久化；回读 FETCH_FAIL 冷却约 8 分钟 `--refill`。旧"简单逐个脚本最可靠、复杂批量不行"结论已证伪（真因即代理累计限流）。
 - **同一空间同一时刻只允许一个写进程**；豆包"工作任务"是服务端异步、OS kill/重启都停不掉，停止须在该任务对话内，开长任务前先确认无同目标 run。
 - 已退役（入 `.trash/*.20260919`）：`sync_wiki_new.sh`（老"课程根→组→点"建树器）、`auto_sync_all.py/.sh`（硬编码老空间）、`verify_sync_completeness.py`（老六科硬编码）。权威步骤见 wiki-sync-sop。
 

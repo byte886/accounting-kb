@@ -67,3 +67,7 @@ test_*
 !project-management/test-plans/
 !project-management/test-plans/测试计划_*.md
 !docs/development/templates/TEST_PLAN_TEMPLATE.md
+
+# --- OCR 断点缓存（RapidOCR/旧Vision共用，<pdf名>.pages/<N>.txt）---
+*.pages/
+.venv-ocr/

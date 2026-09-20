@@ -93,7 +93,7 @@ python3 scripts/knowledge/resync_wiki_content.py --profile <profile> --dry-run
 正式批量同步（推荐驱动，自动换新进程）：
 
 ```bash
-# 每轮新进程写 20 篇、轮间休眠；总篇数自动=map行数+首页；单外层最多 3 轮后换新 shell
+# Supervisor 模式：worker 写满 20 篇即退出，Supervisor 立即拉起新 worker（不长休眠）；总篇数自动=map行数+首页；连续 5 次无进展才短休 30s，done 数达标自退
 nohup bash scripts/knowledge/run_resync_batches.sh <profile> 20 75 > /tmp/resync_<profile>.out 2>&1 &
 tail -f data/_workspace/<profile>/logs/resync_wiki.log
 ```
@@ -114,10 +114,11 @@ nohup bash scripts/knowledge/run_resync_batches.sh <profile> 20 75 > /tmp/resync
 ### 限流处置（转发代理，非飞书账号/token/内容问题）
 
 - 现象：`invalid_response`、`parse temporary token`、`invalid character 'e'`、非 JSON 以 `e` 开头、rc=5。
-- 根因两层：①单 lark-cli/python 进程累计请求到阈值→**换新进程**即恢复；②外层 shell 凭证老化（健康约 3 轮）→`run_resync_batches.sh` 跑满 `MAX_ROUNDS=3` 主动退出，**用全新交互 shell 重新拉起**即可，done 断点无缝续。
+- 根因两层：①单 lark-cli/python 进程累计请求到阈值→**换新进程**即恢复；②`run_resync_batches.sh` 已是 Worker Supervisor 模式——worker 写满 `RESYNC_MAX_NEW=20` 篇主动干净退出后，Supervisor **立即拉起新 worker**（不长休眠）；连续 `RESYNC_FAIL_MAX=5`（默认）次无进展重启才短休 `RESYNC_COOLDOWN=30s`（默认）；done 列表落 `logs/resync_done/*.done` 持久化，重启不丢；跑到全部 done 才自退。
+- 进程内重试（2026-09-20 固化进 `resync_wiki_content.py`）：错误分类——`ext err` / `parse temporary token` / `invalid_response`（非 JSON 返回）属代理会话问题，原地只重试 1 次（2s±20% 抖动）再败即 `exit 2` 交外层换新进程；标准 HTTP 429 读 `Retry-After` 头等待；其他网络错最多重试 3 次（1→2→4→8→16s 封顶 30s，每次 ±20% 抖动）。
 - 判别口诀：先停脚本，用**全新 shell 手动单发同一篇**，立即成功即代理累计限流；不要误判登录失效、不要让用户重新登录、不要一味加长静默。
 - 深限流（整晚密集写）彻底静默约 15 分钟；窗口内继续请求会"续命"。详见 [../api/feishu-api.md](../api/feishu-api.md)。
-- 实测可靠节奏：单进程新写 20 篇 0 失败；撞限流连续 2 败即快速退出换新进程，篇间 1.5–5s。
+- 实测可靠节奏：单进程新写 20 篇 0 失败；撞限流快速退出换新进程，篇间 1.5–5s。
 
 ---
 
@@ -158,7 +159,7 @@ python3 scripts/knowledge/verify_wiki_content.py <profile>
 | 课程容器被建成短名/错名（如"会计罗翔"） | 手工/GUI 误建或配置卡 name 不对 | 以配置卡 `primaryCourse.name` 全称为准；错节点用 `wiki +node-delete`（**默认级联、会删整棵子树，--yes 前再三确认**）删除后重跑，不得留同名双容器 |
 | 飞书节点标题与本地目录名不一致 | 本地目录名被截断/改名 | 以 frontmatter `title`/官方全称改本地目录名，同步改相对链接与 map 标题键（token 不变），再验收（会计 17 章先例） |
 | 正文写入 ok 但飞书是空文档 | resolver 输出空 / WIKI_MAP 没传 / 写到错 obj | resync 有空输出守卫与 `](./` 残留 fail-loud；必须回读确认；检查 `--profile` 与 map 是否同课 |
-| 大量 `invalid_response`/rc=5 | 转发代理累计限流 | 换新进程批次法 + 外层满 3 轮换新 shell（第 3 节），不要重新登录 |
+| 大量 `invalid_response`/rc=5 | 转发代理累计限流 | 换新进程批次法 + 单进程写满20篇自动换进程（第 3 节），不要重新登录 |
 | 回读 `FETCH_FAIL`（len=0） | 拉取时限流，"没拉到"不是"飞书为空" | 冷却后 `--refill` 只补失败篇，勿据此判空 |
 | 两个窗口/异步任务同时在写 | 服务端异步任务未停 | 在该任务对话内停止；OS 层 kill 无效；开跑前务必确认唯一写进程 |
 | 本地批量改了知识点文件名 | 节点标题不会随内容更新 | 先改本地名 + 章 README 链接 + map 标题键（保留 token），再 resync；节点树标题以 map/本地为准，必要时按 feishu-api 的节点改名接口处理 |
