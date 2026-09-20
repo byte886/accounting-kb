@@ -32,7 +32,7 @@
 
 | 角色 | 主要写哪些项目文档 |
 |------|--------------------|
-| 项目架构师 | ADR（`decisions/`）、`DIRECTORY_STRUCTURE.md`、`WORKFLOW.md`、治理 / 交接文档、`active/TASK_STATUS.md` |
+| 项目架构师 | ADR（`decisions/`）、`DIRECTORY_STRUCTURE.md`、`WORKFLOW.md`、治理 / 交接文档、`TASK_STATUS.md` |
 | 开发工程师 | `scripts/README.md`、`docs/development/tools/`、`docs/development/api/` 技术文档、代码注释 |
 | 产品经理 | `知识详解/` 成品、考试指导、做题分析报告、PRD、测试 / 验收报告 |
 | 私人秘书 | 个人记忆与协调记录（过程件，不入库） |

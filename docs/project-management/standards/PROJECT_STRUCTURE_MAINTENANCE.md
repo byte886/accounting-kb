@@ -248,8 +248,8 @@ L3 默认不入库，但**同时满足三问**的"轻量派生/路由元数据"�
 
 | 查询意图 | 权威文档 | 说明 |
 |----------|----------|------|
-| Q1 任务状态 | `project-management/active/TASK_STATUS.md` | 唯一任务状态来源 |
-| Q2 问题/BUG | `project-management/active/ISSUES.md` | 问题跟踪唯一来源 |
+| Q1 任务状态 | `project-management/TASK_STATUS.md` | 唯一任务状态来源 |
+| Q2 问题/BUG | `project-management/ISSUES.md` | 问题跟踪唯一来源 |
 | Q3 维护工作 | `docs/project-management/standards/PROJECT_STRUCTURE_MAINTENANCE.md` + TASK_STATUS待优化项 | 维护规范和待优化项 |
 | Q7 维护检查（执行型） | `PROJECT_STRUCTURE_MAINTENANCE.md` + `DOCUMENTATION_OPTIMIZATION.md`第12章 + `DIRECTORY_STRUCTURE.md` | 实际执行结构+文档健康度检查并出报告 |
 | Q4 文档/操作 | `docs/DOCUMENTATION_MAP.md` + `docs/WORKFLOW.md` | 文档索引和工作流 |

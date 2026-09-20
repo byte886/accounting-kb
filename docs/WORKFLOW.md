@@ -124,7 +124,7 @@
 | 做题/交卷（纯接口主链路） | `cdp/api_do_paper.js`（单卷）、`cdp/batch_redo_papers.js`（批量，内置 token 失效自愈重试）、`cdp/do_sprint_paper.js`（冲刺） |
 | 鉴权 token 自愈 | `cdp/refresh_auth_token.js`（从已登录日常 Chrome 自动抓新 authentication；findJwt 按文件 mtime 取最新） |
 
-完整索引见 [scripts/README.md](../scripts/README.md)。
+完整索引见 [scripts/README.md](../code/scripts/README.md)。
 
 ### 重要决策前查看历史 ADR（必须遵守）
 
@@ -136,7 +136,7 @@
 
 ### 任务状态实时更新（必须遵守）
 
-任务状态变更立即更新 `project-management/active/TASK_STATUS.md`，不得延迟；它是唯一任务状态来源。规范见 [AGENTS.md 3.6节](../AGENTS.md)。
+任务状态变更立即更新 `project-management/TASK_STATUS.md`，不得延迟；它是唯一任务状态来源。规范见 [AGENTS.md 3.6节](../AGENTS.md)。
 
 ### 飞书同步策略（必须遵守）
 

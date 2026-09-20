@@ -36,7 +36,7 @@
 
 | 内容性质 | 落点 | 生命周期 |
 |----------|------|----------|
-| 跨课活态台账（进度 / 问题） | 根 `project-management/active/`（TASK_STATUS、ISSUES） | 高频改、常驻 |
+| 跨课活态台账（进度 / 问题） | 根 `project-management/`（TASK_STATUS、ISSUES） | 高频改、常驻 |
 | 稳定规范 / 方法论 | `docs/project-management/standards/`、`docs/development/` | 相对静态 |
 | 不可逆决策 | `docs/project-management/decisions/ADR-xxx` | 只增不改 |
 | 跨会话稳定结论 | `docs/project-management/memory/`（OKF，结论 + 相对指针） | 结论变才改、提交前过 `okf_validate` |

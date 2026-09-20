@@ -1,47 +1,30 @@
-# 项目管理（project-management）
+# 活动文档目录（active）
 
-> **文档类型**：Reference（治理结构说明）
-> **更新频率**：目录结构 / 治理机制变更时
+> **文档类型**：Active（全局活态台账）
+> **更新频率**：状态变化时实时更新
 > **维护者**：AI 自动维护
-> **读者**：AI 代理 + 用户
+> **读者**：AI 代理 + 用户（了解项目当前状态）
 
-## 本目录装什么
+本目录**只放两份跨课全局活态台账**，是新会话 / 接手任务时的入口。
 
-只放**跨课全局、需要跨会话持续维护的活态台账**，常驻只有 `active/`：
+## 文档清单（仅两份，不再增加常驻文件）
 
-```
-project-management/
-└── active/                       # 跨课全局活态台账（仅此两份，不再增加常驻文件）
-    ├── TASK_STATUS.md            # 进度视图：项目到哪了、全局里程碑、当前课指针、断点与下一步
-    ├── ISSUES.md                 # 问题视图：跨课/机制级 BUG 与风险的生命周期、解法
-    └── README.md                 # 两份台账的职责与边界
-```
+| 文档 | 一句话职责 | 谁在用 / 何时写 |
+|------|-----------|----------------|
+| `TASK_STATUS.md` | **进度视图**：项目到哪了、全局里程碑、当前课程指针、断点与下一步 | AI 启动/接手/被问状态时读；阶段或课程状态切换时写 |
+| `ISSUES.md` | **问题视图**：跨课/机制级 BUG、风险的 open→closed 生命周期与解法 | AI 排障先查、被问"有什么问题"时读；发现/解决机制级问题时写 |
 
-## 单课过程件不在这里（关键分层）
+## 边界（什么不放这里）
 
-**某一门课生产过程中的一切过程件都是临时件，统一落 `data/_workspace/<course>/`（gitignore、不入库）：**
+- **单门课的一切过程件**——逐讲/逐卷/批次状态、工单、任务报告、侦查、检查报告、日志、断点哨兵、需求/BUG 过程台账——一律落 `data/_workspace/<course>/`（不入库）：
+  - 工单与实时进度：`data/_workspace/<course>/tickets/`
+  - 任务报告：`data/_workspace/<course>/task-reports/`
+  - 日志/断点：`data/_workspace/<course>/logs/`
+- **稳定、跨课复用的决策与方法**落 `docs/project-management/`（standards 规范、decisions 的 ADR、memory 的 OKF），不写进活态台账。
+- TASK_STATUS 只放当前课**指针**、不抄 workspace 的易变计数；ISSUES 只收**换课还会踩**的机制问题，单课一次性问题进该课 `tickets/BUG_BACKLOG.md`。
 
-| 过程件 | 落点 |
-|--------|------|
-| 工单 / spec / 实时进度台账 | `data/_workspace/<course>/tickets/` |
-| 需求表 REQUIREMENTS、BUG 表 BUG_BACKLOG | `data/_workspace/<course>/tickets/` |
-| 任务报告、侦查/检查报告 | `data/_workspace/<course>/task-reports/` |
-| 日志、断点哨兵、manifest、原始抓取、临时文件 | `data/_workspace/<course>/{logs,manifest,sniff,tmp,...}` |
+## 使用原则
 
-课程 finalize 后这些过程件本地留底（不入库）；其中**稳定、跨课复用的结论**提炼进下面的静态治理层。
-
-## 与 `docs/project-management/` 的边界（动态 vs 静态）
-
-| 内容 | 位置 | 性质 |
-|------|------|------|
-| 当前任务状态、全局断点下一步 | `project-management/active/TASK_STATUS.md` | 动态，频繁更新 |
-| 跨课/机制级问题与 BUG | `project-management/active/ISSUES.md` | 动态，频繁更新 |
-| 标准 / 规范 / SOP（怎么做事的规则） | `docs/project-management/standards/` | 静态，规则变更才改 |
-| 架构决策记录 ADR（为什么这么定，只增不改） | `docs/project-management/decisions/` | 半静态，只增不改 |
-| 工程记忆 OKF bundle（跨会话稳定结论编译层） | `docs/project-management/memory/` | 静态，稳定结论变化时改 |
-
-> 一句话：**活的、会变的当前态在本目录 `active/`；怎么做事的规则和为什么这么定在 `docs/project-management/`；单门课的生产过程在 `data/_workspace/<course>/`。**
-
----
-
-**文档维护**：本结构变更时同步更新本文档、`docs/DIRECTORY_STRUCTURE.md` 与 `docs/DOCUMENTATION_MAP.md`。
+1. 接手任务前先读 `TASK_STATUS.md`，再按其指针读对应课程 `data/_workspace/<course>/`。
+2. 状态变化即时更新 TASK_STATUS；机制问题发现/闭环即时更新 ISSUES。
+3. 课程 finalize 后，其 workspace 过程件本地留底（不入库），TASK_STATUS 把该课移入"已完成课程"履历。

@@ -146,7 +146,7 @@ python3 scripts/knowledge/verify_wiki_content.py <profile>
 
 ## 5. 收尾
 
-1. 更新 `project-management/active/TASK_STATUS.md`（该课指针级状态：容器 token、子页数、验收结论）；单课批次明细留 `data/_workspace/<profile>/`（过程件不入库）。
+1. 更新 `project-management/TASK_STATUS.md`（该课指针级状态：容器 token、子页数、验收结论）；单课批次明细留 `data/_workspace/<profile>/`（过程件不入库）。
 2. 按 `docs/project-management/standards/DOC_SYNC_CHECKLIST.md` 同步相关文档；稳定结论沉淀 OKF 工程记忆。
 3. 一门课完整闭环（建树→同步→双验收 0 问题）后再开下一门；8 门课全部完成后再更新课程首页/CPA 层导航（如需要）。
 4. 生成结果（视频/PDF/文字稿）与 `data/_workspace/` 不入库；脚本与文档变更按 git 规范提交。

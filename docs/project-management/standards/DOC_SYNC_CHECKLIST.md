@@ -30,8 +30,8 @@
 
 | 文档 | 位置 | 更新内容 |
 |------|------|---------|
-| TASK_STATUS.md | `project-management/active/TASK_STATUS.md` | **全局**任务状态：跨课里程碑、当前课指针、断点/下一步；不抄单课批次明细 |
-| ISSUES.md | `project-management/active/ISSUES.md` | 跨课/机制级问题生命周期 |
+| TASK_STATUS.md | `project-management/TASK_STATUS.md` | **全局**任务状态：跨课里程碑、当前课指针、断点/下一步；不抄单课批次明细 |
+| ISSUES.md | `project-management/ISSUES.md` | 跨课/机制级问题生命周期 |
 
 ### 2.2 单课过程件（gitignore、不入库、不同步飞书）
 

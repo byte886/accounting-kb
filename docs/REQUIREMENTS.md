@@ -321,7 +321,7 @@
 #### 2.8.2 任务状态跟踪
 
 - **需求**：实时跟踪任务状态，方便查询和接手
-- **唯一权威来源**：`project-management/active/TASK_STATUS.md`（Markdown文档）
+- **唯一权威来源**：`project-management/TASK_STATUS.md`（Markdown文档）
 - **飞书Base**：保留作为可视化模板，供其他同事参考，不日常更新（避免双轨维护）
 - **内容**：
   - 课程列表和进度
@@ -568,10 +568,10 @@
 - [项目介绍](../README.md) — 项目目标和存储分工
 - [文档地图](DOCUMENTATION_MAP.md) — 所有文档的导航入口
 - [命名规范](project-management/standards/NAMING_CONVENTION.md) — 目录和文件命名
-- [任务状态](../project-management/active/TASK_STATUS.md) — 当前任务进度
-- [问题跟踪](../project-management/active/ISSUES.md) — 未解决问题
+- [任务状态](../project-management/TASK_STATUS.md) — 当前任务进度
+- [问题跟踪](../project-management/ISSUES.md) — 未解决问题
 - [知识库组织规范](development/knowledge/knowledge-base-organization.md) — 知识库设计原则
 - [知识库来源清单](development/knowledge/knowledge-base-sources.md) — 知识库内容来源
 - [做题/交卷任务执行指南](development/guides/exam-workflow.md) — 接口为主、UI 兜底的做题任务执行（前置准备/枚举作业/批量与单卷/回查/异常分流）
-- [脚本说明](../scripts/README.md) — 所有脚本的用途和参数
+- [脚本说明](../code/scripts/README.md) — 所有脚本的用途和参数
 - [项目管理规范](project-management/README.md) — 测试驱动、缺陷管理、任务报告

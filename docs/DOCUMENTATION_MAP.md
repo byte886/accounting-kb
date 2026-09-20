@@ -15,7 +15,7 @@
 ### 开始新任务前
 - 先判冷启动还是续接，按 `AGENTS.md` 第 2 章「路径 A / 路径 B」读对应文档，续接不重复全读稳定背景
 - 任何路径都读：`AGENTS.md`（核心规则）、`docs/project-management/memory/index.md`（跨会话稳定结论编译入口，按需沿 concept 下钻）
-- 当前到哪/下一步：`project-management/active/TASK_STATUS.md` + `active/ISSUES.md`；单课逐讲/逐卷明细看 `data/_workspace/`
+- 当前到哪/下一步：`project-management/TASK_STATUS.md` + `ISSUES.md`；单课逐讲/逐卷明细看 `data/_workspace/`
 
 ### 做题验证前
 1. `docs/development/api/gaodun-exam-api.md` — **高顿做题接口契约（接口为主：syllabus 枚举作业→redo-paper 取题与标准答案→submit-paper 交卷→exam-report 回查）**
@@ -181,8 +181,8 @@
 
 | 文档 | 路径 | 用途 |
 |------|------|------|
-| 任务状态（全局） | `project-management/active/TASK_STATUS.md` | 跨课里程碑、当前课指针、全局断点/下一步（唯一**全局**状态源；单课明细在 workspace） |
-| 问题/BUG 跟踪（全局） | `project-management/active/ISSUES.md` | 跨课/机制级问题生命周期；单课一次性问题进该课 workspace 的 BUG_BACKLOG |
+| 任务状态（全局） | `project-management/TASK_STATUS.md` | 跨课里程碑、当前课指针、全局断点/下一步（唯一**全局**状态源；单课明细在 workspace） |
+| 问题/BUG 跟踪（全局） | `project-management/ISSUES.md` | 跨课/机制级问题生命周期；单课一次性问题进该课 workspace 的 BUG_BACKLOG |
 | 决策记录（ADR） | `docs/project-management/decisions/ADR-*.md` | 重要决策的背景、原因、后果（只增不改） |
 | 单课过程件（工单/批次/测试计划/任务报告/题答/笔记原件/日志） | 课程 `data/_workspace/<profile>/{tickets,task-reports,papers,notes-raw,manifest,logs}/` | 单门课生产过程的一切过程件，gitignore 不入库；finalize 后本地留底，稳定结论才提炼进 ADR/OKF/SOP |
 

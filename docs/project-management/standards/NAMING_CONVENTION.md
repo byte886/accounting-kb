@@ -264,7 +264,7 @@ data/_workspace/
 
 > 题/标准答案/官方解析由接口落 `data/_workspace/<profile>/papers/*.json`，不再手抄成中文 md；旧 `知识拆解.md/考试指导.md` 双文档已废止（ADR-012）。
 
-**L5 单课过程产物**（任务报告/测试计划/侦查/工单记录，统一落该课 `data/_workspace/<course>/`、不入库；`project-management/active/` 只留 TASK_STATUS/ISSUES 两份全局台账）：每次任务生成、H1 为中文，文件名用中文并与 H1 对应：
+**L5 单课过程产物**（任务报告/测试计划/侦查/工单记录，统一落该课 `data/_workspace/<course>/`、不入库；`project-management/` 只留 TASK_STATUS/ISSUES 两份全局台账）：每次任务生成、H1 为中文，文件名用中文并与 H1 对应：
 
 - 统一格式：`{中文类型}_{对象}_{日期}.md`；日期用 ISO `YYYY-MM-DD`，无日期的持续性记录可省略日期段，但**不得中英前缀混排、不得用紧凑日期 `YYYYMMDD`**。
 - 中文类型词：任务报告 / 测试计划 / 问题调研 / 整改方案 / 优化记录 等（验证默认并入任务报告，不单设「同步报告/验证报告」类型；仅视频等非标准对象专项质检可用 `VERIFICATION.md`）。
@@ -275,7 +275,7 @@ data/_workspace/
 ### 9.6 L1 治理/规范/模板/台账/索引：全大写 UPPER_SNAKE_CASE
 
 - 判定：回答"必须遵守什么、标准是什么、当前状态、供复制的骨架、清单索引"。
-- 位置：`docs/` 根、`docs/project-management/standards/`、`docs/development/templates/`、`project-management/active/` 的状态台账。
+- 位置：`docs/` 根、`docs/project-management/standards/`、`docs/development/templates/`、`project-management/` 的状态台账。
 - 正例：`NAMING_CONVENTION.md`、`CODE_STYLE.md`、`QUALITY_ASSURANCE.md`、`REPORT_TEMPLATE.md`、`TASK_STATUS.md`、`ISSUES.md`。
 - 模板统一以 `_TEMPLATE` 结尾；禁止同词大小写混排（反例 `VERIFICATION_TEMPLATE_knowledge_base.md`）。
 - **`docs/` 根顶层骨架文档固定大写**：`WORKFLOW.md`、`REQUIREMENTS.md`、`SYSTEM_REQUIREMENTS.md`、`DOCUMENTATION_MAP.md`、`DIRECTORY_STRUCTURE.md` 是全局主工作流/需求/总览/索引/结构骨架，统一 UPPER_SNAKE，**不随其内容类型（Task/Concept/Reference）改小写**，与子目录里的具体方法文档（小写）形成层级区分。
@@ -299,7 +299,7 @@ data/_workspace/
 
 ### 9.10 跨类目录说明（避免误判"同目录不一致"）
 
-- `project-management/active/` 只放**两份跨课全局状态台账**（L1，大写：`TASK_STATUS.md`、`ISSUES.md`）；原 `COURSE_INDEX.md`、`BATCH_TASK_STATUS.md` 等课程级定格件已于 2026-09-08 删除，单课过程件按 L5 落 `data/_workspace/<course>/`。**不设任务交接文件**：角色职责见 multi-role-collaboration 专档（AGENTS 只留速查）、项目当前情况由使用者用话术让 AI 读这些实时台账即可，原 `task-handover.md` 已删除。
+- `project-management/` 只放**两份跨课全局状态台账**（L1，大写：`TASK_STATUS.md`、`ISSUES.md`）；原 `COURSE_INDEX.md`、`BATCH_TASK_STATUS.md` 等课程级定格件已于 2026-09-08 删除，单课过程件按 L5 落 `data/_workspace/<course>/`。**不设任务交接文件**：角色职责见 multi-role-collaboration 专档（AGENTS 只留速查）、项目当前情况由使用者用话术让 AI 读这些实时台账即可，原 `task-handover.md` 已删除。
 - `docs/development/guides/` 只放方法/最佳实践文档（L2 小写），如 `agents-md-best-practices.md`；`CODE_STYLE.md` 正文是"必须/禁止"的强制编码与文档规范（Governance），已移至 `standards/` 并大写，不放 guides。
 
 ### 9.11 仓库命名检查清单（新增/改名文件时逐项过）

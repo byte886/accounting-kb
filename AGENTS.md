@@ -38,12 +38,12 @@
 2. 工程记忆 `docs/project-management/memory/index.md` — 跨会话稳定结论与硬约束的"编译入口"，按需沿 concept「来源与下钻」深读源 ADR/规范；记忆层自身变更看同目录 `log.md`
 3. `docs/REQUIREMENTS.md` — 项目目标、功能范围、验收标准
 4. `docs/WORKFLOW.md` 对应环节 → 沿其「参考文档」链接读专项 SOP（如做题交互规范、压缩参数）
-5. `project-management/active/TASK_STATUS.md` + `active/ISSUES.md` — 当前状态、前置依赖、跨课问题
+5. `project-management/TASK_STATUS.md` + `ISSUES.md` — 当前状态、前置依赖、跨课问题
 
 ### 路径 B · 续接（用户说"继续/接手/接着做 X"，且仍是同一阶段同类活）
 如继续写知识详解、继续压缩、继续上传。只读：
 1. `memory/index.md`（只扫结论定位）
-2. `active/TASK_STATUS.md` + `active/ISSUES.md`（到哪、下一步、跨课问题）
+2. `TASK_STATUS.md` + `ISSUES.md`（到哪、下一步、跨课问题）
 3. 该课过程台账 `data/_workspace/<course>/` 与账号级 `data/_workspace/_account/ep3/three_tracks_status.md`（逐讲/逐卷/批次/断点）
 4. **当前环节那一篇 SOP/guide 的相关小节 + 上一单元样板成品**（如写知识详解读 knowledge-base-organization §2.1/§2.12 + 上一章成品）
 
@@ -98,7 +98,7 @@
 
 **开始任何大任务前，必须先创建执行状态记录，异常恢复时必须先读取状态记录。**
 
-**落点（分层）**：单门课的大任务状态记录（批次进度、工单、断点）落 `data/_workspace/<course>/`（不入库）；`active/TASK_STATUS.md` 只更新该课的**指针级**状态，不抄批次明细。
+**落点（分层）**：单门课的大任务状态记录（批次进度、工单、断点）落 `data/_workspace/<course>/`（不入库）；`TASK_STATUS.md` 只更新该课的**指针级**状态，不抄批次明细。
 
 **详细规范**：`docs/project-management/standards/BATCH_TASK_EXECUTION.md`
 
@@ -190,7 +190,7 @@
 
 **开启新对话前必须完成的工作**：
 1. 确保所有重要决策已记录到ADR（`docs/project-management/decisions/`）
-2. 确保任务状态已更新到`project-management/active/TASK_STATUS.md`
+2. 确保任务状态已更新到`project-management/TASK_STATUS.md`
 3. 确保所有文档已提交并推送到GitHub
 
 > 是否在新会话前准备摘要由使用者自行决定，不强制生成交接文件/摘要；新会话按第 2 章 A/B 路径恢复、启动方式见下。
@@ -242,8 +242,8 @@
 | 层级 | 位置 | 装什么 | 不装什么 |
 |------|------|--------|----------|
 | **单课工单** | `data/_workspace/<course>/tickets/`（过程件，不入库） | 工单 01..N、BUG_BACKLOG、REQUIREMENTS、tickets-index | 全局状态、跨课机制问题 |
-| **全局任务状态** | `project-management/active/TASK_STATUS.md` | 指针级状态、全局里程碑、下一步 | 单课逐讲/逐卷计数、工单勾选 |
-| **全局问题/BUG** | `project-management/active/ISSUES.md` | 跨课/机制级问题（换课还会踩） | 单课一次性问题（进该课 BUG_BACKLOG） |
+| **全局任务状态** | `project-management/TASK_STATUS.md` | 指针级状态、全局里程碑、下一步 | 单课逐讲/逐卷计数、工单勾选 |
+| **全局问题/BUG** | `project-management/ISSUES.md` | 跨课/机制级问题（换课还会踩） | 单课一次性问题（进该课 BUG_BACKLOG） |
 | **稳定决策** | `docs/project-management/decisions/`（ADR） | 不可逆决策、只增不改 | 易变状态、临时方案 |
 | **工程记忆** | `docs/project-management/memory/`（OKF bundle） | 跨会话稳定结论编译层 | 进度、计数、当天日期 |
 
@@ -373,7 +373,7 @@
 
 **6类查询意图：**
 - Q1 任务状态查询 → 读 `TASK_STATUS.md`
-- Q2 问题/BUG查询 → 读 `active/ISSUES.md`（跨课/机制级）+ 该课 `data/_workspace/<course>/tickets/BUG_BACKLOG.md`（单课一次性问题）
+- Q2 问题/BUG查询 → 读 `ISSUES.md`（跨课/机制级）+ 该课 `data/_workspace/<course>/tickets/BUG_BACKLOG.md`（单课一次性问题）
 - Q3 维护工作查询 → 读 `PROJECT_MAINTENANCE.md` + 待优化项
 - Q4 文档/操作查询 → 读 `DOCUMENTATION_MAP.md` + `WORKFLOW.md`
 - Q5 项目概览查询 → 读 `README.md` + `TASK_STATUS.md`

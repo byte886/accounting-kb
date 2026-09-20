@@ -51,7 +51,7 @@ docs/project-management/        # 项目管理方法论（静态内容）
 
 ### 唯一任务状态来源
 
-**`project-management/active/TASK_STATUS.md`**（Markdown 文档）
+**`project-management/TASK_STATUS.md`**（Markdown 文档）
 
 - 所有任务状态、进度、详情以本文档为准
 - AI 助手直接编辑本文档更新任务状态

@@ -101,4 +101,4 @@ const fileLines = fileIndex >= 0 ? lines.slice(fileIndex + 1) : lines.slice(-30)
 
 - `docs/development/tools/playwright-cli-guide.md` — Playwright使用指南
 - `docs/development/api/netdisk-setup.md` — 百度网盘API设置
-- `project-management/active/ISSUES.md` — 问题跟踪（I-002已解决）
+- `project-management/ISSUES.md` — 问题跟踪（I-002已解决）

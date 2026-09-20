@@ -95,9 +95,9 @@
 
 | 意图ID | 意图名称 | 用户想知道什么 | AI应读取的文档 |
 |--------|----------|----------------|----------------|
-| Q1 | 任务状态查询 | 还有哪些任务要做、当前进度、下一步是什么 | `project-management/active/TASK_STATUS.md` |
-| Q2 | 问题/BUG查询 | 有什么问题、有哪些bug、有什么异常 | `project-management/active/ISSUES.md` |
-| Q3 | 维护工作查询 | 需要做什么维护、定期检查什么、有什么待优化 | `docs/project-management/standards/PROJECT_MAINTENANCE.md` + `project-management/active/TASK_STATUS.md`中的待优化项 |
+| Q1 | 任务状态查询 | 还有哪些任务要做、当前进度、下一步是什么 | `project-management/TASK_STATUS.md` |
+| Q2 | 问题/BUG查询 | 有什么问题、有哪些bug、有什么异常 | `project-management/ISSUES.md` |
+| Q3 | 维护工作查询 | 需要做什么维护、定期检查什么、有什么待优化 | `docs/project-management/standards/PROJECT_MAINTENANCE.md` + `project-management/TASK_STATUS.md`中的待优化项 |
 | Q4 | 文档/操作查询 | 某某文档在哪里、怎么操作某某、流程是什么 | `docs/DOCUMENTATION_MAP.md` + `docs/WORKFLOW.md` |
 | Q5 | 项目概览查询 | 项目现在什么情况、总结一下、整体进度 | `README.md` + `TASK_STATUS.md` + 最近的任务报告 |
 | Q6 | 决策/历史查询 | 为什么这样做、之前做了什么决定、历史记录 | `docs/project-management/decisions/`（ADR）+ `data/_workspace/<course>/task-reports/` |

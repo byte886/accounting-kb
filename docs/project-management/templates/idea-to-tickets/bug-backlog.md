@@ -6,7 +6,7 @@
 # BUG 过程台账 · {{课程/账号级任务名}}（过程件，不入库）
 
 > 位置：单课 `data/_workspace/<course>/tickets/BUG_BACKLOG.md`；跨多 profile 的账号级共性问题落 `data/_workspace/_account/<平台>/BUG_BACKLOG.md`。
-> 只记**本课程/本批次**开放缺陷的生命周期。**换课还会踩的机制级问题**，关单时把共性解法提炼到全局 `project-management/active/ISSUES.md` + OKF，这里只留指针、不复制解法正文。
+> 只记**本课程/本批次**开放缺陷的生命周期。**换课还会踩的机制级问题**，关单时把共性解法提炼到全局 `project-management/ISSUES.md` + OKF，这里只留指针、不复制解法正文。
 > 外部限制（风控、权限、平台下架）不是脚本缺陷，记到 REQUIREMENTS/tickets-index，不要伪装成 BUG。任务 finalize 后本文件随过程件清理。
 
 ## 一、未解决 BUG（开放）

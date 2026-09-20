@@ -33,8 +33,8 @@
 **单门课的大任务状态记录在该课工作区 `data/_workspace/<course>/`（gitignore、不入库）**，通常是 `tickets/`（工单与实时进度）+ 批次状态文件；它是该课大任务执行状态的唯一来源。
 
 - 单课大任务（批量处理 >3 个讲次、多工具链、预计 >1 小时）都必须在该课 workspace 留检查点记录。
-- `project-management/active/TASK_STATUS.md` 是**全局**台账，只更新该课的**指针级**状态（一句话 + 指向 workspace），不抄讲次明细表、不抄易变计数。
-- 跨课 / 项目级的大任务才在 `active/TASK_STATUS.md` 体现；不存在全局唯一的 `BATCH_TASK_STATUS.md`（该课程级定格文件已于 2026-09-08 下沉 workspace 并删除）。
+- `project-management/TASK_STATUS.md` 是**全局**台账，只更新该课的**指针级**状态（一句话 + 指向 workspace），不抄讲次明细表、不抄易变计数。
+- 跨课 / 项目级的大任务才在 `TASK_STATUS.md` 体现；不存在全局唯一的 `BATCH_TASK_STATUS.md`（该课程级定格文件已于 2026-09-08 下沉 workspace 并删除）。
 
 ### 2.2 记录模板
 
@@ -226,7 +226,7 @@
 
 | 文档 | 关联内容 |
 |------|----------|
-| `active/TASK_STATUS.md` | 全局任务状态，只放该课大任务的指针级概要 |
+| `TASK_STATUS.md` | 全局任务状态，只放该课大任务的指针级概要 |
 | 官方 syllabus / `data/_workspace/<course>/manifest/` | 讲次/试卷清单与实时计数的权威来源 |
 | `WORKFLOW.md` | 完整工作流程，每个步骤的详细操作 |
 | `DOC_SYNC_CHECKLIST.md` | 文档同步清单，状态记录更新后需要同步的文档 |
