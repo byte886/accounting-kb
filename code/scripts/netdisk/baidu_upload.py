@@ -11,7 +11,7 @@
 
 兼容旧用法: python3 baidu_upload.py <本地文件> <网盘路径> [token]
 
-网盘路径必须以 /apps/CPA课程归档/ 开头（该沙箱根名与应用授权绑定、不可改名；2026-09-12 起课程统一在 /apps/CPA课程归档/会计知识库/高顿/CPA/ 下，见 ADR-020）。
+网盘路径必须在应用授权的沙箱目录内（形如 /apps/<应用沙箱根>/...；沙箱根名与应用授权绑定、不可改名，沙箱外操作报 errno=31064）。
 直连百度服务器（国内服务，不走代理）。
 """
 
@@ -29,11 +29,27 @@ API_BASE = "https://pan.baidu.com/rest/2.0/xpan/file"
 UPLOAD_BASE = "https://d.pcs.baidu.com/rest/2.0/pcs/superfile2"
 
 
+def default_enc_file():
+    """凭证密文解析顺序：环境变量 BAIDU_CRED_FILE > 沿脚本目录向上找到的
+    <repo>/.secrets/baidu_credentials.enc > ~/.secrets/baidu_credentials.enc。"""
+    env = os.environ.get("BAIDU_CRED_FILE", "").strip()
+    if env:
+        return os.path.expanduser(env)
+    d = os.path.dirname(os.path.abspath(__file__))
+    for _ in range(8):
+        cand = os.path.join(d, ".secrets", "baidu_credentials.enc")
+        if os.path.isfile(cand):
+            return cand
+        parent = os.path.dirname(d)
+        if parent == d:
+            break
+        d = parent
+    return os.path.expanduser("~/.secrets/baidu_credentials.enc")
+
+
 def get_token():
-    """从加密文件解密获取 access_token"""
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    project_dir = os.path.dirname(script_dir)
-    enc_file = os.path.join(project_dir, ".secrets", "baidu_credentials.enc")
+    """从加密文件解密获取 access_token（密文位置见 default_enc_file）。"""
+    enc_file = default_enc_file()
 
     password = os.environ.get("BAIDU_ENC_PASS", "")
     if not password:
@@ -250,6 +266,79 @@ def move_file(src_path, dest_dir, token, new_name=None):
     return result
 
 
+MULTIMEDIA_BASE = "https://pan.baidu.com/rest/2.0/xpan/multimedia"
+
+
+def get_dlink(fs_id, token):
+    """通过 filemetas(dlink=1) 取单文件下载直链（dlink 8 小时有效）。"""
+    params = {
+        "method": "filemetas",
+        "access_token": token,
+        "fsids": json.dumps([int(fs_id)]),
+        "dlink": "1",
+    }
+    url = MULTIMEDIA_BASE + "?" + "&".join(
+        f"{k}={urllib.parse.quote(str(v), safe='')}" for k, v in params.items())
+    cmd = ["curl", "-s", "--connect-timeout", "10", url]
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+    data = json.loads(result.stdout)
+    if data.get("errno") != 0 or not data.get("list"):
+        raise RuntimeError(f"filemetas failed: {data}")
+    dlink = data["list"][0].get("dlink")
+    if not dlink:
+        raise RuntimeError(f"no dlink in response: {data}")
+    return dlink
+
+
+def download_entry(entry, remote_parent, local_parent, token):
+    """下载一个文件条目（含 fs_id/size），支持限速与断点跳过。"""
+    name = entry["server_filename"]
+    remote_path = remote_parent + "/" + name
+    local_path = os.path.join(local_parent, name)
+    size = entry.get("size", 0)
+    if os.path.isfile(local_path) and os.path.getsize(local_path) == size:
+        print(f"  [跳过] {remote_path}（本地大小一致 {size}B）")
+        return
+    dlink = get_dlink(entry["fs_id"], token)
+    url = dlink + "&access_token=" + urllib.parse.quote(token, safe='')
+    os.makedirs(local_parent, exist_ok=True)
+    tmp_path = local_path + ".part"
+    cmd = ["curl", "-sL", "--connect-timeout", "10",
+           "-H", "User-Agent: pan.baidu.com",
+           "-o", tmp_path]
+    rate = os.environ.get("BAIDU_DOWNLOAD_RATE", "").strip()
+    if rate:
+        cmd += ["--limit-rate", rate]
+    cmd.append(url)
+    print(f"  下载: {remote_path} ({size / 1024 / 1024:.1f} MB)")
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=7200)
+    if result.returncode != 0:
+        print(f"  下载失败: {result.stderr}", file=sys.stderr)
+        return False
+    actual = os.path.getsize(tmp_path) if os.path.isfile(tmp_path) else -1
+    if actual != size:
+        print(f"  大小不符: 期望 {size}B 实得 {actual}B，保留 .part 待续", file=sys.stderr)
+        return False
+    os.replace(tmp_path, local_path)
+    return True
+
+
+def download_dir(remote_dir, local_dir, token, skip_top_mkdir=False):
+    """递归下载整个网盘目录到本地，保持目录结构；同大小文件跳过。"""
+    if not skip_top_mkdir:
+        os.makedirs(local_dir, exist_ok=True)
+    items = list_files(remote_dir, token)
+    ok = True
+    for item in items:
+        if item["isdir"]:
+            download_dir(remote_dir + "/" + item["server_filename"],
+                         os.path.join(local_dir, item["server_filename"]), token)
+        else:
+            if not download_entry(item, remote_dir, local_dir, token):
+                ok = False
+    return ok
+
+
 def delete_file(remote_path, token):
     """删除网盘文件或目录（使用 filemanager API）"""
     filelist = json.dumps([remote_path])
@@ -276,7 +365,8 @@ if __name__ == "__main__":
     token = get_token()
 
     # 兼容旧用法: python3 baidu_upload.py <本地文件> <网盘路径>
-    if command not in ("upload", "list", "rename", "move", "delete", "mkdir"):
+    if command not in ("upload", "list", "rename", "move", "delete", "mkdir",
+                       "download", "tree"):
         local_file = sys.argv[1]
         remote_file = sys.argv[2]
         if not os.path.isfile(local_file):
@@ -334,3 +424,29 @@ if __name__ == "__main__":
             print("用法: baidu_upload.py mkdir <网盘目录>", file=sys.stderr)
             sys.exit(1)
         mkdir_p(sys.argv[2], token)
+
+    elif command == "download":
+        if len(sys.argv) < 4:
+            print("用法: baidu_upload.py download <网盘文件或目录> <本地目标目录>",
+                  file=sys.stderr)
+            sys.exit(1)
+        remote_path = sys.argv[2]
+        local_target = sys.argv[3]
+        # 判断远端是文件还是目录：列父目录找同名条目
+        parent, name = remote_path.rsplit("/", 1)
+        with open(os.devnull, "w") as devnull:
+            import contextlib
+            with contextlib.redirect_stdout(devnull):
+                siblings = list_files(parent, token)
+        match = [it for it in siblings if it["server_filename"] == name]
+        if not match:
+            print(f"网盘路径不存在: {remote_path}", file=sys.stderr)
+            sys.exit(1)
+        entry = match[0]
+        if entry["isdir"]:
+            ok = download_dir(remote_path, local_target, token)
+            sys.exit(0 if ok else 1)
+        else:
+            os.makedirs(local_target, exist_ok=True)
+            ok = download_entry(entry, parent, local_target, token)
+            sys.exit(0 if ok else 1)

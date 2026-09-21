@@ -52,7 +52,12 @@
 ### 百度网盘同步
 1. `docs/WORKFLOW.md` 第4节
 2. `docs/development/api/netdisk-setup.md` — 网盘API配置、上传脚本使用
-3. `code/scripts/netdisk/baidu_upload.py` — 上传脚本
+3. `docs/development/api/netdisk-sync-api-notes.md` — 沙箱目录同步场景的 API 实测笔记（可行接口、死路、限流伪装空目录、mtime 剪枝）
+4. `docs/development/guides/netdisk-alignment-sop.md` — 网盘↔本地目录全量对齐 SOP（盘点→计划→试点→执行→验收→台账）
+5. `docs/development/guides/netdisk-incremental-check-sop.md` — 日常增量检查 SOP（秒级知道哪里变了、台账基线提交、多人操作安全）
+6. `docs/development/guides/netdisk-background-launchd.md` — 数小时级同步任务的 macOS launchd 后台托管 SOP（成功自卸载）
+7. `code/scripts/netdisk/baidu_upload.py` — API 封装（上传/下载/列出/移动/删除）
+8. `code/scripts/netdisk/pan_inventory.py` / `sync_plan.py` / `sync_apply.py` / `sync_check.py` — 对齐盘点、计划、执行、增量台账四件套
 
 ### 遇到问题/异常
 1. `grep -rn "关键词" docs/` — 搜索相关文档
@@ -103,6 +108,7 @@
 | OCR讲义 | `docs/development/tools/ocr.md` | PDF/PPT/DOC文字提取 |
 | 音频转写 | `docs/development/tools/transcription.md` | FunASR方案、环境配置 |
 | 网盘操作 | `docs/development/api/netdisk-setup.md` | 百度网盘API配置与上传 |
+| 网盘目录对齐/增量检查 | `docs/development/guides/netdisk-alignment-sop.md`、`netdisk-incremental-check-sop.md` | 网盘↔本地目录双向对齐、秒级变化检测与台账 |
 | 飞书API | `docs/development/api/feishu-api.md` | 知识库、文档、多维表格API |
 | 加密凭证 | `docs/development/api/encryption.md` | Token加密存储与使用 |
 | Git工作流 | `docs/development/guides/git-workflow.md` | 分支策略、提交规范、pre-commit |
