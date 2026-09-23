@@ -188,22 +188,41 @@ def upload_file(local_path, remote_path, token):
     return result
 
 
+def list_raw(remote_dir, token):
+    """列目录条目；errno 非 0 直接抛异常，不吞成空列表。"""
+    url = (f"{API_BASE}?method=list&access_token={token}"
+           f"&dir={urllib.parse.quote(remote_dir)}&num=10000&web=5")
+    result = subprocess.run(["curl", "-s", "--connect-timeout", "10", url],
+                            capture_output=True, text=True, timeout=60)
+    data = json.loads(result.stdout)
+    if data.get("errno") != 0:
+        raise RuntimeError(f"list {remote_dir} failed: {data}")
+    return data.get("list", [])
+
+
 def mkdir_p(remote_dir, token):
-    """递归创建网盘目录（沙箱内，跳过 /apps 系统目录）"""
+    """递归创建网盘目录（沙箱内，跳过 /apps 系统目录）。
+
+    本沙箱应用 method=mkdir 返回 31064 未授权；建目录用 method=create&isdir=1。
+    create 默认 rtype=1：对已存在目录会改名成 <名>_<时间戳>，因此每级先列父目录、
+    确认不存在再 create，绝不盲建。
+    """
     parts = remote_dir.strip("/").split("/")
     current = ""
+    cache = {}
     for part in parts:
-        current += "/" + part
+        prev, current = current, current + "/" + part
         if current == "/apps":
             continue
-        result = curl_api(API_BASE, {
-            "method": "mkdir",
-            "access_token": token,
-        }, {"path": current})
+        if prev not in cache:
+            cache[prev] = {it["server_filename"] for it in list_raw(prev, token)}
+        if part in cache[prev]:
+            continue
+        result = curl_api(API_BASE, {"method": "create", "access_token": token},
+                          {"path": current, "isdir": "1"})
         if result.get("errno") == 0:
+            cache[prev].add(part)
             print(f"  Created: {current}")
-        elif result.get("errno") == 31061 or result.get("error_code") == 31061:
-            pass  # already exists
         else:
             print(f"  mkdir {current} returned: {result}")
 

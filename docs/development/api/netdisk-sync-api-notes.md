@@ -16,7 +16,7 @@
 | 能力 | 接口 | 关键点 |
 |------|------|--------|
 | 逐目录列文件 | `GET https://pan.baidu.com/rest/2.0/xpan/file?method=list&dir=<path>&num=10000&web=5` | 返回 `server_filename / fs_id / size / isdir / server_mtime`；分页 `order=name&desc=0&start=` |
-| 创建目录 | `file?method=create`（`path`、`isdir=1`） | 逐级 mkdir，已存在不报错 |
+| 创建目录 | `file?method=create`（`path`、`isdir=1`） | 逐级创建；**`method=mkdir` 本应用可能返回 31064**；create 默认 rtype=1，对**已存在目录会改名成 `<名>_<时间戳>`**，必须先列父目录确认不存在再建 |
 | 分片上传 | `file?method=precreate` → `pcs/superfile2?method=upload` → `file?method=create` | 三步；body 固定 `rtype=3` 同名覆盖；**precreate 与 create 都要带 rtype=3**；`ondup` 对三步上传无效 |
 | 下载直链 | `multimedia?method=filemetas&fsids=[id]&dlink=1` 取 `dlink` | 再 `curl -sL -H "User-Agent: pan.baidu.com" "<dlink>&access_token=<token>"`；缺 UA 或不带 token 会失败；dlink 8 小时有效 |
 | 移动/重命名 | `file?method=filemanager&opera=move/rename` | 服务端秒移、不重传 |
