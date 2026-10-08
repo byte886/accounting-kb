@@ -35,7 +35,7 @@
 
 - GitHub: https://github.com/byte886/accounting-kb （公有）
 
-> 本仓为五仓体系的**治理方法论标杆**（README/AGENTS 分层、Diátaxis 文档分类、质量保证机制）；体系总控与跨仓导航见 `system-architecture`（总控仓，`~/Desktop/system-architecture/`，GitHub: `github.com/byte886/system-architecture`）。本仓运行不依赖其他仓。
+> 本仓为五仓体系的**治理方法论标杆**（README/AGENTS 分层、Diátaxis 文档分类、质量保证机制）；体系总控与跨仓导航见 `multi-repo-orchestration`（总控仓，`~/Desktop/multi-repo-orchestration/`，GitHub: `github.com/byte886/multi-repo-orchestration`）。本仓运行不依赖其他仓。
 
 ## 常用查询话术（直接复制使用）
 
