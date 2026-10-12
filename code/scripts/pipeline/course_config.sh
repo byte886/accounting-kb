@@ -45,8 +45,8 @@ export COURSE_DESKTOP_ROOT="$COURSE_LOCAL_ROOT"
 # 百度网盘加密密码：不硬编码。统一走 lib/load_enc_pass.sh
 # （环境变量 BAIDU_ENC_PASS > 本机 600 主密码文件 > 交互输入）
 _CC_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=lib/load_enc_pass.sh
-source "$_CC_LIB_DIR/lib/load_enc_pass.sh"
+# shellcheck source=../lib/load_enc_pass.sh
+source "$_CC_LIB_DIR/../lib/load_enc_pass.sh"
 unset _CC_LIB_DIR
 
 # 原始资源子目录名

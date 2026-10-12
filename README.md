@@ -159,30 +159,9 @@
 
 ## 项目维护规则
 
-> ⚠️ **执行任何任务前，必须先读 [AGENTS.md](AGENTS.md)** — 里面有全局执行规则、文档快速入口、存储分工等核心要求。
->
-> 每次开始新任务前、完成大任务后，必须检查项目结构是否合理，发现问题主动梳理调整。
-> 详细规范见 [docs/project-management/standards/PROJECT_MAINTENANCE.md](docs/project-management/standards/PROJECT_MAINTENANCE.md)
+> ⚠️ **执行任何任务前，必须先读 [AGENTS.md](AGENTS.md)** —— 全局执行规则、写文档前的检查流程、问题驱动更新、定期结构检查、清理原则等**核心规则全部以 AGENTS.md §3 为准**（README 不重复）。
 
-### 核心原则
-
-1. **GitHub 仓库只放代码和文档**：生成结果（视频、PDF、文字稿）放本地和百度网盘
-2. **代码统一放 `code/`（scripts/ venvs/ node_modules/）**：不分散在各子目录
-3. **文档按专业领域分类**：`docs/project-management/`、`docs/development/`
-4. **具体产出物放对应课程目录**：专项质检、知识梳理等和被验证对象在一起（验证默认不单独成文）
-5. **定期清理**：测试文件、临时日志、残留目录及时清理
-
-### 文档组织三层保障
-
-| 层级 | 位置 | 内容 |
-|------|------|------|
-| 第一层 | **README.md 正文** | 核心规则、维护原则、存储分工 |
-| 第二层 | **docs/ 子文档** | 详细操作步骤、参数、常见问题 |
-| 第三层 | **自动化机制** | pre-commit hook、脚本检查 |
-
-### 问题驱动更新（强制）
-
-发现任何问题（文件位置不对、脚本有bug、流程有缺陷等）时，必须立即评估是否需要更新文档或自动化检查，评估后必须执行，不能只发现问题不更新。
+维护/清理的具体规范见 [docs/project-management/standards/PROJECT_MAINTENANCE.md](docs/project-management/standards/PROJECT_MAINTENANCE.md)；文档分层与组织纪律见 [DOCUMENTATION_MAP.md](docs/DOCUMENTATION_MAP.md)。
 
 
 ## 系统要求
@@ -211,22 +190,12 @@
 
 ## 技术方案
 
-- 浏览器自动化：Playwright Extension 模式附加 Chrome
-- 密钥提取：Hook hls.js Worker 通信截获 AES-128 密钥
-- 下载：Node.js 多线程下载 HLS 分片
-- 解密：AES-128-CBC
-- 压缩：ffmpeg H.265 CRF30 + AAC 96k
-- 网盘：百度网盘 PCS API 分片上传（4MB 分片，MD5 秒传）
-- 验证：ffprobe 自动校验时长和可播放性
+管线实现口径（浏览器自动化/密钥截获/HLS 下载/解密/压缩/网盘分片/校验）见 [docs/SYSTEM_REQUIREMENTS.md §七](docs/SYSTEM_REQUIREMENTS.md)；各环节详细操作见 [docs/WORKFLOW.md](docs/WORKFLOW.md)。
 
 
 ## 密钥管理
 
-敏感凭证使用 openssl AES-256-CBC -pbkdf2 加密存储，加密文件提交到仓库，解密密码由用户保管。
-
-```bash
-secrets decrypt .secrets/<name>.enc   # 全局命令解密查看（原 code/scripts/... 已抽离为全机唯一工具）
-```
+敏感凭证用 openssl AES-256-CBC 加密、`.secrets/*.enc` 入库，解密命令见 [AGENTS.md §6.1](AGENTS.md)。
 
 
 ## 文档同步清单

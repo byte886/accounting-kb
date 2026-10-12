@@ -46,6 +46,8 @@ docs/project-management/        # 项目管理方法论（静态内容）
 > **动态内容**（任务状态、问题跟踪、测试计划、报告等）已移到项目根目录下的 `project-management/` 目录，详见 [project-management/README.md](../../project-management/README.md)。
 > **具体课程的专项质检/任务产物**放在对应课程目录下（和被验证对象在一起）；验证默认不单独成文、结论并入任务报告。
 > **一次性施工方案 / 迁移脚本等任务过程件不进 docs/**：执行期间落 `data/_workspace/<course>/`，完成后把稳定、可复用的结论提炼进 ADR/OKF，过程件即清理（git 历史可溯），不在持久文档区保留"施工记录"僵尸文件。
+>
+> **旁观者评审与修正记录**见 [`reviews/`](reviews/)：按日期归档（`YYYY-MM-DD-<主题>.md`），只增不改；最新一份＝[2026-10-12 修正轮记录](reviews/2026-10-12-修正轮记录.md)。
 
 ---
 

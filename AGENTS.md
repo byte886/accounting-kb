@@ -325,6 +325,14 @@
 
 > 详细的目录结构说明见 [docs/DIRECTORY_STRUCTURE.md](docs/DIRECTORY_STRUCTURE.md)。
 
+### 6.1 密钥管理
+
+敏感凭证用 `openssl AES-256-CBC -pbkdf2` 加密存储，`.secrets/*.enc` 加密文件提交到仓库，解密密码由用户本人保管（不入仓库）。查看/解密用全局唯一命令：
+
+```bash
+secrets decrypt .secrets/<name>.enc   # 解密查看（原 code/scripts/... 已抽离为全机唯一工具；新机器先 secrets install）
+```
+
 ---
 
 ## 7. 异常处理流程（任何操作失败时）

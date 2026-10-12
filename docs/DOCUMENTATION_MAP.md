@@ -203,7 +203,7 @@
 | 文档同步清单 | `docs/project-management/standards/DOC_SYNC_CHECKLIST.md` | 同步时机、更新内容 |
 | 项目管理规范总览 | `docs/project-management/README.md` | 项目管理文档索引 |
 | 编码规范 | `docs/project-management/standards/CODE_STYLE.md` | Python/Shell 编码、文档与命名的强制规范 |
-| 治理成熟度评审报告 | `docs/project-management/reviews/2026-10-12-governance-maturity-independent-audit.md` | 旁观者视角全仓治理/文档自评与修正闭环（问题清单/待拍板项/验收标准） |
+| 治理成熟度评审报告 | `docs/project-management/reviews/` | 旁观者视角全仓治理/文档评审与修正闭环（按日期归档：`2026-10-12-governance-maturity-independent-audit.md` 评审、`2026-10-12-修正轮记录.md` 执行记录） |
 
 ### 六、知识库内容（Knowledge — 学什么）
 

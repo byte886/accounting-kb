@@ -146,3 +146,17 @@ bash code/scripts/check/check_directory_structure.sh
 2. **新电脑复现环境**：按照"迁移到新 Mac 的步骤"操作，确保环境一致
 3. **工具版本锁定**：关键工具（ffmpeg、Node.js、Python）的版本记录在本文档中
 4. **平台兼容性说明**：新增功能时，必须说明是否依赖特定平台的工具
+
+---
+
+## 七、核心技术实现要点（管线实现口径）
+
+> 从 README 下沉（2026-10-12）。各环节详细参数/排障见 `docs/WORKFLOW.md` 与 `docs/development/` 对应 guide，本节只列实现口径。
+
+- **浏览器自动化**：Playwright Extension 模式附加已运行 Chrome（复用登录态）；CDP/puppeteer-core 为主通道（见 `docs/development/guides/` 与 `browser-cdp-connect-guide.md`）
+- **密钥提取**：Hook hls.js Worker 通信截获 AES-128 密钥
+- **下载**：Node.js 多线程下载 HLS 分片
+- **解密**：AES-128-CBC
+- **压缩**：ffmpeg H.265 CRF30 + AAC 96k
+- **网盘**：百度网盘 PCS API 分片上传（4MB 分片，MD5 秒传）
+- **验证**：ffprobe 自动校验时长和可播放性

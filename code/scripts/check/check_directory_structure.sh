@@ -13,8 +13,8 @@ set -euo pipefail
 # 动态获取项目目录（脚本所在目录的上一级）
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
-# shellcheck source=course_config.sh
-source "$SCRIPT_DIR/course_config.sh"
+# shellcheck source=../pipeline/course_config.sh
+source "$SCRIPT_DIR/../pipeline/course_config.sh"
 
 
 set -e
