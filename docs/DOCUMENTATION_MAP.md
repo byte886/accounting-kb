@@ -78,6 +78,7 @@
 7. `docs/project-management/standards/NAMING_CONVENTION.md` — 命名规范
 8. `docs/project-management/decisions/README.md` — 架构决策记录（ADR）索引，做重要决策前先查看历史决策
 9. `docs/project-management/memory/index.md`、`log.md` — 工程记忆 bundle：稳定结论变化时同步对应 concept 并记 log，跑 `code/scripts/check/okf_validate.py` 校验（ADR-017）
+10. `docs/project-management/reviews/` — 旁观者评审报告（治理成熟度自评/复核，按日期归档）
 
 ### 飞书知识库整理 / 维护
 1. `docs/development/guides/feishu-knowledge-base-maintenance.md` — 盘点分类、结构整理SOP、父节点导航规范与覆盖校验（先读）
@@ -150,7 +151,7 @@
 | 质量保证规范 | `docs/project-management/standards/QUALITY_ASSURANCE.md` | 验证标准、质量检查流程 |
 | 目录结构说明 | `docs/DIRECTORY_STRUCTURE.md` | 仓库/本地/网盘/飞书目录结构、Git忽略说明、维护原则 |
 | 系统要求与环境配置 | `docs/SYSTEM_REQUIREMENTS.md` | 平台兼容性、硬件要求、环境配置、迁移新Mac步骤 |
-| **工程记忆 bundle 入口** | `docs/project-management/memory/index.md` | OKF v0.2 跨会话记忆导航：架构/链路/治理/对照 13 篇 concept 索引（ADR-017/018） |
+| **工程记忆 bundle 入口** | `docs/project-management/memory/index.md` | OKF v0.2 跨会话记忆导航：架构/链路/治理/对照 15 篇 concept 索引（ADR-017/018） |
 | 工程记忆概念页 | `docs/project-management/memory/concepts/*.md` | 稳定结论 + 指向源 ADR/规范的相对指针，不复制正文；机器初编、人核后加 verified |
 | 工程记忆变更线 | `docs/project-management/memory/log.md` | 记忆层自身结构变更，倒序；业务流水看根 CHANGELOG |
 | OKF 一致性校验器 | `code/scripts/check/okf_validate.py` | vendored 零依赖校验，提交前 `python3 code/scripts/check/okf_validate.py docs/project-management/memory`，E 必须为 0 |
@@ -202,6 +203,7 @@
 | 文档同步清单 | `docs/project-management/standards/DOC_SYNC_CHECKLIST.md` | 同步时机、更新内容 |
 | 项目管理规范总览 | `docs/project-management/README.md` | 项目管理文档索引 |
 | 编码规范 | `docs/project-management/standards/CODE_STYLE.md` | Python/Shell 编码、文档与命名的强制规范 |
+| 治理成熟度评审报告 | `docs/project-management/reviews/2026-10-12-governance-maturity-independent-audit.md` | 旁观者视角全仓治理/文档自评与修正闭环（问题清单/待拍板项/验收标准） |
 
 ### 六、知识库内容（Knowledge — 学什么）
 

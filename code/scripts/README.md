@@ -627,7 +627,7 @@ python3 scripts/knowledge/collect_point_questions.py --all
 
 ## 九、高顿做题接口链路（17个，位于 `scripts/cdp/`）
 
-> 「接口为主、UI 兜底」的纯接口做题脚本，契约见 [高顿作业接口档案](../docs/development/api/gaodun-exam-api.md)。报文落 `data/_workspace/<profile>/sniff/`（不入库）。
+> 「接口为主、UI 兜底」的纯接口做题脚本，契约见 [高顿作业接口档案](../../docs/development/api/gaodun-exam-api.md)。报文落 `data/_workspace/<profile>/sniff/`（不入库）。
 
 
 ---
@@ -653,7 +653,7 @@ python3 scripts/knowledge/collect_point_questions.py --all
 |------|------|
 | **用途** | 被 `api_do_paper.js`/`batch_redo_papers.js` 复用：record→(首次先 create-paper)→redo→平铺答案（type5 父题不答、平铺其 type6 子题；顶层独立 type6 同样处理）→按 `aiCorrect.cpaBotType` 分流（=3 进 AI 批改、=0 未配 AI 只交答案）→最小停留→submit 全量交卷→交卷后并发=3 逐题 correct-ai/cpa：cs=6 走「canon+qual / full / AI 未命中点」三级补全 → best-of-N×4 原样重取 → 仍不满且答案=标准答案则归 aiCeiling→exam-report 两层核对（fullScore / platformDone）。主观答案统一走 `cleanSubjectiveAnswer`（算式主体+点拨精简「依据：」+多小问分点，交卷与首次 AI 批改同版；点拨不全删——六卷实证其含采分点，只删年份政策背景句）。导出 `doPaperViaApi/buildUserAnswers/cleanSubjectiveAnswer/canonAnswer/qualitativeAnswer/findJwt` 等 |
 | **答案来源** | 客观取 `questionAnswer.answer`；主观（type5 子题与顶层 type6）从 `questionAnswer.analysis` 提炼（canon 等式句 / qual 点拨定性句 / full 整段兜底），无需本地题库 |
-| **可靠性** | ✅ 基础卷 116 张全部达成（109 严格满分 + 7 平台最优）；73 张客观精讲卷一次满分零失败；交卷与 AI 批改解耦（交卷即完成，批改异常只标记不崩）；AI 判分抖动应对见 [flaky-ai-judging.md](../docs/development/guides/flaky-ai-judging.md) |
+| **可靠性** | ✅ 基础卷 116 张全部达成（109 严格满分 + 7 平台最优）；73 张客观精讲卷一次满分零失败；交卷与 AI 批改解耦（交卷即完成，批改异常只标记不崩）；AI 判分抖动应对见 [flaky-ai-judging.md](../../docs/development/guides/flaky-ai-judging.md) |
 | **相关文档** | gaodun-exam-api.md §2.3/2.5/2.6/2.7、§3 |
 
 ---

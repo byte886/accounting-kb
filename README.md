@@ -100,10 +100,9 @@
 ```
 项目根目录/
 ├── docs/                 # 项目文档（只放静态内容：方法论、指导、规范、流程、模板）
-├── project-management/   # 项目管理（动态内容：任务状态、问题跟踪、测试计划、报告）
-├── knowledge-base/       # 知识库内容（本地源头，同步到飞书）
-├── code/                  # 所有代码（脚本、venv、node_modules）
-├── transcription/        # 转写工作目录（.gitignore忽略）
+├── project-management/   # 项目管理（动态内容：任务状态、问题跟踪，仅两份全局活态台账）
+├── code/                  # 所有代码（scripts/、venvs/、node_modules/）
+├── config/               # 课程档案卡 profile（一门课一个 JSON，换课只换卡）
 ├── .secrets/             # 加密凭证（加密文件提交到仓库）
 ├── data/                 # 运行数据实体目录（高顿课程库 + _workspace），整体 .gitignore 忽略
 ├── README.md             # 项目介绍（本文件）

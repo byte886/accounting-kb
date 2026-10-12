@@ -61,10 +61,10 @@ ssh -T git@github.com
 git remote -v
 
 # 切换到 SSH（如当前是 HTTPS）
-git remote set-url origin git@github.com:byte886/gaodun-course-knowledge-base.git
+git remote set-url origin git@github.com:byte886/accounting-kb.git
 
 # 切换到 HTTPS（如需）
-git remote set-url origin https://github.com/byte886/gaodun-course-knowledge-base.git
+git remote set-url origin https://github.com/byte886/accounting-kb.git
 ```
 
 ## 4. 代理配置
@@ -207,7 +207,7 @@ pip3 install git-filter-repo
 git filter-repo --strip-blobs-bigger-than 10M --force
 
 # 重新添加remote（filter-repo会移除remote）
-git remote add origin git@github.com:byte886/gaodun-course-knowledge-base.git
+git remote add origin git@github.com:byte886/accounting-kb.git
 
 # 强制push（历史已重写）
 git push --force origin master

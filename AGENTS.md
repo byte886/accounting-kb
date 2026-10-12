@@ -212,7 +212,7 @@
 - **只读用法**：新会话按第 2 章顺序读 `memory/index.md` 定位，再沿 concept 的「来源与下钻」读源 ADR/规范；**concept 只写结论与相对指针、不复制源文档正文**，冲突时以源文档为准。
 - **维护时机**：当 ADR/规范/链路的**稳定结论**发生变化时，同步修订对应 concept 并在 `memory/log.md` 倒序记一行；易变值（进度、计数、当天日期、SHA、剩余权益）**不进记忆**，需要时实时读台账。
 - **信任标注**：AI 机器初编/改写的 concept 不得写 `verified: human`（不冒充人核）；只有用户实际审核后才补 `verified: { by: "human:<id>", at }`。
-- **机械校验（提交前必过）**：`python3 code/scripts/check/okf_validate.py docs/project-management/memory`，硬错误 E 必须为 0（已挂入 `code/scripts/pre-commit`）；警告 W 需逐条确认。
+- **机械校验（提交前必过）**：`python3 code/scripts/check/okf_validate.py docs/project-management/memory`，硬错误 E 必须为 0（已挂入 `code/scripts/check/pre-commit`）；警告 W 需逐条确认。
 - **项目自包含 / 可移植（硬约束）**：工程运行**不得依赖全局 `~/Doubao/AGENTS.md` 或任何全局技能**——校验器等工具一律 vendor 进本仓库 `code/scripts/`，规则与指针只引用仓库内相对路径；保证仅 clone 本仓库、换一个 Agent 也能按自身文档接手。
 
 ### 3.12 知识详解 OKF frontmatter（格式层延伸，强制）

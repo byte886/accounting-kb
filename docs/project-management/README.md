@@ -23,14 +23,16 @@ docs/project-management/        # 项目管理方法论（静态内容）
 │   ├── BATCH_TASK_EXECUTION.md  # 大任务执行状态记录与异常恢复机制
 │   ├── PROJECT_STATUS_QUERY.md  # 状态查询协议、意图分类、模糊表达映射
 │   ├── NAMING_CONVENTION.md     # 命名规范（文件、目录、变量）
+│   ├── CODE_STYLE.md            # Python/Shell 编码规范
 │   └── DOC_SYNC_CHECKLIST.md    # 文档同步清单
 ├── decisions/                   # 决策记录（ADR，半静态，只增不改）
 │   ├── README.md                # ADR索引
-│   └── ADR-*.md                 # 各决策记录（ADR-001~019）
+│   └── ADR-*.md                 # 各决策记录（ADR-001~022）
 ├── memory/                      # OKF工程记忆bundle（跨会话稳定结论编译层）
 │   ├── index.md                 # 记忆入口（有什么、在哪）
 │   ├── log.md                   # 记忆层自身变更（倒序）
-│   └── concepts/                # 高密度concept（架构4/链路5/治理3/对照1）
+│   └── concepts/                # 高密度concept（架构4/链路7/治理3/对照1，共15篇）
+├── reviews/                     # 旁观者评审报告（治理成熟度自评/复核，按日期归档，只增不改）
 └── templates/                   # 任务工程模板（vendor进项目，不依赖全局技能）
     └── idea-to-tickets/         # Idea-to-Tickets 模板（clarify/spec/slice + 过程台账）
         ├── consensus.md         # clarify模式：共识小结
